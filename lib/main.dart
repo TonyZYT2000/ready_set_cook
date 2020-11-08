@@ -1,98 +1,79 @@
+import 'package:auth_screen/screens/auth_screen.dart';
+import 'package:auth_screen/screens/signout_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ready_set_cook/signup.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
-  runApp(MyApp());
+import 'screens/starting.dart';
+
+void main() async{
+    print("done");
+   WidgetsFlutterBinding.ensureInitialized();
+   await Firebase.initializeApp();
+   print("yup");
+   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  // final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'ReadySetCook',
+      title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
         primarySwatch: Colors.blue,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+        backgroundColor: Color(0xFF26DBE5),
+        accentColor: Color(0xFF9ACA41),
+        // accentColorBrightness: Brightness.dark,
+        buttonTheme: ButtonTheme.of(context).copyWith(
+          buttonColor: Color(0xFF26DBE5),
+          textTheme: ButtonTextTheme.primary,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),)
+        )
       ),
-      home: MyHomePage(title: 'ReadySetCook Homepage'),
+      home: 
+      StreamBuilder(stream: FirebaseAuth.instance.authStateChanges(), builder: (ctx, userSnapshot){
+        if(userSnapshot.hasData){
+          return Signout();
+        }
+        return AuthScreen();
+      })
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
+// void main() {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   runApp(App());
+  
+// }
 
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+// class App extends StatelessWidget {
+//   // Create the initialization Future outside of `build`:
+//   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
-  final String title;
+//   @override
+//   Widget build(BuildContext context) {
+//     return FutureBuilder(
+//       // Initialize FlutterFire:
+//       future: _initialization,
+//       builder: (context, snapshot) {
+//         // Check for errors
+//         if (snapshot.hasError) {
+//           return Text("something is wrong");
+//         }
 
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
+//         // Once complete, show your application
+//         if (snapshot.connectionState == ConnectionState.done) {
+//           return Start();
+//         }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _selectedIndex = 0;
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: TextStyle(fontSize: 18),
-    ),
-    Text(
-      'Index 1: Storage',
-      style: TextStyle(fontSize: 18),
-    ),
-    Text(
-      'Index 2: Profile',
-      style: TextStyle(fontSize: 18),
-    ),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('ReadySetCook!'),
-      ),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.food_bank),
-            label: 'Storage',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_box),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.green[400],
-        onTap: _onItemTapped,
-      ),
-    );
-  }
-}
+//         // Otherwise, show something whilst waiting for initialization to complete
+//         return Text("still waiting");
+//       },
+//     );
+//   }
+// }
