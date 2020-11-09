@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:ready_set_cook/signup.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ready_set_cook/screens/auth_screen.dart';
+import 'package:ready_set_cook/screens/profile_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -14,12 +19,24 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         // This is the theme of your application.
         primarySwatch: Colors.blue,
+        accentColor: Colors.green[400],
         // This makes the visual density adapt to the platform that you run
         // the app on. For desktop platforms, the controls will be smaller and
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        buttonTheme: ButtonTheme.of(context).copyWith(
+          buttonColor: Color(0xFF26DBE5),
+          textTheme: ButtonTextTheme.primary,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20),)
+        )
       ),
-      home: MyHomePage(title: 'ReadySetCook Homepage'),
+      home: StreamBuilder(stream: FirebaseAuth.instance.authStateChanges(), builder: (ctx, userSnapshot) {
+        if (userSnapshot.hasData) {
+          return MyHomePage(title: 'ReadySetCook Homepage');
+        } else {
+          return AuthScreen();
+        }
+      })
     );
   }
 }
@@ -44,7 +61,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
-  static const List<Widget> _widgetOptions = <Widget>[
+  static List<Widget> _widgetOptions = <Widget>[
     Text(
       'Index 0: Home',
       style: TextStyle(fontSize: 18),
@@ -53,10 +70,8 @@ class _MyHomePageState extends State<MyHomePage> {
       'Index 1: Storage',
       style: TextStyle(fontSize: 18),
     ),
-    Text(
-      'Index 2: Profile',
-      style: TextStyle(fontSize: 18),
-    ),
+    // Index 2: Profile Screen
+    ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {
