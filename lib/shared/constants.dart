@@ -12,7 +12,7 @@ const textInputDecoration = InputDecoration(
   ),
 );
 
-class bigLogo extends StatelessWidget {
+class BigLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class bigLogo extends StatelessWidget {
   }
 }
 
-class smallLogo extends StatelessWidget {
+class SmallLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {

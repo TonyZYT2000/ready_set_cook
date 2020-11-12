@@ -58,7 +58,7 @@ class _HomeState extends State<Home> {
             ),
           ],
           leading:
-              Padding(padding: const EdgeInsets.all(8.0), child: smallLogo()),
+              Padding(padding: const EdgeInsets.all(8.0), child: SmallLogo()),
         ),
         body: Center(
           child: _widgetOptions.elementAt(_selectedIndex),
