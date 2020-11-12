@@ -2,8 +2,14 @@ import 'package:ready_set_cook/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ready_set_cook/shared/constants.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  Home();
 
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
 
   int _selectedIndex = 0;
@@ -28,9 +34,9 @@ class Home extends StatelessWidget {
   ];
 
   void _onItemTapped(int index) {
-    /*(setState(() {
+    setState(() {
       _selectedIndex = index;
-    });*/
+    });
   }
 
   @override
@@ -51,39 +57,38 @@ class Home extends StatelessWidget {
               },
             ),
           ],
-        leading: Padding(padding: const EdgeInsets.all(8.0),
-        child: smallLogo()),
+          leading:
+              Padding(padding: const EdgeInsets.all(8.0), child: smallLogo()),
         ),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        body: Center(
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.blue[120],
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add_rounded),
+              label: 'Recommended',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.food_bank),
+              label: 'Recipes',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.inbox),
+              label: 'Storage',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_box),
+              label: 'Profile',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.green[400],
+          onTap: _onItemTapped,
+        ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.blue[120],
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_rounded),
-            label: 'Recommended',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.food_bank),
-            label: 'Recipes',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.inbox),
-            label: 'Storage',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_box),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.green[400],
-        onTap: _onItemTapped,
-      ),
-      ),
-      
     );
   }
 }
