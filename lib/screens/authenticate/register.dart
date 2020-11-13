@@ -13,13 +13,13 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
-  String error = '';
+  String _error = '';
 
   // text field state
-  String email = '';
-  String password = '';
-  String firstName = '';
-  String lastName = '';
+  String _email = '';
+  String _password = '';
+  String _firstName = '';
+  String _lastName = '';
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,7 @@ class _RegisterState extends State<Register> {
                   decoration:
                       textInputDecoration.copyWith(hintText: 'First Name'),
                   onChanged: (val) {
-                    setState(() => firstName = val);
+                    setState(() => _firstName = val);
                   },
                 ),
                 SizedBox(height: 20.0),
@@ -59,7 +59,7 @@ class _RegisterState extends State<Register> {
                   decoration:
                       textInputDecoration.copyWith(hintText: 'Last Name'),
                   onChanged: (val) {
-                    setState(() => lastName = val);
+                    setState(() => _lastName = val);
                   },
                 ),
                 SizedBox(height: 20.0),
@@ -67,7 +67,7 @@ class _RegisterState extends State<Register> {
                   decoration: textInputDecoration.copyWith(hintText: 'Email'),
                   validator: (val) => val.isEmpty ? 'Enter an email' : null,
                   onChanged: (val) {
-                    setState(() => email = val);
+                    setState(() => _email = val);
                   },
                 ),
                 SizedBox(height: 20.0),
@@ -78,7 +78,7 @@ class _RegisterState extends State<Register> {
                   validator: (val) =>
                       val.length < 6 ? 'Enter a password 6+ chars long' : null,
                   onChanged: (val) {
-                    setState(() => password = val);
+                    setState(() => _password = val);
                   },
                 ),
                 SizedBox(height: 20.0),
@@ -91,17 +91,17 @@ class _RegisterState extends State<Register> {
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
                         dynamic result = await _auth
-                            .registerWithEmailAndPassword(email, password);
+                            .registerWithEmailAndPassword(_email, _password);
                         if (result == null) {
                           setState(() {
-                            error = 'Please supply a valid email';
+                            _error = 'Please supply a valid email';
                           });
                         }
                       }
                     }),
                 SizedBox(height: 12.0),
                 Text(
-                  error,
+                  _error,
                   style: TextStyle(color: Colors.red, fontSize: 14.0),
                 ),
                 SizedBox(height: 12.0),

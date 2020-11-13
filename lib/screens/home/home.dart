@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:ready_set_cook/shared/constants.dart';
 
 class Home extends StatefulWidget {
-  Home();
-
   @override
   _HomeState createState() => _HomeState();
 }
@@ -65,7 +63,6 @@ class _HomeState extends State<Home> {
         ),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.blue[120],
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.add_rounded),
