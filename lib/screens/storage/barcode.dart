@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// Fast QR code reader plugin
 
 class Barcode extends StatefulWidget {
   @override

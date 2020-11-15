@@ -5,6 +5,7 @@ class Manual extends StatefulWidget {
   _ManualState createState() => _ManualState();
 }
 
+
 class _ManualState extends State<Manual> {
   @override
   Widget build(BuildContext context) {

@@ -11,6 +11,7 @@ class _StorageState extends State<Storage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.red[100],
+      // Add Button
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
