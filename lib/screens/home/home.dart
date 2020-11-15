@@ -1,4 +1,4 @@
-import 'package:ready_set_cook/screens/home/storage.dart';
+import 'package:ready_set_cook/screens/storage/storage.dart';
 import 'package:ready_set_cook/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ready_set_cook/shared/constants.dart';
@@ -13,7 +13,6 @@ class _HomeState extends State<Home> {
 
   int _selectedIndex = 0;
 
-  /*
   static List<Widget> _widgetOptions = <Widget>[
     Text(
       'Index 0: Recommended Recipes',
@@ -23,16 +22,12 @@ class _HomeState extends State<Home> {
       'Index 1: Your Recipes',
       style: TextStyle(fontSize: 12),
     ),
-    Text(
-      'Index 2: Storage',
-      style: TextStyle(fontSize: 12),
-    ),
+    Storage(),
     Text(
       'Index 3: Profile',
       style: TextStyle(fontSize: 12),
     ),
   ];
-  */
 
   void _onItemTapped(int index) {
     setState(() {
@@ -62,16 +57,7 @@ class _HomeState extends State<Home> {
               Padding(padding: const EdgeInsets.all(8.0), child: SmallLogo()),
         ),
         body: Center(
-          //child: _widgetOptions.elementAt(_selectedIndex),
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Storage()),
-              );
-            },
-            child: Text('View Current Storage'),
-          ),
+          child: _widgetOptions.elementAt(_selectedIndex),
         ),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,

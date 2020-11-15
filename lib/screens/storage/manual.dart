@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class Manual extends StatefulWidget {
   @override
-  _ManualState manualState() => _ManualState();
+  _ManualState createState() => _ManualState();
 }
 
 class _ManualState extends State<Manual> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Center(child: Text('Manual Page', style: TextStyle(fontSize: 12)));
   }
 }
