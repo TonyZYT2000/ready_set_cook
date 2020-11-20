@@ -36,7 +36,8 @@ class _StorageState extends State<Storage> {
                     final ingredientName = storageSnap[index]["ingredientName"];
                     final quant = storageSnap[index]['quantity'];
                     final date = storageSnap[index]['dateAdded'];
-                    return StorageRow(ingredientName, quant, date);
+                    final unit = storageSnap[index]['unit'];
+                    return StorageRow(ingredientName, quant, date, unit);
                   });
             }));
   }

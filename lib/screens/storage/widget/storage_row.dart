@@ -4,8 +4,9 @@ class StorageRow extends StatelessWidget {
   final ingredientName;
   final quantity;
   final date;
+  final unit;
 
-  StorageRow(this.ingredientName, this.quantity, this.date);
+  StorageRow(this.ingredientName, this.quantity, this.date, this.unit);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,8 @@ class StorageRow extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
           Text(ingredientName),
-          Text(quantity.toString())
+          Text(quantity.toString()),
+          Text(unit)
         ]));
   }
 }
