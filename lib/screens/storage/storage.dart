@@ -13,7 +13,6 @@ class _StorageState extends State<Storage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.blue[50],
-        // Add Button
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.push(
@@ -30,14 +29,13 @@ class _StorageState extends State<Storage> {
               if (storageSnapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
               }
-              final storageSnap = storageSnapshot.data.documents();
+              final storageSnap = storageSnapshot.data.documents;
               return ListView.builder(
                   itemCount: storageSnap.length,
                   itemBuilder: (ctx, index) {
-                    final ingredientName =
-                        storageSnap.get(index).get("ingredientName");
-                    final quant = storageSnap.get(index).get('quantity');
-                    final date = storageSnap.get(index).get('dateAdded');
+                    final ingredientName = storageSnap[index]["ingredientName"];
+                    final quant = storageSnap[index]['quantity'];
+                    final date = storageSnap[index]['dateAdded'];
                     return StorageRow(ingredientName, quant, date);
                   });
             }));

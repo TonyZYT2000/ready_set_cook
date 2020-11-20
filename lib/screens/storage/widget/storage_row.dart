@@ -12,6 +12,9 @@ class StorageRow extends StatelessWidget {
     return Container(
         child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[Text(ingredientName), Text(quantity)]));
+            children: <Widget>[
+          Text(ingredientName),
+          Text(quantity.toString())
+        ]));
   }
 }
