@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ready_set_cook/shared/constants.dart';
 import 'package:ready_set_cook/models/ingredient.dart';
-import 'package:intl/intl_browser.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Manual extends StatefulWidget {
   @override
@@ -11,9 +11,23 @@ class Manual extends StatefulWidget {
 class _ManualState extends State<Manual> {
   final _formKey = GlobalKey<FormState>();
   String _ingredientName = '';
-  int _quantity = 0;
+  var _quantity = 0;
   DateTime _addDate;
-  Ingredient ingredient;
+  // Ingredient ingredient = new ;
+
+  void _onSubmit() {
+    final isValid = _formKey.currentState.validate();
+    if (isValid) {
+      _formKey.currentState.save();
+      FirebaseFirestore.instance.collection('storage2').add({
+        "ingredientName": _ingredientName,
+        "quantity": _quantity,
+        "dateAdded": _addDate,
+      });
+    }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,6 +40,13 @@ class _ManualState extends State<Manual> {
                 children: <Widget>[
                   SizedBox(height: 20.0),
                   TextFormField(
+                    key: ValueKey("ingredient name"),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return "please enter valid ingredient name";
+                      }
+                      return null;
+                    },
                     decoration: textInputDecoration.copyWith(
                         hintText: 'Enter Ingredient Name'),
                     onChanged: (val) {
@@ -34,6 +55,13 @@ class _ManualState extends State<Manual> {
                   ),
                   SizedBox(height: 20.0),
                   TextFormField(
+                    key: ValueKey("quantity"),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return "please enter valid quantity";
+                      }
+                      return null;
+                    },
                     decoration: textInputDecoration.copyWith(
                         hintText: 'Enter Quantity'),
                     onChanged: (val) {
@@ -44,13 +72,14 @@ class _ManualState extends State<Manual> {
                   RaisedButton(
                       color: Colors.blue[400],
                       child: Text(
-                        'Sign In',
+                        'Enter',
                         style: TextStyle(color: Colors.white),
                       ),
-                      onPressed: () async {
-                        _addDate = new DateTime.now();
-                        //传到database
-                      }),
+                      onPressed: _onSubmit
+                      // onPressed: () async {
+                      //   _addDate = new DateTime.now();
+                      //}
+                      ),
                 ],
               ),
             )),

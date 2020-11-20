@@ -38,7 +38,7 @@ class Ingredient {
     this.spoilage = spoilage;
   }
 
-  String get getIngredietId {
+  String get getIngredientId {
     return this.ingredientId;
   }
 
