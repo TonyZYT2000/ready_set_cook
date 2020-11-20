@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ready_set_cook/shared/constants.dart';
 import 'package:ready_set_cook/models/ingredient.dart';
-import 'package:intl/intl_browser.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Manual extends StatefulWidget {
   @override
@@ -9,6 +9,8 @@ class Manual extends StatefulWidget {
 }
 
 class _ManualState extends State<Manual> {
+  final storageDB = FirebaseFirestore.instance;
+
   final _formKey = GlobalKey<FormState>();
   String _ingredientName = '';
   int _quantity = 0;
@@ -44,11 +46,15 @@ class _ManualState extends State<Manual> {
                   RaisedButton(
                       color: Colors.blue[400],
                       child: Text(
-                        'Sign In',
+                        'Add Item',
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () async {
                         _addDate = new DateTime.now();
+                        storageDB.collection("storage").add({
+                          "ingredientName": _ingredientName,
+                          "quantity": _quantity
+                        });
                         //传到database
                       }),
                 ],

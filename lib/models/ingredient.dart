@@ -11,8 +11,8 @@ class Ingredient {
   Nutrition nutrition;
   bool spoilage;
 
-  set setIngredientId(String ingreId) {
-    this.ingredientId = ingreId;
+  set setIngredientId(String ingredientId) {
+    this.ingredientId = ingredientId;
   }
 
   set setName(String name) {
