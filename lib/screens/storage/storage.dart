@@ -1,6 +1,5 @@
 import 'package:ready_set_cook/screens/storage/widget/storage_row.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:ready_set_cook/screens/storage/add.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
