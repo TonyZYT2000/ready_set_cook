@@ -1,7 +1,8 @@
 import 'package:ready_set_cook/screens/storage/widget/storage_row.dart';
 import 'package:flutter/material.dart';
 import 'package:ready_set_cook/screens/storage/add.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ready_set_cook/services/grocery.dart';
 
 class Storage extends StatefulWidget {
   @override
@@ -9,8 +10,13 @@ class Storage extends StatefulWidget {
 }
 
 class _StorageState extends State<Storage> {
+  GroceryDatabase _groceryDB = null;
+
   @override
   Widget build(BuildContext context) {
+    if (_groceryDB == null) {
+      _groceryDB = GroceryDatabase(context);
+    }
     return Scaffold(
         backgroundColor: Colors.blue[50],
         floatingActionButton: FloatingActionButton(
@@ -23,8 +29,8 @@ class _StorageState extends State<Storage> {
           child: Icon(Icons.add),
         ),
         body: StreamBuilder(
-            stream:
-                FirebaseFirestore.instance.collection('storage2').snapshots(),
+            stream: _groceryDB.getGroceryList(),
+            // FirebaseFirestore.instance.collection('storage2').snapshots(),
             builder: (ctx, storageSnapshot) {
               if (storageSnapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ready_set_cook/shared/constants.dart';
 //import 'package:ready_set_cook/models/ingredient.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ready_set_cook/services/grocery.dart';
 
 class Manual extends StatefulWidget {
   TextEditingController _controller1 = TextEditingController();
@@ -17,6 +18,7 @@ class _ManualState extends State<Manual> {
   var _quantity = 0;
   DateTime _addDate = null;
   var _unit = '';
+  GroceryDatabase _groceryDB = null;
   // Ingredient ingredient = new ;
 
   void _onSubmit() {
@@ -26,18 +28,24 @@ class _ManualState extends State<Manual> {
       widget._controller2.clear();
       widget._controller3.clear();
       _formKey.currentState.save();
+      /*
       FirebaseFirestore.instance.collection('storage2').add({
         "ingredientName": _ingredientName,
         "quantity": _quantity,
         "dateAdded": _addDate,
         "unit": _unit
       });
+      */
+      _groceryDB.addItem(_ingredientName, _quantity, _addDate, _unit);
     }
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_groceryDB == null) {
+      _groceryDB = GroceryDatabase(context);
+    }
     return Scaffold(
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
