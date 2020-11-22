@@ -1,8 +1,8 @@
 import 'package:ready_set_cook/screens/storage/widget/storage_row.dart';
 import 'package:flutter/material.dart';
 import 'package:ready_set_cook/screens/storage/add.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ready_set_cook/services/grocery.dart';
+import 'package:ready_set_cook/models/ingredient.dart';
 
 class Storage extends StatefulWidget {
   @override
@@ -29,7 +29,7 @@ class _StorageState extends State<Storage> {
           child: Icon(Icons.add),
         ),
         body: StreamBuilder(
-            stream: _groceryDB.getGroceryList(),
+            stream: _groceryDB.getGrocerySnap(),
             // FirebaseFirestore.instance.collection('storage2').snapshots(),
             builder: (ctx, storageSnapshot) {
               if (storageSnapshot.connectionState == ConnectionState.waiting) {
@@ -39,11 +39,14 @@ class _StorageState extends State<Storage> {
               return ListView.builder(
                   itemCount: storageSnap.length,
                   itemBuilder: (ctx, index) {
-                    final ingredientName = storageSnap[index]["ingredientName"];
+                    final id = storageSnap[index].id;
+                    final name = storageSnap[index]["name"];
                     final quant = storageSnap[index]['quantity'];
-                    final date = storageSnap[index]['dateAdded'];
                     final unit = storageSnap[index]['unit'];
-                    return StorageRow(ingredientName, quant, date, unit);
+                    final date = storageSnap[index]['startDate'];
+                    print(storageSnap[index].id);
+                    return StorageRow(Ingredient(
+                        id, name, quant, unit, date, null, 15, false));
                   });
             }));
   }

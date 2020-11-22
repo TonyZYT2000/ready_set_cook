@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ready_set_cook/shared/constants.dart';
-//import 'package:ready_set_cook/models/ingredient.dart';
-//import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ready_set_cook/models/ingredient.dart';
 import 'package:ready_set_cook/services/grocery.dart';
 
 class Manual extends StatefulWidget {
@@ -14,12 +13,12 @@ class Manual extends StatefulWidget {
 
 class _ManualState extends State<Manual> {
   final _formKey = GlobalKey<FormState>();
-  String _ingredientName = '';
-  var _quantity = 0;
-  DateTime _addDate = null;
-  var _unit = '';
   GroceryDatabase _groceryDB = null;
-  // Ingredient ingredient = new ;
+
+  String _name = '';
+  int _quantity = 0;
+  String _unit = '';
+  DateTime _addDate = null;
 
   void _onSubmit() {
     final isValid = _formKey.currentState.validate();
@@ -28,15 +27,8 @@ class _ManualState extends State<Manual> {
       widget._controller2.clear();
       widget._controller3.clear();
       _formKey.currentState.save();
-      /*
-      FirebaseFirestore.instance.collection('storage2').add({
-        "ingredientName": _ingredientName,
-        "quantity": _quantity,
-        "dateAdded": _addDate,
-        "unit": _unit
-      });
-      */
-      _groceryDB.addItem(_ingredientName, _quantity, _addDate, _unit);
+      _groceryDB.addItem(
+          Ingredient(null, _name, _quantity, _unit, _addDate, null, 15, false));
     }
     setState(() {});
   }
@@ -67,7 +59,7 @@ class _ManualState extends State<Manual> {
                     decoration: textInputDecoration.copyWith(
                         hintText: 'Enter Ingredient Name'),
                     onChanged: (val) {
-                      setState(() => _ingredientName = val);
+                      setState(() => _name = val);
                     },
                   ),
                   SizedBox(height: 20.0),
@@ -109,11 +101,7 @@ class _ManualState extends State<Manual> {
                         'Enter',
                         style: TextStyle(color: Colors.white),
                       ),
-                      onPressed: _onSubmit
-                      // onPressed: () async {
-                      //   _addDate = new DateTime.now();
-                      //}
-                      ),
+                      onPressed: _onSubmit),
                 ],
               ),
             )),

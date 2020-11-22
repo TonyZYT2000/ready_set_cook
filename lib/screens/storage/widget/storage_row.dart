@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:ready_set_cook/models/ingredient.dart';
 
 class StorageRow extends StatelessWidget {
-  final ingredientName;
-  final quantity;
-  final date;
-  final unit;
+  final Ingredient _ingredient;
 
-  StorageRow(this.ingredientName, this.quantity, this.date, this.unit);
+  StorageRow(this._ingredient);
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +12,10 @@ class StorageRow extends StatelessWidget {
         child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-          Text(ingredientName),
-          Text(quantity.toString()),
-          Text(unit)
+          Text(_ingredient.name),
+          Text(_ingredient.quantity.toString()),
+          Text(_ingredient.unit),
+          Text(_ingredient.id)
         ]));
   }
 }

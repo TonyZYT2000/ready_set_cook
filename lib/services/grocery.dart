@@ -1,12 +1,11 @@
 import 'package:ready_set_cook/models/user.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:ready_set_cook/models/ingredient.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 
 class GroceryDatabase {
   User _user;
-  DocumentReference _groceryList;
+  DocumentReference _groceryDoc;
   final _groceryReference = FirebaseFirestore.instance.collection("grocery");
 
   GroceryDatabase(context) {
@@ -14,30 +13,23 @@ class GroceryDatabase {
     if (_groceryReference.doc(_user.uid) == null) {
       _groceryReference.doc(_user.uid).set({"count": 0});
     }
-    _groceryList = _groceryReference.doc(_user.uid);
+    _groceryDoc = _groceryReference.doc(_user.uid);
     print(_user.uid);
   }
 
-  void addItem(String name, int quantity, DateTime date, String unit) {
-    _groceryList.collection("groceryList").add({
-      "ingredientName": name,
-      "quantity": quantity,
-      "dateAdded": date,
-      "unit": unit
+  void addItem(Ingredient ingredient) {
+    _groceryDoc.collection("groceryList").add({
+      "name": ingredient.name,
+      "quantity": ingredient.quantity,
+      "unit": ingredient.unit,
+      "startDate": ingredient.startDate,
+      "nutrition": null,
+      "shelfLife": ingredient.shelfLife,
+      "spoilage": ingredient.spoilage
     });
   }
 
-  Stream<QuerySnapshot> getGroceryList() {
-    return _groceryList.collection("groceryList").snapshots();
+  Stream<QuerySnapshot> getGrocerySnap() {
+    return _groceryDoc.collection("groceryList").snapshots();
   }
-  /*Future createItem() async {
-    try {
-      await cloudReference.collection("books")
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
-  }// createItem()
-*/
-
 }
