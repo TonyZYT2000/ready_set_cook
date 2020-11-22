@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ready_set_cook/shared/constants.dart';
-import 'package:ready_set_cook/models/ingredient.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Manual extends StatefulWidget {
@@ -9,6 +8,8 @@ class Manual extends StatefulWidget {
 }
 
 class _ManualState extends State<Manual> {
+  final storageDB = FirebaseFirestore.instance;
+
   final _formKey = GlobalKey<FormState>();
   String _ingredientName = '';
   var _quantity = 0;

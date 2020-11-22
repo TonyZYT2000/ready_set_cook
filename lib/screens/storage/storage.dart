@@ -1,8 +1,8 @@
-import 'package:ready_set_cook/screens/storage/widget/storage_row.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:ready_set_cook/screens/storage/add.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ready_set_cook/dbp_Storage/Groceries.dart';
+import 'package:ready_set_cook/shared/basicListTile.dart';
+import 'package:ready_set_cook/models/pracIngredients.dart';
 
 class Storage extends StatefulWidget {
   @override
@@ -10,37 +10,55 @@ class Storage extends StatefulWidget {
 }
 
 class _StorageState extends State<Storage> {
+  final List<Grocery> groceries = GroceryList.getGroceries();
+
+  Widget _buildGroceryList() {
+    return Container(
+      child: groceries.length > 0
+          ? ListView.builder(
+              itemCount: groceries.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Dismissible(
+                  onDismissed: (DismissDirection direction) {
+                    setState(() {
+                      groceries.removeAt(index);
+                    });
+                  },
+                  secondaryBackground: Container(
+                    child: Center(
+                      child: Text(
+                        'Delete',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    color: Colors.red,
+                  ),
+                  background: Container(),
+                  child: GroceryCard(grocery: groceries[index]),
+                  key: UniqueKey(),
+                  direction: DismissDirection.endToStart,
+                );
+              },
+            )
+          : Center(child: Text('No Items')),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.blue[50],
-        // Add Button
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Add()),
-            );
-          },
-          child: Icon(Icons.add),
-        ),
-        body: StreamBuilder(
-            stream:
-                FirebaseFirestore.instance.collection('storage2').snapshots(),
-            builder: (ctx, storageSnapshot) {
-              if (storageSnapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              }
-              final storageSnap = storageSnapshot.data.documents();
-              return ListView.builder(
-                  itemCount: storageSnap.length,
-                  itemBuilder: (ctx, index) {
-                    final ingredientName =
-                        storageSnap.get(index).get("ingredientName");
-                    final quant = storageSnap.get(index).get('quantity');
-                    final date = storageSnap.get(index).get('dateAdded');
-                    return StorageRow(ingredientName, quant, date);
-                  });
-            }));
+      backgroundColor: Colors.red[100],
+      body: _buildGroceryList(),
+      // Add Button
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Add()),
+          );
+        },
+        child: Icon(Icons.add),
+      ),
+    );
   }
 }
