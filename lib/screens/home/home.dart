@@ -1,5 +1,5 @@
 import 'package:ready_set_cook/screens/Recipe/recipe.dart';
-import 'package:ready_set_cook/screens/Recipe/search.dart';
+import 'package:ready_set_cook/screens/recipes/search.dart';
 import 'package:ready_set_cook/screens/storage/storage.dart';
 import 'package:ready_set_cook/services/auth.dart';
 import 'package:flutter/material.dart';

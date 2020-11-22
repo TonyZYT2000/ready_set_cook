@@ -15,9 +15,23 @@ class RecipesDatabaseService {
     return await recipeCollection.doc(uid).set({'recipes': recipes});
   }
 
-  Future addUserRecipes(Recipe r) async {
-    return await recipeCollection.doc(uid).set({
-      'recipes': [r]
+  Future addRecipe(Recipe recipe) async {
+    return await recipeCollection
+        .doc(uid)
+        .collection("recipesList")
+        .add({"recipe": recipe});
+  }
+
+  // list of recipes from snapshot
+  List<Recipe> _recipesList(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return Recipe(
+        recipeId: doc(uid).collection("recipesList").data['recipeId'],
+        userId: doc(uid).collection("recipesList").data['userId'],
+        name: doc(uid).collection("recipesList").data['name'],
+        name: doc(uid).collection("recipesList").data['name'],
+        name: doc(uid).collection("recipesList").data['name'],
+      );
     });
   }
 

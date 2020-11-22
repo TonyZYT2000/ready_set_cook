@@ -14,10 +14,12 @@ class Recipe extends StatefulWidget {
 class _RecipeState extends State<Recipe> {
   @override
   Widget build(BuildContext context) {
-    /*return StreamProvider<QuerySnapshot>.value(
-      value: RecipesDatabaseService().recipes,
-      body: RecipesList(),
-    );*/
+    return StreamProvider<QuerySnapshot>.value(
+        value: RecipesDatabaseService().recipes,
+        child: Scaffold(
+          body: RecipesList(),
+        ));
+    /*
     return new Scaffold(
       body: new Center(
         child: new ListView(
@@ -49,6 +51,6 @@ class _RecipeState extends State<Recipe> {
           ],
         ),
       ),
-    );
+    );*/
   }
 }
