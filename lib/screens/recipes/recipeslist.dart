@@ -11,9 +11,6 @@ class _RecipesListState extends State<RecipesList> {
   @override
   Widget build(BuildContext context) {
     final recipes = Provider.of<QuerySnapshot>(context);
-    for (var doc in recipes.docs) {
-      print(doc.data);
-    }
 
     return Container();
   }

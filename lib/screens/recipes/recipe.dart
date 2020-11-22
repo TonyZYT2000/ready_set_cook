@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ready_set_cook/services/recipes_database.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ready_set_cook/screens/Recipe/recipeslist.dart';
+import 'package:ready_set_cook/screens/recipes/recipeslist.dart';
 
 class Recipe extends StatefulWidget {
   final Function toggleView;

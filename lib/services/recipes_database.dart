@@ -4,7 +4,7 @@ import 'package:ready_set_cook/models/recipe.dart';
 class RecipesDatabaseService {
   // uid of user
   final String uid;
-  RecipesDatabaseService({this.uid});
+  RecipesDatabaseService({ this.uid });
 
   // obtains instance of the recipes collection from firestore
   final CollectionReference recipeCollection =
@@ -24,15 +24,17 @@ class RecipesDatabaseService {
 
   // list of recipes from snapshot
   List<Recipe> _recipesList(QuerySnapshot snapshot) {
-    return snapshot.docs.map((doc) {
+    /*return snapshot.docs.map((doc) {
       return Recipe(
-        recipeId: doc(uid).collection("recipesList").data['recipeId'],
-        userId: doc(uid).collection("recipesList").data['userId'],
-        name: doc(uid).collection("recipesList").data['name'],
-        name: doc(uid).collection("recipesList").data['name'],
-        name: doc(uid).collection("recipesList").data['name'],
+        doc(uid).collection("recipesList").data['recipeId'],
+        doc(uid).collection("recipesList").data['userId'],
+        doc(uid).collection("recipesList").data['name'],
+        null,
+        null,
+        doc(uid).collection("recipesList").data['rating'],
+        doc(uid).collection("recipesList").data['cookedBefore'],
       );
-    });
+    }).toList();*/
   }
 
   // get recipes stream
