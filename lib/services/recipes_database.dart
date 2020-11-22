@@ -7,5 +7,5 @@ class DatabaseService {
 
   final CollectionReference recipeCollection = FirebaseFirestore.instance.collection('recipes');
 
-  Future updateUserRecipes()
+  Future updateUserRecipes() {}
 }
