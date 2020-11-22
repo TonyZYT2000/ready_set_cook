@@ -18,7 +18,7 @@ class _ManualState extends State<Manual> {
   String _name = '';
   int _quantity = 0;
   String _unit = '';
-  DateTime _addDate = null;
+  DateTime _startDate = DateTime.now();
 
   void _onSubmit() {
     final isValid = _formKey.currentState.validate();
@@ -27,8 +27,8 @@ class _ManualState extends State<Manual> {
       widget._controller2.clear();
       widget._controller3.clear();
       _formKey.currentState.save();
-      _groceryDB.addItem(
-          Ingredient(null, _name, _quantity, _unit, _addDate, null, 15, false));
+      _groceryDB.addItem(Ingredient(
+          null, _name, _quantity, _unit, _startDate, null, 15, false));
     }
     setState(() {});
   }

@@ -1,6 +1,7 @@
-import 'package:ready_set_cook/screens/storage/widget/storage_row.dart';
 import 'package:flutter/material.dart';
+import 'package:ready_set_cook/screens/storage/widget/storage_row.dart';
 import 'package:ready_set_cook/screens/storage/add.dart';
+import 'package:ready_set_cook/screens/storage/edit.dart';
 import 'package:ready_set_cook/services/grocery.dart';
 import 'package:ready_set_cook/models/ingredient.dart';
 
@@ -39,14 +40,57 @@ class _StorageState extends State<Storage> {
               return ListView.builder(
                   itemCount: storageSnap.length,
                   itemBuilder: (ctx, index) {
-                    final id = storageSnap[index].id;
-                    final name = storageSnap[index]["name"];
-                    final quant = storageSnap[index]['quantity'];
-                    final unit = storageSnap[index]['unit'];
-                    final date = storageSnap[index]['startDate'];
-                    print(storageSnap[index].id);
-                    return StorageRow(Ingredient(
-                        id, name, quant, unit, date, null, 15, false));
+                    final String id = storageSnap[index].id;
+                    final String name = storageSnap[index]["name"];
+                    final int quant = storageSnap[index]['quantity'];
+                    final String unit = storageSnap[index]['unit'];
+                    final DateTime date = DateTime.parse(
+                        storageSnap[index]['startDate'].toDate().toString());
+
+                    // return a widget that can be slided
+                    return Dismissible(
+                      onDismissed: (DismissDirection direction) {
+                        // right->left delete, left->right edit
+                        if (direction == DismissDirection.endToStart) {
+                          setState(() {
+                            _groceryDB.deleteItem(id);
+                          });
+                          Scaffold.of(context).showSnackBar(
+                              SnackBar(content: Text("$name deleted")));
+                        } else {
+                          setState(() {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Edit()));
+                          });
+                        }
+                      },
+                      // background for edit
+                      background: Container(
+                        child: Center(
+                          child: Text(
+                            'Edit',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        color: Colors.blue,
+                      ),
+                      // background for delete
+                      secondaryBackground: Container(
+                        child: Center(
+                          child: Text(
+                            'Delete',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        color: Colors.red,
+                      ),
+                      child: StorageRow(Ingredient(
+                          id, name, quant, unit, date, null, 15, false)),
+                      key: UniqueKey(),
+                      //direction: DismissDirection.endToStart,
+                    );
                   });
             }));
   }

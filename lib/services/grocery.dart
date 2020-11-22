@@ -29,6 +29,10 @@ class GroceryDatabase {
     });
   }
 
+  void deleteItem(String id) {
+    _groceryDoc.collection("groceryList").doc(id).delete();
+  }
+
   Stream<QuerySnapshot> getGrocerySnap() {
     return _groceryDoc.collection("groceryList").snapshots();
   }

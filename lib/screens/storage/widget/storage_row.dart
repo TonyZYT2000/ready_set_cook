@@ -8,6 +8,16 @@ class StorageRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return ListTile(
+        leading: Icon(Icons.food_bank),
+        title: Text(_ingredient.name),
+        subtitle:
+            Text(_ingredient.quantity.toString() + " " + _ingredient.unit),
+        trailing: Text(DateTime.now().difference(_ingredient.startDate).inDays <
+                _ingredient.shelfLife
+            ? "Good"
+            : "Bad"));
+    /*
     return Container(
         child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -17,5 +27,6 @@ class StorageRow extends StatelessWidget {
           Text(_ingredient.unit),
           Text(_ingredient.id)
         ]));
+    */
   }
 }
