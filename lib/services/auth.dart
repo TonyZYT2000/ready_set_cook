@@ -1,6 +1,7 @@
 import 'package:ready_set_cook/models/user.dart' as u;
 import 'package:firebase_auth/firebase_auth.dart' as fire;
 import 'package:ready_set_cook/services/recipes_database.dart';
+import 'package:ready_set_cook/models/recipe.dart';
 
 class AuthService {
   final fire.FirebaseAuth _auth = fire.FirebaseAuth.instance;
@@ -38,7 +39,15 @@ class AuthService {
           email: email, password: password);
       fire.User user = result.user;
 
-      await RecipesDatabaseService(uid: user.uid).updateUserRecipes(null);
+      List<Recipe> recipes = [];
+      await RecipesDatabaseService(uid: user.uid).updateUserRecipes(recipes);
+
+      // test adding a single recipe
+      Recipe testRecipe =
+          new Recipe(123, user.uid, "Deez Nutz", null, null, 5.0, false);
+
+      await RecipesDatabaseService(uid: user.uid).addUserRecipes(testRecipe);
+
       return _userFromFirebaseUser(user);
     } catch (error) {
       print(error.toString());
