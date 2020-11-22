@@ -46,6 +46,10 @@ class _StorageState extends State<Storage> {
                     final String unit = storageSnap[index]['unit'];
                     final DateTime date = DateTime.parse(
                         storageSnap[index]['startDate'].toDate().toString());
+                    final docName = storageSnap[index].documentID;
+                    print("popoopopopopopo" + "       "  + docName);
+
+
 
                     // return a widget that can be slided
                     return Dismissible(
@@ -62,7 +66,7 @@ class _StorageState extends State<Storage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Edit()));
+                                    builder: (context) => Edit(docName: docName)));
                           });
                         }
                       },

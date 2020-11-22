@@ -8,6 +8,8 @@ class GroceryDatabase {
   DocumentReference _groceryDoc;
   final _groceryReference = FirebaseFirestore.instance.collection("grocery");
 
+
+
   GroceryDatabase(context) {
     _user = Provider.of<User>(context);
     if (_groceryReference.doc(_user.uid) == null) {

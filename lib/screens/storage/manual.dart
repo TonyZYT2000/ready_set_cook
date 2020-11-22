@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ready_set_cook/shared/constants.dart';
 import 'package:ready_set_cook/models/ingredient.dart';
@@ -82,15 +83,15 @@ class _ManualState extends State<Manual> {
                   TextFormField(
                     controller: widget._controller3,
                     key: ValueKey("unit"),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return "please enter valid unit";
-                      }
-                      return null;
-                    },
+                    // validator: (value) {
+                    //   if (value.isEmpty) {
+                    //     return "please enter valid unit";
+                    //   }
+                    //   return null;
+                    // },
                     decoration:
-                        textInputDecoration.copyWith(hintText: 'Enter unit'),
-                    onChanged: (val) {
+                        textInputDecoration.copyWith(hintText: 'Enter Unit (Optional)'),
+                    onChanged: ([val]) {
                       setState(() => _unit = val);
                     },
                   ),
