@@ -4,7 +4,7 @@ import 'package:ready_set_cook/models/recipe.dart';
 class RecipesDatabaseService {
   
   final String uid;
-  DatabaseService({ this.uid });
+  RecipesDatabaseService({ this.uid });
 
   final CollectionReference recipeCollection = FirebaseFirestore.instance.collection('recipes');
 
