@@ -2,6 +2,7 @@ import 'package:ready_set_cook/services/auth.dart';
 import 'package:ready_set_cook/shared/constants.dart';
 import 'package:ready_set_cook/screens/profile/edit_password.dart';
 import 'package:flutter/material.dart';
+import 'package:ready_set_cook/screens/profile/profile.dart';
 import 'package:ready_set_cook/screens/home/home.dart';
 
 class ForgotPassword extends StatefulWidget {
@@ -37,7 +38,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => EditPassword()),
+            MaterialPageRoute(builder: (context) => Home()),
           );
         },
         child: Icon(Icons.arrow_back),
@@ -73,16 +74,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () async {
-                        if (_formKey.currentState.validate()) {
-                          dynamic result = await _auth
-                              .signInWithEmailAndPassword(email, password);
-                          if (result == null) {
-                            setState(() {
-                              error =
-                                  'Could not sign in with those credentials';
-                            });
-                          }
-                        }
+                        await _auth.resetPassword(email);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Profile()),
+                        );
                       }),
 
                   SizedBox(height: 12.0),

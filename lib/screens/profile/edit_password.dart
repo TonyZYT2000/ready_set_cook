@@ -20,7 +20,8 @@ class _EditPasswordState extends State<EditPassword> {
 
   // text field state
   String email = '';
-  String password = '';
+  String oldPassword = '';
+  String newPassword = '';
 
   @override
   Widget build(BuildContext context) {
@@ -75,20 +76,32 @@ class _EditPasswordState extends State<EditPassword> {
                         ? 'Enter a password 8+ chars long'
                         : null,
                     onChanged: (val) {
-                      setState(() => password = val);
+                      setState(() => oldPassword = val);
+                    },
+                  ),
+                  SizedBox(height: 20.0),
+                  TextFormField(
+                    obscureText: true,
+                    decoration:
+                        textInputDecoration.copyWith(hintText: 'New Password'),
+                    validator: (val) => val.length < 8
+                        ? 'Enter a password 8+ chars long'
+                        : null,
+                    onChanged: (val) {
+                      setState(() => newPassword = val);
                     },
                   ),
                   SizedBox(height: 40.0),
                   RaisedButton(
                       color: Colors.blue[400],
                       child: Text(
-                        'Change Password',
+                        'Password Reset',
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () async {
                         if (_formKey.currentState.validate()) {
                           dynamic result = await _auth
-                              .signInWithEmailAndPassword(email, password);
+                              .signInWithEmailAndPassword(email, oldPassword);
                           if (result == null) {
                             setState(() {
                               error =

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ready_set_cook/screens/profile/edit_password.dart';
+import 'package:ready_set_cook/screens/profile/forgot_password.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -45,7 +46,7 @@ class _ProfileState extends State<Profile> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => EditPassword()),
+                  MaterialPageRoute(builder: (context) => ForgotPassword()),
                 );
               },
             ),
