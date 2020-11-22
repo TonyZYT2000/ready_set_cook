@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ready_set_cook/screens/profile/edit_password.dart';
 import 'package:ready_set_cook/screens/profile/forgot_password.dart';
+import 'package:ready_set_cook/services/auth.dart';
+import 'package:ready_set_cook/models/user.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -10,7 +12,6 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   String _userName = "My Name";
   String _email = "myname@gmail.com";
-  String _password = "*******";
   String _profilePicURL =
       "https://i0.wp.com/nerdschalk.com/wp-content/uploads/2020/08/pogger.png?resize=768%2C757&ssl=1";
   bool _notification = false;

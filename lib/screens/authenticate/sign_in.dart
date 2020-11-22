@@ -1,5 +1,6 @@
 import 'package:ready_set_cook/services/auth.dart';
 import 'package:ready_set_cook/shared/constants.dart';
+import 'package:ready_set_cook/screens/profile/forgot_password.dart';
 import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {
@@ -82,6 +83,20 @@ class _SignInState extends State<SignIn> {
                             });
                           }
                         }
+                      }),
+                  SizedBox(height: 20.0),
+                  RaisedButton(
+                      color: Colors.blue[400],
+                      child: Text(
+                        'Forgot Password',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ForgotPassword()),
+                        );
                       }),
                   SizedBox(height: 12.0),
                   Text(
