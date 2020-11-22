@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 import 'package:ready_set_cook/screens/Recipe/recipe.dart';
 import 'package:ready_set_cook/screens/Recipe/search.dart';
-=======
 import 'package:ready_set_cook/screens/storage/storage.dart';
->>>>>>> feature/storage
 import 'package:ready_set_cook/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ready_set_cook/shared/constants.dart';
@@ -19,23 +16,6 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
 
   static List<Widget> _widgetOptions = <Widget>[
-<<<<<<< HEAD
-    // Text(
-    //   'Index 0: Recommended Recipes',
-    //   style: TextStyle(fontSize: 12),
-    // ),
-    Search(),
-    Recipe(),
-
-    // Text(
-    //   'Index 1: Your Recipes',
-    //   style: TextStyle(fontSize: 12),
-    // ),
-    Text(
-      'Index 2: Storage',
-      style: TextStyle(fontSize: 12),
-    ),
-=======
     Text(
       'Index 0: Recommended Recipes',
       style: TextStyle(fontSize: 12),
@@ -45,7 +25,6 @@ class _HomeState extends State<Home> {
       style: TextStyle(fontSize: 12),
     ),
     Storage(),
->>>>>>> feature/storage
     Text(
       'Index 3: Profile',
       style: TextStyle(fontSize: 12),
