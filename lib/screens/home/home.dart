@@ -1,3 +1,4 @@
+import 'package:ready_set_cook/screens/profile/profile.dart';
 import 'package:ready_set_cook/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ready_set_cook/shared/constants.dart';
@@ -25,10 +26,7 @@ class _HomeState extends State<Home> {
       'Index 2: Storage',
       style: TextStyle(fontSize: 12),
     ),
-    Text(
-      'Index 3: Profile',
-      style: TextStyle(fontSize: 12),
-    ),
+    Profile(),
   ];
 
   void _onItemTapped(int index) {
