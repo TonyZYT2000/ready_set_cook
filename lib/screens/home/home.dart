@@ -20,10 +20,7 @@ class _HomeState extends State<Home> {
       'Index 0: Recommended Recipes',
       style: TextStyle(fontSize: 12),
     ),
-    Text(
-      'Index 1: Your Recipes',
-      style: TextStyle(fontSize: 12),
-    ),
+    Recipe(),
     Storage(),
     Text(
       'Index 3: Profile',

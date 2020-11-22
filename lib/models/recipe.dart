@@ -1,7 +1,7 @@
 import 'package:ready_set_cook/models/ingredient.dart';
 
 class Recipe {
-  int recipeId;
+  String recipeId;
   String userId;
   String name;
   List<Ingredient> ingredients;
@@ -9,8 +9,14 @@ class Recipe {
   double rating;
   bool cookedBefore;
 
-  Recipe(int recipeId, String userId, String name, List<Ingredient> ingredients,
-      List<String> instructions, double rating, bool cookedBefore) {
+  Recipe(
+      String recipeId,
+      String userId,
+      String name,
+      List<Ingredient> ingredients,
+      List<String> instructions,
+      double rating,
+      bool cookedBefore) {
     this.recipeId = recipeId;
     this.userId = userId;
     this.name = name;
