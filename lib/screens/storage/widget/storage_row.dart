@@ -9,7 +9,7 @@ class StorageRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-        leading: Icon(Icons.food_bank),
+        leading: Container(height: 45, width: 45, child: Image(image: NetworkImage(_ingredient.imageUrl),)),
         title: Text(_ingredient.name),
         subtitle:
             Text(_ingredient.quantity.toString() + " " + _ingredient.unit),

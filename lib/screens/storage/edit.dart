@@ -38,7 +38,8 @@ class _EditState extends State<Edit> {
         "startDate": _startDate,
         "nutrition": null,
         "shelfLife": 15,
-        "spoilage": false
+        "spoilage": false,
+        "imageUrl": null
       });
     }
     setState(() {});

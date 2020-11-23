@@ -34,6 +34,8 @@ dependencies:
   cloud_firestore: ^0.14.3
   provider: ^4.3.2+2
   intl: ^0.16.1
+  image_picker: ^0.6.7+14
+  firebase_storage: ^5.0.1
 
 
 dev_dependencies:
@@ -55,6 +57,7 @@ flutter:
   assets:
     - assets/images/readysetcooklogo.png
     - assets/images/apple.png
+    - assets/images/noImage.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

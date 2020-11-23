@@ -9,7 +9,8 @@ class Ingredient {
   Nutrition nutrition;
   int shelfLife;
   bool spoilage;
+  String imageUrl;
 
   Ingredient(this.id, this.name, this.quantity, this.unit, this.startDate,
-      this.nutrition, this.shelfLife, this.spoilage);
+      this.nutrition, this.shelfLife, this.spoilage, this.imageUrl);
 }

@@ -1,0 +1,10 @@
+# This is a generated file; do not edit or check into version control.
+cloud_firestore=/Users/wuwu/Utils/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-0.14.3/
+cloud_firestore_web=/Users/wuwu/Utils/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore_web-0.2.1/
+firebase_auth=/Users/wuwu/Utils/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-0.18.3/
+firebase_auth_web=/Users/wuwu/Utils/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth_web-0.3.2/
+firebase_core=/Users/wuwu/Utils/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-0.5.2/
+firebase_core_web=/Users/wuwu/Utils/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-0.2.1/
+flutter_barcode_scanner=/Users/wuwu/Utils/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_barcode_scanner-1.0.1/
+flutter_plugin_android_lifecycle=/Users/wuwu/Utils/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-1.0.11/
+image_picker=/Users/wuwu/Utils/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker-0.6.7+14/

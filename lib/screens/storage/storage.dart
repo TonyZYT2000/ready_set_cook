@@ -44,12 +44,11 @@ class _StorageState extends State<Storage> {
                     final String name = storageSnap[index]["name"];
                     final int quant = storageSnap[index]['quantity'];
                     final String unit = storageSnap[index]['unit'];
+                    final String imageUrl = storageSnap[index]['imageUrl'];
                     final DateTime date = DateTime.parse(
                         storageSnap[index]['startDate'].toDate().toString());
                     final docName = storageSnap[index].documentID;
                     print("popoopopopopopo" + "       "  + docName);
-
-
 
                     // return a widget that can be slided
                     return Dismissible(
@@ -91,7 +90,7 @@ class _StorageState extends State<Storage> {
                         color: Colors.red,
                       ),
                       child: StorageRow(Ingredient(
-                          id, name, quant, unit, date, null, 15, false)),
+                          id, name, quant, unit, date, null, 15, false, imageUrl)),
                       key: UniqueKey(),
                       //direction: DismissDirection.endToStart,
                     );
