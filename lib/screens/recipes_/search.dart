@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ready_set_cook/screens/recipes_/view_recipe.dart';
 
 class Search extends StatefulWidget {
   final Function toggleView;
@@ -9,6 +10,47 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+  List<String> recipes = [
+    "chicken breast",
+    "pizza",
+    "Buffalo chicken",
+    "salad",
+    "chicken breast",
+    "pizza",
+    "Buffalo chicken",
+    "salad"
+  ];
+  List<List<String>> ingredient = [
+    ["ingredient for CB"],
+    ["ingredient for pizza"],
+    ["ingredient for BC"],
+    ["ingredient for salad"],
+    ["ingredient for CB"],
+    ["ingredient for pizza"],
+    ["ingredient for BC"],
+    ["ingredient for salad"]
+  ];
+  List<List<String>> quantity = [
+    ["quantity for CB"],
+    ["quantity for pizza"],
+    ["quantity for BC"],
+    ["quantity for salad"],
+    ["quantity for CB"],
+    ["quantity for pizza"],
+    ["quantity for BC"],
+    ["quantity for salad"]
+  ];
+  // Recipes(this.recipes);
+  List a = [
+    "assets/images/chicken breast.jpg",
+    "assets/images/pizza.jpg",
+    "assets/images/Buffalo chicken.jpg",
+    "assets/images/salad.jpg",
+    "assets/images/chicken breast.jpg",
+    "assets/images/pizza.jpg",
+    "assets/images/Buffalo chicken.jpg",
+    "assets/images/salad.jpg",
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,6 +67,36 @@ class _SearchState extends State<Search> {
         ],
       ),
       drawer: Drawer(),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: ListView.builder(
+            itemCount: a.length,
+            itemBuilder: (context, i) {
+              return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ViewRecipe(a[i], ingredient[i], quantity[i])));
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(50.0),
+                    height: 150,
+                    width: 350,
+                    decoration: BoxDecoration(
+                        // backgroundBlendMode: BlendMode.softLight,
+                        border: Border.all(color: Colors.blue[100], width: 10),
+                        borderRadius: BorderRadius.circular(20),
+                        image: DecorationImage(
+                            colorFilter: ColorFilter.mode(
+                                Colors.blue.withOpacity(1.0),
+                                BlendMode.softLight),
+                            fit: BoxFit.cover,
+                            image: AssetImage(a[i]))),
+                  ));
+            }),
+      ),
     );
   }
 }
