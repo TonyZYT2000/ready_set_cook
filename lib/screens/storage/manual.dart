@@ -47,7 +47,7 @@ class _ManualState extends State<Manual> {
     final user = FirebaseAuth.instance.currentUser;
     final uid = user.uid;
     final isValid = _formKey.currentState.validate();
-    if (isValid) {
+    if (isValid && _image != null) {
       var ref = FirebaseStorage.instance.ref().child('storage_image').child(_filePath);
       await ref.putFile(_image).whenComplete(() => null);
       _imageUrl = await ref.getDownloadURL();
