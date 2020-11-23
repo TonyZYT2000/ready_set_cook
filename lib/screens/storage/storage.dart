@@ -31,7 +31,6 @@ class _StorageState extends State<Storage> {
         ),
         body: StreamBuilder(
             stream: _groceryDB.getGrocerySnap(),
-            // FirebaseFirestore.instance.collection('storage2').snapshots(),
             builder: (ctx, storageSnapshot) {
               if (storageSnapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
@@ -47,8 +46,9 @@ class _StorageState extends State<Storage> {
                     final String imageUrl = storageSnap[index]['imageUrl'];
                     final DateTime date = DateTime.parse(
                         storageSnap[index]['startDate'].toDate().toString());
-                    final docName = storageSnap[index].documentID;
-                    print("popoopopopopopo" + "       "  + docName);
+
+                    final Ingredient ingredient = Ingredient(
+                        id, name, quant, unit, date, null, 15, false, imageUrl);
 
                     // return a widget that can be slided
                     return Dismissible(
@@ -65,7 +65,7 @@ class _StorageState extends State<Storage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Edit(docName: docName)));
+                                    builder: (context) => Edit(id, ingredient)));
                           });
                         }
                       },
@@ -89,8 +89,7 @@ class _StorageState extends State<Storage> {
                         ),
                         color: Colors.red,
                       ),
-                      child: StorageRow(Ingredient(
-                          id, name, quant, unit, date, null, 15, false, imageUrl)),
+                      child: StorageRow(ingredient),
                       key: UniqueKey(),
                       //direction: DismissDirection.endToStart,
                     );
