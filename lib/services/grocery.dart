@@ -27,7 +27,8 @@ class GroceryDatabase {
       "startDate": ingredient.startDate,
       "nutrition": null,
       "shelfLife": ingredient.shelfLife,
-      "spoilage": ingredient.spoilage
+      "spoilage": ingredient.spoilage,
+      "imageUrl": ingredient.imageUrl
     });
   }
 
