@@ -27,17 +27,20 @@ class _EditState extends State<Edit> {
     //final isValid = _formKey.currentState.validate();
     //if (isValid) {
     if (_name != null || _quantity != null || _unit != null) {
-      widget._controller1.clear();
-      widget._controller2.clear();
-      widget._controller3.clear();
-      _formKey.currentState.save();
-
       widget._ingredient.name = _name != null ? _name : widget._ingredient.name;
       widget._ingredient.quantity =
           _quantity != null ? _quantity : widget._ingredient.quantity;
       widget._ingredient.unit = _unit != null ? _unit : widget._ingredient.unit;
 
       _groceryDB.updateItem(widget._id, widget._ingredient);
+
+      _name = null;
+      _quantity = null;
+      _unit = null;
+      widget._controller1.clear();
+      widget._controller2.clear();
+      widget._controller3.clear();
+      _formKey.currentState.save();
     }
     setState(() {});
   }
