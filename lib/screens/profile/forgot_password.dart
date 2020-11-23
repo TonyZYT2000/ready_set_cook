@@ -30,10 +30,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         backgroundColor: Colors.blue[120],
         elevation: 0.0,
         title: Text('Password Reset'),
-        actions: <Widget>[],
-        leading:
-            Padding(padding: const EdgeInsets.all(8.0), child: SmallLogo()),
+        //actions: <Widget>[],
+        //leading:
+        //    Padding(padding: const EdgeInsets.all(8.0), child: SmallLogo()),
       ),
+      /*
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -43,6 +44,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         },
         child: Icon(Icons.arrow_back),
       ),
+      */
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         child: Form(
