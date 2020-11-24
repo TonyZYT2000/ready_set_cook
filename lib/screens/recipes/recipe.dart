@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ready_set_cook/services/recipes_database.dart' as data;
+import 'package:ready_set_cook/services/recipes_database.dart';
 import 'package:provider/provider.dart';
-import 'package:ready_set_cook/models/recipe.dart';
+import 'package:ready_set_cook/models/recipe.dart' as model;
 import 'package:ready_set_cook/screens/recipes/recipeslist.dart';
 
 class Recipe extends StatefulWidget {
@@ -14,10 +14,10 @@ class Recipe extends StatefulWidget {
 class _RecipeState extends State<Recipe> {
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<List<String>>.value(
-      value: getRecipeIds().recipes,
+    return StreamProvider<List<model.Recipe>>.value(
+      value: RecipesDatabaseService().recipes,
       child: Scaffold(
-        body: RecipeList(),
+        body: RecipesList(),
       ),
     );
   }

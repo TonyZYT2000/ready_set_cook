@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:ready_set_cook/services/recipes_database.dart';
 import 'package:ready_set_cook/models/recipe.dart';
+import 'package:ready_set_cook/screens/recipes/recipeTile.dart';
 
 class RecipesList extends StatefulWidget {
   @override
@@ -14,12 +14,24 @@ class _RecipesListState extends State<RecipesList> {
 
   @override
   Widget build(BuildContext context) {
-    final recipes = Provider.of<List<String>>(context);
+    final recipes = Provider.of<List<Recipe>>(context);
+    if(recipes == null) {
+      return Container(
+        child: Text('Shit was null')
+      );
+    }
+
+    // checks if the user has no recipes
+    if(recipes == null || recipes.length == 0 ) {
+      return Container(
+        child: Text('Add some recipes to get started!')
+      );
+    }
 
     return ListView.builder(
         itemCount: recipes.length,
         itemBuilder: (context, index) {
-          return Text("recipeId: recipes[recipeId]");
+          return RecipeTile(recipe: recipes[index]);
         });
   }
 

@@ -25,4 +25,8 @@ class Recipe {
     this.rating = rating;
     this.cookedBefore = cookedBefore;
   }
+
+  String getRecipeId() {
+    return recipeId;
+  }
 }

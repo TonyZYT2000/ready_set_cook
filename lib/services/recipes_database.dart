@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ready_set_cook/models/recipe.dart';
 import 'package:provider/provider.dart';
 import 'package:ready_set_cook/models/user.dart';
+import 'dart:developer';
 
 class RecipesDatabaseService {
   // uid of user
@@ -14,6 +15,13 @@ class RecipesDatabaseService {
   // obtains instance of the recipes collection from firestore
   final CollectionReference recipeCollection =
       FirebaseFirestore.instance.collection('recipes');
+  
+  final CollectionReference allRecipesCollection = 
+      FirebaseFirestore.instance.collection('allRecipes');
+
+  String _recipeName;
+  double _recipeRating;
+  bool _recipeCookedBefore;
 
   // sets entire recipe list
   /*Future updateUserRecipes(List<String> recipeIds) async {
@@ -39,9 +47,35 @@ class RecipesDatabaseService {
         .add({"recipeId": recipeId});
   }
 
+  Future getRecipesHelper(QueryDocumentSnapshot qds) async {
+    DocumentSnapshot recipeSnapshot = await allRecipesCollection.doc(qds.get('recipeId')).get();
+    _recipeName = recipeSnapshot.get('name');
+    _recipeRating = recipeSnapshot.get('rating');
+    _recipeCookedBefore = recipeSnapshot.get('cookedBefore');
+
+    log('The recipe name is $_recipeName');
+    log('The rating is $_recipeRating');
+    log('The cookedBefore is $_recipeCookedBefore');
+  }
+
   // list of recipes from snapshot
-  List<String> _recipesList(QuerySnapshot snapshot) {
-    QuerySnapshot list;
+  List<Recipe> _recipesList(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+        getRecipesHelper(doc);
+        log('called helper');
+        return Recipe(
+          doc.get('recipeId').toString(),
+          uid,
+          _recipeName,
+          null,
+          null,
+          _recipeRating,
+          _recipeCookedBefore);
+    }).toList();
+  }
+
+
+    /*QuerySnapshot list;
     List<DocumentSnapshot> snap = snapshot.docs;
     for (var i in snap) {
       // var dss = i.data();
@@ -64,11 +98,10 @@ class RecipesDatabaseService {
         doc.data['rating'],
         doc.data['cookedBefore'],
       );*/
-    }).toList();
-  }
+    }).toList();*/
 
   // get recipes stream
-  Stream<List<String>> getRecipeIds() {
+  Stream<List<Recipe>> get recipes {
     return recipeCollection
         .doc(uid)
         .collection("recipesList")
