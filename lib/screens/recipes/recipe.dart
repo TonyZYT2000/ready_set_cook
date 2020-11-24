@@ -12,8 +12,13 @@ class Recipe extends StatefulWidget {
 }
 
 class _RecipeState extends State<Recipe> {
+
   @override
   Widget build(BuildContext context) {
+    StreamProvider<List<model.Recipe>>.value(
+      value: RecipesDatabaseService().recipes,
+    );
+
     return StreamProvider<List<model.Recipe>>.value(
       value: RecipesDatabaseService().recipes,
       child: Scaffold(

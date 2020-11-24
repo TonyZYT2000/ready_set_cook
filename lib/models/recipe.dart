@@ -9,22 +9,15 @@ class Recipe {
   double rating;
   bool cookedBefore;
 
-  Recipe(
-      String recipeId,
-      String userId,
-      String name,
-      List<Ingredient> ingredients,
-      List<String> instructions,
-      double rating,
-      bool cookedBefore) {
-    this.recipeId = recipeId;
-    this.userId = userId;
-    this.name = name;
-    this.ingredients = ingredients;
-    this.instructions = instructions;
-    this.rating = rating;
-    this.cookedBefore = cookedBefore;
-  }
+  Recipe({
+    this.recipeId,
+    this.userId,
+    this.name,
+    this.ingredients,
+    this.instructions,
+    this.rating,
+    this.cookedBefore,
+  });
 
   String getRecipeId() {
     return recipeId;

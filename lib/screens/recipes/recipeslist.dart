@@ -15,6 +15,7 @@ class _RecipesListState extends State<RecipesList> {
   @override
   Widget build(BuildContext context) {
     final recipes = Provider.of<List<Recipe>>(context);
+    
     if(recipes == null) {
       return Container(
         child: Text('Shit was null')

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ready_set_cook/models/recipe.dart';
 import 'package:provider/provider.dart';
 import 'package:ready_set_cook/models/user.dart';
+import 'dart:io';
 import 'dart:developer';
 
 class RecipesDatabaseService {
@@ -53,6 +54,8 @@ class RecipesDatabaseService {
     _recipeRating = recipeSnapshot.get('rating');
     _recipeCookedBefore = recipeSnapshot.get('cookedBefore');
 
+    debugger(when: true);
+
     log('The recipe name is $_recipeName');
     log('The rating is $_recipeRating');
     log('The cookedBefore is $_recipeCookedBefore');
@@ -64,13 +67,13 @@ class RecipesDatabaseService {
         getRecipesHelper(doc);
         log('called helper');
         return Recipe(
-          doc.get('recipeId').toString(),
-          uid,
-          _recipeName,
-          null,
-          null,
-          _recipeRating,
-          _recipeCookedBefore);
+          recipeId: doc.get('recipeId'),
+          userId: uid,
+          name: _recipeName,
+          ingredients: null,
+          instructions: null,
+          rating: _recipeRating,
+          cookedBefore: _recipeCookedBefore);
     }).toList();
   }
 
