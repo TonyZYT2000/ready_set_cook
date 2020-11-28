@@ -4,7 +4,7 @@ import 'package:ready_set_cook/services/recipes_database.dart';
 import 'package:ready_set_cook/models/recipe.dart';
 import 'package:ready_set_cook/screens/recipes/recipeTile.dart';
 
-class RecipesList extends StatefulWidget {
+/*class RecipesList extends StatefulWidget {
   @override
   _RecipesListState createState() => _RecipesListState();
 }
@@ -55,4 +55,4 @@ class _RecipesListState extends State<RecipesList> {
       )
     )
     */
-}
+}*/

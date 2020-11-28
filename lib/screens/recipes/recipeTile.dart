@@ -3,12 +3,16 @@ import 'package:ready_set_cook/models/recipe.dart';
 
 class RecipeTile extends StatelessWidget {
 
-  final Recipe recipe;
+  final String name;
 
-  RecipeTile( { this.recipe } );
+  RecipeTile( { this.name } );
 
   @override
   Widget build(BuildContext context) {
+    if(name == "") {
+      return Container();
+    }
+
     return Padding(
       padding: EdgeInsets.only(top: 8.0),
       child: Card(
@@ -18,8 +22,8 @@ class RecipeTile extends StatelessWidget {
             radius: 30.0,
             backgroundColor: Colors.blue[300],
             ),
-            title: Text(recipe.name),
-            subtitle: Text('Rating: ${recipe.rating}/5'),
+            title: Text(name),
+            // subtitle: Text('Rating: ${recipe.rating}/5'),
         ),
       )
     );

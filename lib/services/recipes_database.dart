@@ -55,10 +55,11 @@ class RecipesDatabaseService {
     _recipeCookedBefore = recipeSnapshot.get('cookedBefore');
 
     debugger(when: true);
-
-    log('The recipe name is $_recipeName');
-    log('The rating is $_recipeRating');
-    log('The cookedBefore is $_recipeCookedBefore');
+    print('hello debug time');
+    print(qds.get('recipeId'));
+    print('The recipe name is {$_recipeName}');
+    print('The rating is ${_recipeRating}');
+    print('The cookedBefore is ${_recipeCookedBefore}');
   }
 
   // list of recipes from snapshot
@@ -111,4 +112,18 @@ class RecipesDatabaseService {
         .snapshots()
         .map(_recipesList);
   }
+
+  
+  // List<Recipe>  get recipes {
+
+  //   StreamBuilder(
+  //     stream: 
+  //   )
+
+  //   return recipeCollection
+  //       .doc(uid)
+  //       .collection("recipesList")
+  //       .snapshots()
+  //       .map(_recipesList);
+  // }
 }
