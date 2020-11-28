@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:ready_set_cook/screens/recipes_/view_recipe.dart';
 
@@ -22,7 +20,7 @@ class _RecipeState extends State<Recipe> {
     "salad"
   ];
   List<List<String>> ingredient = [
-    ["ingredient for CB"],
+    ["ingredient for CB", "chicken", "buffalo"],
     ["ingredient for pizza"],
     ["ingredient for BC"],
     ["ingredient for salad"],
@@ -32,7 +30,7 @@ class _RecipeState extends State<Recipe> {
     ["ingredient for salad"]
   ];
   List<List<String>> quantity = [
-    ["quantity for CB"],
+    ["quantity for CB", "0", "1"],
     ["quantity for pizza"],
     ["quantity for BC"],
     ["quantity for salad"],
@@ -55,81 +53,79 @@ class _RecipeState extends State<Recipe> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: ListView.builder(
-            itemCount: a.length,
-            itemBuilder: (context, i) {
-              return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                ViewRecipe(a[i], ingredient[i], quantity[i])));
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(50.0),
-                    height: 150,
-                    width: 350,
-                    decoration: BoxDecoration(
-                        // backgroundBlendMode: BlendMode.softLight,
-                        border: Border.all(color: Colors.blue[100], width: 10),
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                            colorFilter: ColorFilter.mode(
-                                Colors.blue.withOpacity(1.0),
-                                BlendMode.softLight),
-                            fit: BoxFit.cover,
-                            image: AssetImage(a[i]))),
-                    // Text(
-                    //   recipes[i],
-                    //   style: TextStyle(
-                    //       color: Colors.purple,
-                    //       fontSize: 25,
-                    //       backgroundColor: Colors.grey),
-                    //   textAlign: TextAlign.center,
-                    // )
-                  ));
+        resizeToAvoidBottomPadding: false,
+        body: Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.all(25),
+            child: ListView.builder(
+                itemCount: a.length * 2,
+                itemBuilder: (context, i) {
+                  if (i % 2 == 1) {
+                    return Text(recipes[(i - 1) ~/ 2],
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.blueGrey,
+                            letterSpacing: 1.5,
+                            height: 2),
+                        textAlign: TextAlign.center);
+                  } else {
+                    return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ViewRecipe(a[i ~/ 2],
+                                      ingredient[i ~/ 2], quantity[i ~/ 2])));
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(90.0),
+                          height: 160,
+                          width: 320,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Colors.blue[100], width: 10),
+                              borderRadius: BorderRadius.circular(20),
+                              image: DecorationImage(
+                                  colorFilter: ColorFilter.mode(
+                                      Colors.blue.withOpacity(1.0),
+                                      BlendMode.softLight),
+                                  fit: BoxFit.cover,
+                                  image: AssetImage(a[i ~/ 2]))),
+                        ));
+                  }
+                })));
 
-              // leading: Image.asset(a[i]),
-              // leading: IconButton(
-              //     icon: Image.asset(a[i]),
-              //     iconSize: 200,
-              //     onPressed: () {
-              //       Navigator.push(
-              //           context,
-              //           MaterialPageRoute(
-              //               builder: (context) => Search()));
-              //     }),
-              // title: Text(recipes[i], textScaleFactor: 1.5),
-              // onLongPress: () {
-              //   Navigator.push(context,
-              //       MaterialPageRoute(builder: (context) => Search()));
-              // }
-              // child: IconButton(
-              //   icon: Image.asset(a[i]),
-              //   iconSize: 500,
-              //   onPressed: () {
-              //     Navigator.push(
-              //         context, MaterialPageRoute(builder: (context) => Search()));
-              //   },
-              // )
-            }),
-      ),
-    );
-    // children: [
-    //   Column(
-    //     children: recipes
-    //         .map(
-    //           (element) => Card(
-    //             child: Column(
-    //               children: <Widget>[Image.asset(a[i]), Text(element)],
-    //             ),
-    //           ),
-    //         )
-    //         .toList(),
+    // return Scaffold(
+    //   body: Padding(
+    //     padding: const EdgeInsets.all(20.0),
+    //     child: ListView.builder(
+    //         itemCount: a.length,
+    //         itemBuilder: (context, i) {
+    //           return GestureDetector(
+    //               onTap: () {
+    //                 Navigator.push(
+    //                     context,
+    //                     MaterialPageRoute(
+    //                         builder: (context) =>
+    //                             ViewRecipe(a[i], ingredient[i], quantity[i])));
+    //               },
+    //               child: Container(
+    //                 padding: EdgeInsets.all(50.0),
+    //                 height: 150,
+    //                 width: 350,
+    //                 decoration: BoxDecoration(
+    //                     // backgroundBlendMode: BlendMode.softLight,
+    //                     border: Border.all(color: Colors.blue[100], width: 10),
+    //                     borderRadius: BorderRadius.circular(20),
+    //                     image: DecorationImage(
+    //                         colorFilter: ColorFilter.mode(
+    //                             Colors.blue.withOpacity(1.0),
+    //                             BlendMode.softLight),
+    //                         fit: BoxFit.cover,
+    //                         image: AssetImage(a[i]))),
+    //               ));
+    //         }),
     //   ),
-    // ],
+    // );
   }
 }
