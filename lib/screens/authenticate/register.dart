@@ -76,7 +76,7 @@ class _RegisterState extends State<Register> {
                       textInputDecoration.copyWith(hintText: 'Password'),
                   obscureText: true,
                   validator: (val) =>
-                      val.length < 6 ? 'Enter a password 6+ chars long' : null,
+                      val.length < 6 ? 'Enter a password 6+ characters long' : null,
                   onChanged: (val) {
                     setState(() => _password = val);
                   },
