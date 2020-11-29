@@ -4,9 +4,8 @@ import 'package:ready_set_cook/services/grocery.dart';
 import 'package:ready_set_cook/models/ingredient.dart';
 
 class Edit extends StatefulWidget {
-  final String _id;
   final Ingredient _ingredient;
-  Edit(this._id, this._ingredient);
+  Edit(this._ingredient);
 
   TextEditingController _controller1 = TextEditingController();
   TextEditingController _controller2 = TextEditingController();
@@ -32,7 +31,7 @@ class _EditState extends State<Edit> {
           _quantity != null ? _quantity : widget._ingredient.quantity;
       widget._ingredient.unit = _unit != null ? _unit : widget._ingredient.unit;
 
-      _groceryDB.updateItem(widget._id, widget._ingredient);
+      _groceryDB.updateItem(widget._ingredient.id, widget._ingredient);
 
       _name = null;
       _quantity = null;
@@ -60,20 +59,22 @@ class _EditState extends State<Edit> {
               child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
+                    Container(
+                        height: 200,
+                        width: 200,
+                        child: (widget._ingredient.imageUrl == null)
+                            ? Image(
+                                image: NetworkImage(
+                                    "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png"))
+                            : Image(
+                                image:
+                                    NetworkImage(widget._ingredient.imageUrl))),
                     SizedBox(height: 20.0),
                     TextFormField(
                       controller: widget._controller1,
                       key: ValueKey("ingredient name"),
-                      /*
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return "please enter valid ingredient name";
-                        }
-                        return null;
-                      },
-                      */
                       decoration: textInputDecoration.copyWith(
-                          hintText: 'Update Ingredient Name (Optional)'),
+                          hintText: 'Update Name: ' + widget._ingredient.name),
                       onChanged: (val) {
                         setState(() => _name = val);
                       },
@@ -82,16 +83,9 @@ class _EditState extends State<Edit> {
                     TextFormField(
                       controller: widget._controller2,
                       key: ValueKey("quantity"),
-                      /*
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return "please enter valid quantity";
-                        }
-                        return null;
-                      },
-                      */
                       decoration: textInputDecoration.copyWith(
-                          hintText: 'Update Quantity (Optional)'),
+                          hintText: 'Update Quantity: ' +
+                              widget._ingredient.quantity.toString()),
                       onChanged: (val) {
                         setState(() => _quantity = int.parse(val));
                       },
@@ -101,7 +95,7 @@ class _EditState extends State<Edit> {
                       controller: widget._controller3,
                       key: ValueKey("unit"),
                       decoration: textInputDecoration.copyWith(
-                          hintText: 'Update Unit (Optional)'),
+                          hintText: 'Update Unit: ' + widget._ingredient.unit),
                       onChanged: ([val]) {
                         setState(() => _unit = val);
                       },

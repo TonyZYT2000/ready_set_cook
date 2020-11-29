@@ -65,7 +65,7 @@ class _StorageState extends State<Storage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Edit(id, ingredient)));
+                                    builder: (context) => Edit(ingredient)));
                           });
                         }
                       },
