@@ -1,8 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ready_set_cook/models/recipe.dart';
-import 'package:provider/provider.dart';
-import 'package:ready_set_cook/models/user.dart';
-import 'dart:io';
 import 'dart:developer';
 
 class RecipesDatabaseService {
@@ -16,8 +13,8 @@ class RecipesDatabaseService {
   // obtains instance of the recipes collection from firestore
   final CollectionReference recipeCollection =
       FirebaseFirestore.instance.collection('recipes');
-  
-  final CollectionReference allRecipesCollection = 
+
+  final CollectionReference allRecipesCollection =
       FirebaseFirestore.instance.collection('allRecipes');
 
   String _recipeName;
@@ -49,7 +46,8 @@ class RecipesDatabaseService {
   }
 
   Future getRecipesHelper(QueryDocumentSnapshot qds) async {
-    DocumentSnapshot recipeSnapshot = await allRecipesCollection.doc(qds.get('recipeId')).get();
+    DocumentSnapshot recipeSnapshot =
+        await allRecipesCollection.doc(qds.get('recipeId')).get();
     _recipeName = recipeSnapshot.get('name');
     _recipeRating = recipeSnapshot.get('rating');
     _recipeCookedBefore = recipeSnapshot.get('cookedBefore');
@@ -65,9 +63,9 @@ class RecipesDatabaseService {
   // list of recipes from snapshot
   List<Recipe> _recipesList(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-        getRecipesHelper(doc);
-        log('called helper');
-        return Recipe(
+      getRecipesHelper(doc);
+      log('called helper');
+      return Recipe(
           recipeId: doc.get('recipeId'),
           userId: uid,
           name: _recipeName,
@@ -78,8 +76,7 @@ class RecipesDatabaseService {
     }).toList();
   }
 
-
-    /*QuerySnapshot list;
+  /*QuerySnapshot list;
     List<DocumentSnapshot> snap = snapshot.docs;
     for (var i in snap) {
       // var dss = i.data();
@@ -113,11 +110,10 @@ class RecipesDatabaseService {
         .map(_recipesList);
   }
 
-  
   // List<Recipe>  get recipes {
 
   //   StreamBuilder(
-  //     stream: 
+  //     stream:
   //   )
 
   //   return recipeCollection
