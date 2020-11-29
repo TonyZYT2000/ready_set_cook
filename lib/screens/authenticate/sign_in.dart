@@ -57,8 +57,8 @@ class _SignInState extends State<SignIn> {
                     obscureText: true,
                     decoration:
                         textInputDecoration.copyWith(hintText: 'Password'),
-                    validator: (val) => val.length < 8
-                        ? 'Enter a password 8+ chars long'
+                    validator: (val) => val.length < 6
+                        ? 'Enter a password 6+ chars long'
                         : null,
                     onChanged: (val) {
                       setState(() => password = val);

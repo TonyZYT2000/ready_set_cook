@@ -57,39 +57,5 @@ class _RecipeState extends State<Recipe> {
 
       }
     );
-    
-    // return StreamProvider<List<model.Recipe>>.value(
-    //   value: RecipesDatabaseService(haha).recipes,
-    //   child: Scaffold(
-    //     body: RecipesList(),
-    //   ),
-    // );
   }
 }
-
-/*
-    return Scaffold(
-        body: StreamBuilder(
-            stream: _recipesDB.getRecipesList(),
-            builder: (ctx, recipesSnapshot) {
-              if (recipesSnapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              }
-
-              final recipesSnap = recipesSnapshot.data.documents;
-              return ListView.builder(
-                  itemCount: recipesSnap.length,
-                  itemBuilder: (ctx, index) {
-                    final recipeId = recipesSnap[index]["recipeId"];
-                    // final recipeRating = recipesSnap[index]["rating"];
-                    // final recipeCookedBefore = recipesSnap[index]["cookedBefore"];
-                    return Container(
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: <Widget>[
-                          Text(recipeId),
-                          // Text(recipeRating.toString()),
-                          // Text(recipeCookedBefore.toString())
-                        ]));
-                  });
-            }));*/

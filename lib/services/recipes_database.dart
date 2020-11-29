@@ -48,6 +48,21 @@ class RecipesDatabaseService {
         .add({"recipeId": recipeId});
   }
 
+  // work in progress
+  Future addCustomRecipe(Recipe recipe) async {
+    await allRecipesCollection
+        .add({"recipeId": recipe.recipeId, "cookedBefore": recipe.cookedBefore, "name": recipe.name,
+          "rating": recipe.rating, "userId": recipe.userId});
+
+    
+    // await allRecipesCollection.doc(recipe.recipeId).collection("ingredients").
+
+    await recipeCollection
+        .doc(uid)
+        .collection("recipesList")
+        .add({"recipeId": recipe.recipeId});
+  }
+
   Future getRecipesHelper(QueryDocumentSnapshot qds) async {
     DocumentSnapshot recipeSnapshot = await allRecipesCollection.doc(qds.get('recipeId')).get();
     _recipeName = recipeSnapshot.get('name');
