@@ -1,27 +1,26 @@
-import 'package:ready_set_cook/screens/profile/forgot_password.dart';
 import 'package:ready_set_cook/services/auth.dart';
 import 'package:ready_set_cook/shared/constants.dart';
-import 'package:ready_set_cook/screens/profile/profile.dart';
+import 'package:ready_set_cook/screens/profile/edit_password.dart';
 import 'package:flutter/material.dart';
+import 'package:ready_set_cook/screens/profile/profile.dart';
 import 'package:ready_set_cook/screens/home/home.dart';
 
-class EditPassword extends StatefulWidget {
+class ChangePassword extends StatefulWidget {
   final Function toggleView;
-  EditPassword({this.toggleView});
+  ChangePassword({this.toggleView});
 
   @override
-  _EditPasswordState createState() => _EditPasswordState();
+  _ChangePasswordState createState() => _ChangePasswordState();
 }
 
-class _EditPasswordState extends State<EditPassword> {
+class _ChangePasswordState extends State<ChangePassword> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   String error = '';
 
   // text field state
-  String email = '';
-  String oldPassword = '';
-  String newPassword = '';
+  String email = 'myemail@gmail.com'; //need to get email from user info
+  String password = '';
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +30,11 @@ class _EditPasswordState extends State<EditPassword> {
         backgroundColor: Colors.blue[120],
         elevation: 0.0,
         title: Text('Change Password'),
-        actions: <Widget>[],
-        leading:
-            Padding(padding: const EdgeInsets.all(8.0), child: SmallLogo()),
+        //actions: <Widget>[],
+        //leading:
+        //    Padding(padding: const EdgeInsets.all(8.0), child: SmallLogo()),
       ),
+      /*
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -44,6 +44,7 @@ class _EditPasswordState extends State<EditPassword> {
         },
         child: Icon(Icons.arrow_back),
       ),
+      */
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         child: Form(
@@ -53,44 +54,22 @@ class _EditPasswordState extends State<EditPassword> {
                 children: <Widget>[
                   SizedBox(height: 40.0),
                   Text(
-                    "Enter your old password!",
+                    "An password reset Email will be sent to your email account!",
                     style: new TextStyle(
                       fontSize: 30.0,
                     ),
                     textAlign: TextAlign.center,
                   ),
+                  /*
                   SizedBox(height: 40.0),
                   TextFormField(
                     decoration: textInputDecoration.copyWith(hintText: 'Email'),
-                    validator: (val) => val.isEmpty ? 'Enter an email' : null,
+                    validator: (val) => val.isEmpty ? 'Enter your email' : null,
                     onChanged: (val) {
                       setState(() => email = val);
                     },
                   ),
-                  SizedBox(height: 20.0),
-                  TextFormField(
-                    obscureText: true,
-                    decoration:
-                        textInputDecoration.copyWith(hintText: 'Old Password'),
-                    validator: (val) => val.length < 8
-                        ? 'Enter a password 8+ chars long'
-                        : null,
-                    onChanged: (val) {
-                      setState(() => oldPassword = val);
-                    },
-                  ),
-                  SizedBox(height: 20.0),
-                  TextFormField(
-                    obscureText: true,
-                    decoration:
-                        textInputDecoration.copyWith(hintText: 'New Password'),
-                    validator: (val) => val.length < 8
-                        ? 'Enter a password 8+ chars long'
-                        : null,
-                    onChanged: (val) {
-                      setState(() => newPassword = val);
-                    },
-                  ),
+                  */
                   SizedBox(height: 40.0),
                   RaisedButton(
                       color: Colors.blue[400],
@@ -99,31 +78,14 @@ class _EditPasswordState extends State<EditPassword> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () async {
-                        if (_formKey.currentState.validate()) {
-                          dynamic result = await _auth
-                              .signInWithEmailAndPassword(email, oldPassword);
-                          if (result == null) {
-                            setState(() {
-                              error =
-                                  'Could not sign in with those credentials';
-                            });
-                          }
-                        }
-                      }),
-
-                  SizedBox(height: 40.0),
-                  RaisedButton(
-                      color: Colors.blue[400],
-                      child: Text(
-                        'I forgot my old password',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ForgotPassword()),
-                        );
+                        await _auth.resetPassword(email);
+                        showDialog(
+                            context: context,
+                            builder: (_) => AlertDialog(
+                                  title: Text('Email sent to ' + email),
+                                  content: Text(
+                                      'Please follow instructions on your email'),
+                                ));
                       }),
 
                   SizedBox(height: 12.0),

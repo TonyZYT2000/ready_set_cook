@@ -77,10 +77,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       ),
                       onPressed: () async {
                         await _auth.resetPassword(email);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Profile()),
-                        );
+                        Navigator.of(context).pop();
+                        showDialog(
+                            context: context,
+                            builder: (_) => AlertDialog(
+                                  title: Text('Email sent to ' + email),
+                                  content: Text(
+                                      'Please follow instructions on your email'),
+                                ));
                       }),
 
                   SizedBox(height: 12.0),
