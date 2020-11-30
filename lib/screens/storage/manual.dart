@@ -10,6 +10,8 @@ class Manual extends StatefulWidget {
   TextEditingController _controller1 = TextEditingController();
   TextEditingController _controller2 = TextEditingController();
   TextEditingController _controller3 = TextEditingController();
+  TextEditingController _controller4 = TextEditingController();
+
   @override
   _ManualState createState() => _ManualState();
 }
@@ -21,6 +23,7 @@ class _ManualState extends State<Manual> {
   String _name = '';
   int _quantity = 0;
   String _unit = '';
+  int _shelfLife = 0;
   DateTime _startDate = DateTime.now();
 
   final _picker = ImagePicker();
@@ -54,12 +57,14 @@ class _ManualState extends State<Manual> {
       }
 
       _groceryDB.addItem(Ingredient(null, _name, _quantity, _unit, _startDate,
-          null, 15, false, _imageUrl));
+          null, _shelfLife, false, _imageUrl));
       _image = null;
       _imageUrl = null;
       widget._controller1.clear();
       widget._controller2.clear();
       widget._controller3.clear();
+      widget._controller4.clear();
+
       _formKey.currentState.save();
     }
 
@@ -93,7 +98,7 @@ class _ManualState extends State<Manual> {
                     child: Text("Add Image"),
                     onPressed: getImage,
                   ),
-                  SizedBox(height: 20.0),
+                  SizedBox(height: 15.0),
                   TextFormField(
                     controller: widget._controller1,
                     key: ValueKey("ingredient name"),
@@ -109,7 +114,7 @@ class _ManualState extends State<Manual> {
                       setState(() => _name = val);
                     },
                   ),
-                  SizedBox(height: 20.0),
+                  SizedBox(height: 15.0),
                   TextFormField(
                     controller: widget._controller2,
                     key: ValueKey("quantity"),
@@ -125,7 +130,7 @@ class _ManualState extends State<Manual> {
                       setState(() => _quantity = int.parse(val));
                     },
                   ),
-                  SizedBox(height: 20.0),
+                  SizedBox(height: 15.0),
                   TextFormField(
                     controller: widget._controller3,
                     key: ValueKey("unit"),
@@ -135,7 +140,17 @@ class _ManualState extends State<Manual> {
                       setState(() => _unit = val);
                     },
                   ),
-                  SizedBox(height: 20.0),
+                  SizedBox(height: 15.0),
+                  TextFormField(
+                    controller: widget._controller4,
+                    key: ValueKey("Shelf Life"),
+                    decoration: textInputDecoration.copyWith(
+                        hintText: 'Enter Shelf Life (Optional)'),
+                    onChanged: ([val]) {
+                      setState(() => _shelfLife = int.parse(val));
+                    },
+                  ),
+                  SizedBox(height: 15.0),
                   RaisedButton(
                       color: Colors.blue[400],
                       child: Text(

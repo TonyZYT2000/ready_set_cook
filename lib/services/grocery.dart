@@ -47,6 +47,6 @@ class GroceryDatabase {
   }
 
   Stream<QuerySnapshot> getGrocerySnap() {
-    return _groceryDoc.collection("groceryList").snapshots();
+    return _groceryDoc.collection("groceryList").orderBy('startDate', descending: true).snapshots();
   }
 }

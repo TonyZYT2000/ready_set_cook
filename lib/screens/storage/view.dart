@@ -61,7 +61,7 @@ class _ViewState extends State<View> {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Spoil in " +
-                      (15 -
+                      (widget._ingredient.shelfLife -
                               DateTime.now().day +
                               widget._ingredient.startDate.day)
                           .toString() +
