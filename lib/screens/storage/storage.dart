@@ -12,6 +12,27 @@ class Storage extends StatefulWidget {
 
 class _StorageState extends State<Storage> {
   GroceryDatabase _groceryDB = null;
+  var _pressIndex = 0; 
+  void _weekTapped(){
+    _pressIndex = 0;
+    setState(() {
+      
+    });
+  }
+
+  void _monthTapped(){
+    _pressIndex = 1;
+    setState(() {
+      
+    });
+  }
+
+  void _customTapped(){
+    _pressIndex = 2;
+    setState(() {
+      
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,71 +50,170 @@ class _StorageState extends State<Storage> {
           },
           child: Icon(Icons.add),
         ),
-        body: StreamBuilder(
-            stream: _groceryDB.getGrocerySnap(),
-            builder: (ctx, storageSnapshot) {
-              if (storageSnapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              }
-              final storageSnap = storageSnapshot.data.documents;
-              return ListView.builder(
-                  itemCount: storageSnap.length,
-                  itemBuilder: (ctx, index) {
-                    final String id = storageSnap[index].id;
-                    final String name = storageSnap[index]["name"];
-                    final int quant = storageSnap[index]['quantity'];
-                    final String unit = storageSnap[index]['unit'];
-                    final String imageUrl = storageSnap[index]['imageUrl'];
-                    final DateTime date = DateTime.parse(
-                        storageSnap[index]['startDate'].toDate().toString());
-
-                    final Ingredient ingredient = Ingredient(
-                        id, name, quant, unit, date, null, 15, false, imageUrl);
-
-                    // return a widget that can be slided
-                    return Dismissible(
-                      onDismissed: (DismissDirection direction) {
-                        // right->left delete, left->right edit
-                        if (direction == DismissDirection.endToStart) {
-                          setState(() {
-                            _groceryDB.deleteItem(id);
-                          });
-                          Scaffold.of(context).showSnackBar(
-                              SnackBar(content: Text("$name deleted")));
-                        } else {
-                          setState(() {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Edit(ingredient)));
-                          });
-                        }
-                      },
-                      // background for edit
-                      background: Container(
-                        child: Center(
-                          child: Text(
-                            'Edit',
-                            style: TextStyle(color: Colors.white),
-                          ),
+        body: Column(
+          children: [
+            Container(
+                height: 210,
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: 15),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(left: 20),
+                          child: Text("Select Time Period",
+                              style: TextStyle(
+                                  color: Colors.blueGrey,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold)),
                         ),
-                        color: Colors.blue,
-                      ),
-                      // background for delete
-                      secondaryBackground: Container(
-                        child: Center(
-                          child: Text(
-                            'Delete',
-                            style: TextStyle(color: Colors.white),
-                          ),
+                      ],
+                    ),
+                    Container(
+                        margin:
+                            EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            ButtonTheme(
+                                minWidth: 100.0,
+                                height: 80.0,
+                                child: RaisedButton(
+                                  color: (_pressIndex == 0) ? Colors.blue : Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  onPressed: _weekTapped,
+                                  child: Text("Last Week", style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.blueGrey
+                                  )),
+                                )),
+                            ButtonTheme(
+                                minWidth: 100.0,
+                                height: 80.0,
+                                child: RaisedButton(
+                                  color: (_pressIndex == 1) ? Colors.blue : Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  onPressed: _monthTapped,
+                                  child: Text("Last Month", style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.grey
+                                  )),
+                                )),
+                            ButtonTheme(
+                                minWidth: 100.0,
+                                height: 80.0,
+                                child: RaisedButton(
+                                  color: (_pressIndex == 2) ? Colors.blue : Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  onPressed: _customTapped,
+                                  child: Text("Custom", style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.blueGrey
+                                  )),
+                                )),
+                          ],
+                        )),
+                        SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(left: 20),
+                          child: Text("Select Time Period",
+                              style: TextStyle(
+                                  color: Colors.blueGrey,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold)),
                         ),
-                        color: Colors.red,
-                      ),
-                      child: StorageRow(ingredient),
-                      key: UniqueKey(),
-                      //direction: DismissDirection.endToStart,
-                    );
-                  });
-            }));
+                      ],
+                    ),
+                  ],
+                )),
+            Expanded(
+                child: Container(
+                    child: StreamBuilder(
+                    stream: _groceryDB.getGrocerySnap(),
+                    builder: (ctx, storageSnapshot) {
+                      if (storageSnapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      final storageSnap = storageSnapshot.data.documents;
+                      return ListView.builder(
+                          itemCount: storageSnap.length,
+                          itemBuilder: (ctx, index) {
+                            final String id = storageSnap[index].id;
+                            final String name = storageSnap[index]["name"];
+                            final int quant = storageSnap[index]['quantity'];
+                            final String unit = storageSnap[index]['unit'];
+                            final String imageUrl =
+                                storageSnap[index]['imageUrl'];
+                            final DateTime date = DateTime.parse(
+                                storageSnap[index]['startDate']
+                                    .toDate()
+                                    .toString());
+
+                            final Ingredient ingredient = Ingredient(id, name,
+                                quant, unit, date, null, 15, false, imageUrl);
+
+                            // return a widget that can be slided
+                            return Dismissible(
+                              onDismissed: (DismissDirection direction) {
+                                // right->left delete, left->right edit
+                                if (direction == DismissDirection.endToStart) {
+                                  setState(() {
+                                    _groceryDB.deleteItem(id);
+                                  });
+                                  Scaffold.of(context).showSnackBar(
+                                      SnackBar(content: Text("$name deleted")));
+                                } else {
+                                  setState(() {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                Edit(ingredient)));
+                                  });
+                                }
+                              },
+                              // background for edit
+                              background: Container(
+                                child: Center(
+                                  child: Text(
+                                    'Edit',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                                color: Colors.blue,
+                              ),
+                              // background for delete
+                              secondaryBackground: Container(
+                                child: Center(
+                                  child: Text(
+                                    'Delete',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                                color: Colors.red,
+                              ),
+                              child: StorageRow(ingredient),
+                              key: UniqueKey(),
+                              //direction: DismissDirection.endToStart,
+                            );
+                          });
+                    }) 
+                  ), 
+                
+                
+                )
+          ],
+        ));
   }
 }
