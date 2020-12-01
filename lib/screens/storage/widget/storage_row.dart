@@ -46,9 +46,7 @@ class _StorageRowState extends State<StorageRow> {
                   width: 110,
                   child: Text(
                     widget._ingredient.name,
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
                 Container(
@@ -72,12 +70,13 @@ class _StorageRowState extends State<StorageRow> {
                             icon: Icon(Icons.check),
                             iconSize: 30.0,
                             color: Colors.green,
+                            onPressed: () {},
                           )
                         : IconButton(
                             icon: Icon(Icons.warning_amber_outlined),
                             iconSize: 30.0,
                             color: Colors.red,
-                          )),
+                      onPressed: () {  }     )),
               ],
             )),
         onTap: () {

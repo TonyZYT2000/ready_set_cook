@@ -4,6 +4,8 @@ import 'package:ready_set_cook/screens/storage/add.dart';
 import 'package:ready_set_cook/screens/storage/edit.dart';
 import 'package:ready_set_cook/services/grocery.dart';
 import 'package:ready_set_cook/models/ingredient.dart';
+import 'package:intl/intl.dart';
+
 
 class Storage extends StatefulWidget {
   @override
@@ -13,14 +15,14 @@ class Storage extends StatefulWidget {
 class _StorageState extends State<Storage> {
   GroceryDatabase _groceryDB = null;
   var _timePeriod = DateTime.now().subtract(const Duration(days: 7));
-
+  var _displayText = "Last Week until now";
   var _pressIndex = 0;
 
   void _weekTapped() {
     _pressIndex = 0;
     _timePeriod = DateTime.now().subtract(const Duration(days: 7));
+    _displayText = "Last Week until now";
     setState(() {
-
       print(_timePeriod);
     });
   }
@@ -29,8 +31,8 @@ class _StorageState extends State<Storage> {
     _pressIndex = 1;
     var _now = new DateTime.now();
     _timePeriod = DateTime(_now.year, _now.month - 1, _now.day);
+    _displayText = "Last Month until now";
     setState(() {
-
       print(_timePeriod);
     });
   }
@@ -38,20 +40,21 @@ class _StorageState extends State<Storage> {
   void _customTapped(BuildContext ctx) {
     _pressIndex = 2;
     showDatePicker(
-        context: ctx,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2020),
-        lastDate: DateTime.now()).then((pickedDate) {
-          if(pickedDate == null){
-            return;
-          }
-          _timePeriod = pickedDate;
-          setState(() {
-
-      print(_timePeriod);
+            context: ctx,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2020),
+            lastDate: DateTime.now())
+        .then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      }
+      _timePeriod = pickedDate;
+      String formattedDate = DateFormat('yyyy-MM-dd').format(_timePeriod);
+      _displayText = formattedDate + " until now";
+      setState(() {
+        print(_timePeriod);
+      });
     });
-        });
-
   }
 
   @override
@@ -158,7 +161,7 @@ class _StorageState extends State<Storage> {
                       children: [
                         Container(
                           margin: EdgeInsets.only(left: 20),
-                          child: Text("Select Time Period",
+                          child: Text(_displayText,
                               style: TextStyle(
                                   color: Colors.blueGrey,
                                   fontSize: 20,
@@ -189,7 +192,8 @@ class _StorageState extends State<Storage> {
                               final String name = storageSnap[index]["name"];
                               final int quant = storageSnap[index]['quantity'];
                               final String unit = storageSnap[index]['unit'];
-                              final int shelfLife = storageSnap[index]['shelfLife'];
+                              final int shelfLife =
+                                  storageSnap[index]['shelfLife'];
                               final String imageUrl =
                                   storageSnap[index]['imageUrl'];
                               final DateTime date = DateTime.parse(
@@ -197,11 +201,20 @@ class _StorageState extends State<Storage> {
                                       .toDate()
                                       .toString());
 
-                              final Ingredient ingredient = Ingredient(id, name,
-                                  quant, unit, date, null, shelfLife, false, imageUrl);
-                              
-                              final DateTime foodDate = storageSnap[index]["startDate"].toDate();
-                              if(foodDate.isBefore(_timePeriod)){
+                              final Ingredient ingredient = Ingredient(
+                                  id,
+                                  name,
+                                  quant,
+                                  unit,
+                                  date,
+                                  null,
+                                  shelfLife,
+                                  false,
+                                  imageUrl);
+
+                              final DateTime foodDate =
+                                  storageSnap[index]["startDate"].toDate();
+                              if (foodDate.isBefore(_timePeriod)) {
                                 return null;
                               }
                               // return a widget that can be slided

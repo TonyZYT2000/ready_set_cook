@@ -60,8 +60,8 @@ class _EditState extends State<Edit> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                        height: 200,
-                        width: 200,
+                        height: 240,
+                        width: 250,
                         child: (widget._ingredient.imageUrl == null)
                             ? Image(
                                 image: NetworkImage(
