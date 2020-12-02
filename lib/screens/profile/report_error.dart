@@ -4,6 +4,8 @@ import 'package:ready_set_cook/screens/profile/edit_password.dart';
 import 'package:flutter/material.dart';
 import 'package:ready_set_cook/screens/profile/profile.dart';
 import 'package:ready_set_cook/screens/home/home.dart';
+import 'package:ready_set_cook/services/error_service.dart';
+import 'package:ready_set_cook/models/error.dart';
 
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 
@@ -18,6 +20,7 @@ class ReportError extends StatefulWidget {
 class _ReportErrorState extends State<ReportError> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
+  ErrorDatabase _errorDB = null;
 
   String title = '';
   String problem = '';
@@ -58,7 +61,7 @@ class _ReportErrorState extends State<ReportError> {
                     keyboardType: TextInputType.multiline,
                     maxLines: 10,
                     decoration:
-                        textInputDecoration.copyWith(hintText: 'Problem'),
+                        textInputDecoration.copyWith(hintText: 'Description'),
                     onChanged: (val) {
                       setState(() => problem = val);
                     },
@@ -71,13 +74,10 @@ class _ReportErrorState extends State<ReportError> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () async {
-                        final Email email = Email(
-                          body: problem,
-                          subject: title,
-                          recipients: ['k2hu@ucsd.edu'],
-                          isHTML: false,
-                        );
-                        await FlutterEmailSender.send(email);
+                        //await _auth.resetPassword(email);
+
+                        _errorDB.addError(ReportedError(title, problem));
+
                         Navigator.of(context).pop();
                         showDialog(
                             context: context,
