@@ -17,6 +17,10 @@ class AuthService {
         .map(_userFromFirebaseUser);
   }
 
+  Future getCurrentUserEmail() async {
+    return _auth.currentUser.email.toString();
+  }
+
   // sign in anon
   Future signInAnon() async {
     try {

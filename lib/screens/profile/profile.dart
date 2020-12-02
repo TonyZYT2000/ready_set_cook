@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ready_set_cook/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ready_set_cook/screens/profile/edit_password.dart';
 import 'package:ready_set_cook/screens/profile/forgot_password.dart';
-import 'package:ready_set_cook/services/auth.dart';
+import 'package:ready_set_cook/services/auth.dart' as fire;
 import 'package:ready_set_cook/models/user.dart';
 
 class Profile extends StatefulWidget {
@@ -10,8 +12,9 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  final AuthService _auth = AuthService();
+
   String _userName = "My Name";
-  String _email = "myname@gmail.com";
   String _profilePicURL =
       "https://i0.wp.com/nerdschalk.com/wp-content/uploads/2020/08/pogger.png?resize=768%2C757&ssl=1";
   bool _notification = false;
@@ -39,23 +42,7 @@ class _ProfileState extends State<Profile> {
             ),
             ListTile(
               title: Text('Email'),
-              subtitle: Text('$_email'),
-            ),
-            ListTile(
-              title: Text('Password Reset'),
-              trailing: Icon(Icons.keyboard_arrow_right),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ChangePassword()),
-                );
-              },
-            ),
-            ListTile(
-              title: Text('Dietary Preferences'),
-              trailing: Icon(Icons.keyboard_arrow_right),
-              onTap: () {
-                // do something
+              subtitle: Text(_auth.getCurrentUserEmail().toString()),
               },
             ),
             SwitchListTile(
