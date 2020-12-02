@@ -4,6 +4,8 @@ import 'package:ready_set_cook/screens/profile/edit_password.dart';
 import 'package:flutter/material.dart';
 import 'package:ready_set_cook/screens/profile/profile.dart';
 import 'package:ready_set_cook/screens/home/home.dart';
+import 'package:ready_set_cook/services/error_service.dart';
+import 'package:ready_set_cook/models/error.dart';
 
 class ReportError extends StatefulWidget {
   final Function toggleView;
@@ -16,6 +18,7 @@ class ReportError extends StatefulWidget {
 class _ReportErrorState extends State<ReportError> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
+  ErrorDatabase _errorDB = null;
 
   String title = '';
   String problem = '';
@@ -55,7 +58,8 @@ class _ReportErrorState extends State<ReportError> {
                   TextFormField(
                     keyboardType: TextInputType.multiline,
                     maxLines: 10,
-                    decoration: textInputDecoration.copyWith(hintText: 'Title'),
+                    decoration:
+                        textInputDecoration.copyWith(hintText: 'Description'),
                     onChanged: (val) {
                       setState(() => title = val);
                     },
@@ -69,6 +73,9 @@ class _ReportErrorState extends State<ReportError> {
                       ),
                       onPressed: () async {
                         //await _auth.resetPassword(email);
+
+                        _errorDB.addError(ReportedError(title, problem));
+
                         Navigator.of(context).pop();
                         showDialog(
                             context: context,
