@@ -25,6 +25,10 @@ class _ReportErrorState extends State<ReportError> {
 
   @override
   Widget build(BuildContext context) {
+    if (_errorDB == null) {
+      _errorDB = ErrorDatabase(context);
+    }
+
     return Scaffold(
       backgroundColor: Colors.blue[200],
       appBar: AppBar(
