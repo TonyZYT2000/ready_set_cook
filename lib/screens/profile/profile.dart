@@ -42,7 +42,7 @@ class _ProfileState extends State<Profile> {
             ),
             ListTile(
               title: Text('Email'),
-              subtitle: Text(_auth.getCurrentUserEmail().toString()),
+              subtitle: Text(_auth.getCurrentUserEmail()),
             ),
             ListTile(
               title: Text('Password Reset'),
