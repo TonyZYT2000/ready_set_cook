@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ready_set_cook/screens/profile/report_error.dart';
 import 'package:ready_set_cook/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ready_set_cook/screens/profile/edit_password.dart';
@@ -25,10 +26,12 @@ class _ProfileState extends State<Profile> {
     return Container(
       child: Scaffold(
           backgroundColor: Colors.blue[50],
+          /*
           floatingActionButton: FloatingActionButton(
             onPressed: () {},
             child: Icon(Icons.edit),
           ),
+          */
           body: ListView(children: <Widget>[
             ListTile(
               trailing: CircleAvatar(
@@ -69,6 +72,16 @@ class _ProfileState extends State<Profile> {
                     _notification = value;
                   });
                 }),
+            ListTile(
+              title: Text('Report Error'),
+              trailing: Icon(Icons.keyboard_arrow_right),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ReportError()),
+                );
+              },
+            ),
           ])),
     );
   }
