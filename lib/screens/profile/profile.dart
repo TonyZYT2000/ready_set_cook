@@ -43,6 +43,22 @@ class _ProfileState extends State<Profile> {
             ListTile(
               title: Text('Email'),
               subtitle: Text(_auth.getCurrentUserEmail().toString()),
+            ),
+            ListTile(
+              title: Text('Password Reset'),
+              trailing: Icon(Icons.keyboard_arrow_right),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ChangePassword()),
+                );
+              },
+            ),
+            ListTile(
+              title: Text('Dietary Preferences'),
+              trailing: Icon(Icons.keyboard_arrow_right),
+              onTap: () {
+                // do something
               },
             ),
             SwitchListTile(
