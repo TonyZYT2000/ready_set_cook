@@ -21,6 +21,10 @@ class AuthService {
     return _auth.currentUser.email;
   }
 
+  String getCurrentUserFirstName() {
+    return _auth.currentUser.displayName;
+  }
+
   // sign in anon
   Future signInAnon() async {
     try {

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:ready_set_cook/screens/profile/profile.dart';
 import 'package:ready_set_cook/screens/home/home.dart';
 
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+
 class ReportError extends StatefulWidget {
   final Function toggleView;
   ReportError({this.toggleView});
@@ -55,9 +57,10 @@ class _ReportErrorState extends State<ReportError> {
                   TextFormField(
                     keyboardType: TextInputType.multiline,
                     maxLines: 10,
-                    decoration: textInputDecoration.copyWith(hintText: 'Title'),
+                    decoration:
+                        textInputDecoration.copyWith(hintText: 'Problem'),
                     onChanged: (val) {
-                      setState(() => title = val);
+                      setState(() => problem = val);
                     },
                   ),
                   SizedBox(height: 40.0),
@@ -68,14 +71,20 @@ class _ReportErrorState extends State<ReportError> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () async {
-                        //await _auth.resetPassword(email);
+                        final Email email = Email(
+                          body: problem,
+                          subject: title,
+                          recipients: ['k2hu@ucsd.edu'],
+                          isHTML: false,
+                        );
+                        await FlutterEmailSender.send(email);
                         Navigator.of(context).pop();
                         showDialog(
                             context: context,
                             builder: (_) => AlertDialog(
                                   title: Text('We got your message!'),
-                                  content:
-                                      Text('Please allow xxdays for response'),
+                                  content: Text(
+                                      'Please allow a few days for response'),
                                 ));
                       }),
 
