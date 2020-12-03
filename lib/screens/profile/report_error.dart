@@ -65,7 +65,7 @@ class _ReportErrorState extends State<ReportError> {
                     decoration:
                         textInputDecoration.copyWith(hintText: 'Description'),
                     onChanged: (val) {
-                      setState(() => title = val);
+                      setState(() => problem = val);
                     },
                   ),
                   SizedBox(height: 40.0),

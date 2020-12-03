@@ -78,11 +78,12 @@ class _ChangePasswordState extends State<ChangePassword> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () async {
-                        await _auth.resetPassword(email);
+                        await _auth.resetPassword(_auth.getCurrentUserEmail());
                         showDialog(
                             context: context,
                             builder: (_) => AlertDialog(
-                                  title: Text('Email sent to ' + email),
+                                  title: Text('Email sent to ' +
+                                      _auth.getCurrentUserEmail()),
                                   content: Text(
                                       'Please follow instructions on your email'),
                                 ));
