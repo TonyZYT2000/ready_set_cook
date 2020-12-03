@@ -1,3 +1,5 @@
+//import 'dart:html';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ready_set_cook/services/auth.dart';
 import 'package:ready_set_cook/shared/constants.dart';
 import 'package:ready_set_cook/screens/profile/edit_password.dart';
@@ -19,8 +21,11 @@ class _AllergyState extends State<Allergy> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   AllergyDatabase _allergyDB = null;
+  final fireInstance =
+      FirebaseFirestore.instance.collection("dietary preferences");
 
   String dropdownValue = 'Vegan';
+  bool addedFlag = false;
 
   @override
   Widget build(BuildContext context) {
@@ -86,18 +91,60 @@ class _AllergyState extends State<Allergy> {
                         style: TextStyle(color: Colors.white),
                       ),
                       //onPressed: () async {}
-
                       onPressed: () async {
-                        _allergyDB.addAllergy(DiePref(dropdownValue));
+                        fireInstance.get().then((querySnapshot) {
+                          querySnapshot.docs.forEach((result) {
+                            fireInstance
+                                .doc(result.id)
+                                .collection("allergyList")
+                                .get()
+                                .then((querySnapshot) {
+                              querySnapshot.docs.forEach((result) {
+                                debugPrint(result.data().toString());
+                                if (result.data().toString() == dropdownValue) {
+                                  addedFlag = true;
+                                }
+                              });
+                            });
+                          });
+                        });
 
-                        //Navigator.of(context).pop();
-                        showDialog(
-                            context: context,
-                            builder: (_) => AlertDialog(
-                                  title: Text('Added ' + dropdownValue + '!'),
-                                  content: Text('You can add more or delete'),
-                                ));
+                        if (addedFlag == false) {
+                          _allergyDB.addAllergy(DiePref(dropdownValue));
+
+                          showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                    title: Text('Added ' + dropdownValue + '!'),
+                                    content: Text('You can add more or delete'),
+                                  ));
+                        } else {
+                          showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                    title: Text('You already added ' +
+                                        dropdownValue +
+                                        '!'),
+                                    content: Text(
+                                        'You can not add duplicate allergy'),
+                                  ));
+                        }
                       }),
+                  /*
+                  StreamBuilder(
+                    stream: _allergyDB.getAllergySnap(),
+                    builder: (ctx, allergySnapShot) {
+                      final allergySnap = allergySnapShot.data.documents;
+                      return ListView.builder(
+                          itemCount: allergySnap.length,
+                          itemBuilder: (ctx, index) {
+                            final String allergy =
+                                allergySnap[index]["allergy"];
+                            final DiePref diepref = DiePref(allergy);
+                          });
+                    },
+                  ),
+                  */
 
                   SizedBox(height: 12.0),
                   //BigLogo()
