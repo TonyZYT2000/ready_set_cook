@@ -6,7 +6,7 @@ class Ingredient {
   String nameOfIngredient;
   int startDate;
   int shelfLife;
-  int quantity;
+  String quantity;
   int useDate;
   String unit;
   Nutrition nutrition;
@@ -24,7 +24,7 @@ class Ingredient {
     this.shelfLife = duration;
   }
 
-  set setQuantity(int quantity) {
+  set setQuantity(String quantity) {
     this.quantity = quantity;
   }
 
@@ -59,7 +59,7 @@ class Ingredient {
     return this.shelfLife;
   }
 
-  int get getQuantity {
+  String get getQuantity {
     return this.quantity;
   }
 
@@ -82,6 +82,7 @@ class Ingredient {
     this.shelfLife,
     this.startDate,
     this.quantity,
+    this.unit,
     this.spoilage,
     this.useDate,
     this.nutrition,

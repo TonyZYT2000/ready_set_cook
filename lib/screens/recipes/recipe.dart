@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ready_set_cook/screens/recipes/recipeTile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'create_recipe.dart';
+import 'createRecipe.dart';
 
 class Recipe extends StatefulWidget {
   final Function toggleView;

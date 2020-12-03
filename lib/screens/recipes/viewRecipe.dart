@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ready_set_cook/screens/recipes/view_recipeIngTile.dart';
-import 'package:ready_set_cook/screens/recipes/view_recipeInsTile.dart';
-import 'edit_recipe.dart';
+import 'package:ready_set_cook/models/ingredient.dart';
+import 'package:ready_set_cook/screens/recipes/viewRecipeIngredTile.dart';
+import 'package:ready_set_cook/screens/recipes/viewRecipeInstructTile.dart';
+import 'editRecipe.dart';
+import 'package:ready_set_cook/screens/recipes/viewRecipeTile.dart';
 
 class ViewRecipe extends StatefulWidget {
   final Function toggleView;
@@ -13,11 +15,16 @@ class ViewRecipe extends StatefulWidget {
 }
 
 class _ViewRecipeState extends State<ViewRecipe> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   String recipeId = "";
   String name = "";
   String quantity = "";
   String unit = "";
   String instruction = "";
+  List<Ingredient> _ingredientsList = [];
+  List<String> _instructionsList = [];
+
   @override
   void initState() {
     super.initState();
@@ -25,6 +32,8 @@ class _ViewRecipeState extends State<ViewRecipe> {
   }
 
   Widget build(BuildContext context) {
+    // getIngredientList(recipeId);
+    // getInstructionList(recipeId);
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection('allRecipes')
@@ -42,13 +51,24 @@ class _ViewRecipeState extends State<ViewRecipe> {
             if (ingredientSnapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
             }
-            final ingredientDoc = ingredientSnapshot.data.documents;
+            // final ingredientDoc = ingredientSnapshot.data.documents;
 
             if (instructionSnapshot.connectionState ==
                 ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
             }
-            final instructionDoc = instructionSnapshot.data.documents;
+            // final instructionDoc = instructionSnapshot.data.documents;
+
+            instructionSnapshot.data.documents.forEach((instruction) {
+              _instructionsList.add(instruction['instruction']);
+            });
+
+            ingredientSnapshot.data.documents.forEach((ingredient) {
+              _ingredientsList.add(new Ingredient(
+                  nameOfIngredient: ingredient['name'],
+                  quantity: ingredient['quantity'].toString(),
+                  unit: ingredient['unit']));
+            });
 
             return Scaffold(
                 appBar: AppBar(title: Text("View Recipe")),
@@ -62,6 +82,10 @@ class _ViewRecipeState extends State<ViewRecipe> {
                               builder: (context) => EditRecipe()));
                     }),
                 body: Container(
+                    child: ViewRecipeTile(
+                        ingredient: _ingredientsList,
+                        instruction: _instructionsList))
+                /*body: Container(
                   // height: 100000,
                   padding: EdgeInsets.symmetric(vertical: 0),
                   // foregroundDecoration: BoxDecoration(
@@ -87,7 +111,7 @@ class _ViewRecipeState extends State<ViewRecipe> {
                             quantity = ingredientDoc[index]['quantity'];
                             unit = ingredientDoc[index]['unit'];
                           }
-                          return ViewRecipeIngTile(
+                          return ViewRecipeIngredTile(
                               name: name, quantity: quantity, unit: unit);
                         },
                       ),
@@ -102,13 +126,41 @@ class _ViewRecipeState extends State<ViewRecipe> {
                                 instruction =
                                     instructionDoc[index]['instruction'];
                               }
-                              return ViewRecipeInsTile(instruction);
+                              return ViewRecipeInstructTile(instruction);
                             }))
                   ]),
-                ));
+                ));*/
+                );
           },
         );
       },
     );
   }
+
+  /*getIngredientList(recipeId) async {
+    QuerySnapshot ingred = await _firestore
+        .collection('allRecipes')
+        .doc(recipeId)
+        .collection('ingredients')
+        .get();
+
+    ingred.docs.forEach((ingredient) {
+      _ingredientsList.add(new Ingredient(
+          nameOfIngredient: ingredient.get('name'),
+          quantity: ingredient.get('quantity').toString(),
+          unit: ingredient.get('unit')));
+    });
+  }
+
+  getInstructionList(recipeId) async {
+    QuerySnapshot instruct = await _firestore
+        .collection('allRecipes')
+        .doc(recipeId)
+        .collection('instructions')
+        .get();
+
+    instruct.docs.forEach((instruction) {
+      _instructionsList.add(instruction.get('instruction'));
+    });
+  }*/
 }
