@@ -1,6 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ready_set_cook/shared/constants.dart';
+import 'package:uuid/uuid.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ready_set_cook/services/recipes_database.dart';
+import 'package:ready_set_cook/models/recipe.dart';
+import 'package:ready_set_cook/models/ingredient.dart';
 
 class CreateRecipe extends StatefulWidget {
   final Function toggleView;
@@ -11,14 +16,20 @@ class CreateRecipe extends StatefulWidget {
 
 class _CreateRecipeState extends State<CreateRecipe> {
   final _formKey = GlobalKey<FormState>();
-  final recipeDB = FirebaseFirestore.instance;
 
   String _recipeName = "";
-  List<String> _ingredient = [];
+  String _recipeId = Uuid().toString();
+  bool _cookedBefore = false;
+  double _rating = 0;
+  int _numRatings = 0;
+  List<Ingredient> _ingredients = [];
   int _quantity = 0;
+  List<String> _instructions = [];
 
   @override
   Widget build(BuildContext context) {
+    final uid = FirebaseAuth.instance.currentUser.uid;
+    final recipeDB = RecipesDatabaseService(uid: uid);
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Recipe'),
@@ -55,11 +66,14 @@ class _CreateRecipeState extends State<CreateRecipe> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () async {
-                        recipeDB.collection("recipeList").add({
+                        /*recipeDB.addRecipe({
                           "ingredientName": _recipeName,
                           "quantity": _quantity
-                        });
-                        //传到database
+                        });*/
+                        recipeDB.addRecipe(_recipeId); // adds to personal collection
+                        recipeDB.addCustomRecipe(new Recipe(recipeId: _recipeId, 
+                        name: _recipeName, ingredients: _ingredients, instructions: _instructions, 
+                        rating: _rating, cookedBefore: _cookedBefore, numRatings: _numRatings)); // adds to all recipes collection
                       }),
                 ],
               ),

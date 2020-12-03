@@ -45,11 +45,13 @@ class RecipesDatabaseService {
         .add({"recipeId": recipeId});
   }
 
-  // work in progress
+  // work in progress (add numRatings) 
+  // work on adding ingredients to database
+  // work on adding instructions to database
   Future addCustomRecipe(Recipe recipe) async {
     await allRecipesCollection
         .add({"recipeId": recipe.recipeId, "cookedBefore": recipe.cookedBefore, "name": recipe.name,
-          "rating": recipe.rating, "userId": recipe.userId});
+          "rating": recipe.rating});
 
     
     // await allRecipesCollection.doc(recipe.recipeId).collection("ingredients").
@@ -82,7 +84,6 @@ class RecipesDatabaseService {
       log('called helper');
       return Recipe(
           recipeId: doc.get('recipeId'),
-          userId: uid,
           name: _recipeName,
           ingredients: null,
           instructions: null,
