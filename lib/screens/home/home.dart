@@ -1,5 +1,4 @@
-import 'package:ready_set_cook/screens/recipes_/recipe.dart';
-import 'package:ready_set_cook/screens/recipes_/search.dart';
+import 'package:ready_set_cook/screens/recipes/recipe.dart';
 import 'package:ready_set_cook/screens/storage/storage.dart';
 import 'package:ready_set_cook/services/auth.dart';
 import 'package:flutter/material.dart';

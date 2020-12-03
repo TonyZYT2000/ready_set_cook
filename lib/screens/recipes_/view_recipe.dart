@@ -1,33 +1,20 @@
 import 'package:flutter/material.dart';
 
+import '../recipes/edit_recipe.dart';
+
 class ViewRecipe extends StatefulWidget {
   final Function toggleView;
-  final String recipe;
-  final List<String> ingredient;
-  final List<String> quantity;
-  ViewRecipe(this.recipe, this.ingredient, this.quantity, {this.toggleView});
+  final String name;
+  final bool cookedBefore;
+  final int quantity;
+  ViewRecipe(this.name, this.cookedBefore, this.quantity, {this.toggleView});
   @override
   _ViewRecipeState createState() => _ViewRecipeState();
 }
 
 class _ViewRecipeState extends State<ViewRecipe> {
-  List<String> ingredientsList = [
-    "Ingredient Lists",
-    "cooked chicken",
-    "Buffalo sauce",
-    "shredded lettuce",
-    "ranch"
-  ];
-  List<String> quantityList = [
-    "Quantity",
-    "2 cup",
-    "1/2 cup",
-    "1 cup",
-    "1/4 cup"
-  ];
-  String image = "";
-  List<String> quantity = [];
-  List<String> ingredient = [];
+  String name = "";
+  bool cookedBefore = false;
 
   @override
   void initState() {
@@ -40,8 +27,15 @@ class _ViewRecipeState extends State<ViewRecipe> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButton: FloatingActionButton.extended(
+            icon: Icon(Icons.edit),
+            label: Text("Edit"),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => EditRecipe()));
+            }),
         appBar: AppBar(
-          title: Text('Ingredients'),
+          title: Text('Edit Recipe'),
         ),
         body: ListView(children: <Widget>[
           SizedBox(height: 20),

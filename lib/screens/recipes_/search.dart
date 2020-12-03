@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ready_set_cook/screens/recipes_/view_recipe.dart';
+import 'package:ready_set_cook/screens/recipes/view_recipe.dart';
 
 class Search extends StatefulWidget {
   final Function toggleView;

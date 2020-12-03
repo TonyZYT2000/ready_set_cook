@@ -15,18 +15,14 @@ class _RecipesListState extends State<RecipesList> {
   @override
   Widget build(BuildContext context) {
     final recipes = Provider.of<List<Recipe>>(context);
-    
-    if(recipes == null) {
-      return Container(
-        child: Text('Shit was null')
-      );
+
+    if (recipes == null) {
+      return Container(child: Text('Shit was null'));
     }
 
     // checks if the user has no recipes
-    if(recipes == null || recipes.length == 0 ) {
-      return Container(
-        child: Text('Add some recipes to get started!')
-      );
+    if (recipes == null || recipes.length == 0) {
+      return Container(child: Text('Add some recipes to get started!'));
     }
 
     return ListView.builder(

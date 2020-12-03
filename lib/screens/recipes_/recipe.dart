@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ready_set_cook/screens/recipes_/view_recipe.dart';
+import 'package:ready_set_cook/screens/recipes/create_recipe.dart';
+import 'package:ready_set_cook/screens/recipes/view_recipe.dart';
+import 'package:ready_set_cook/shared/constants.dart';
 
 class Recipe extends StatefulWidget {
   final Function toggleView;
@@ -53,6 +55,13 @@ class _RecipeState extends State<Recipe> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButton: FloatingActionButton.extended(
+            icon: Icon(Icons.add),
+            label: Text("Create"),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CreateRecipe()));
+            }),
         resizeToAvoidBottomPadding: false,
         body: Container(
             alignment: Alignment.center,
@@ -64,7 +73,8 @@ class _RecipeState extends State<Recipe> {
                     return Text(recipes[(i - 1) ~/ 2],
                         style: TextStyle(
                             fontSize: 20,
-                            color: Colors.blueGrey,
+                            color: Colors.black54,
+                            backgroundColor: Colors.cyan,
                             letterSpacing: 1.5,
                             height: 2),
                         textAlign: TextAlign.center);
@@ -94,38 +104,5 @@ class _RecipeState extends State<Recipe> {
                         ));
                   }
                 })));
-
-    // return Scaffold(
-    //   body: Padding(
-    //     padding: const EdgeInsets.all(20.0),
-    //     child: ListView.builder(
-    //         itemCount: a.length,
-    //         itemBuilder: (context, i) {
-    //           return GestureDetector(
-    //               onTap: () {
-    //                 Navigator.push(
-    //                     context,
-    //                     MaterialPageRoute(
-    //                         builder: (context) =>
-    //                             ViewRecipe(a[i], ingredient[i], quantity[i])));
-    //               },
-    //               child: Container(
-    //                 padding: EdgeInsets.all(50.0),
-    //                 height: 150,
-    //                 width: 350,
-    //                 decoration: BoxDecoration(
-    //                     // backgroundBlendMode: BlendMode.softLight,
-    //                     border: Border.all(color: Colors.blue[100], width: 10),
-    //                     borderRadius: BorderRadius.circular(20),
-    //                     image: DecorationImage(
-    //                         colorFilter: ColorFilter.mode(
-    //                             Colors.blue.withOpacity(1.0),
-    //                             BlendMode.softLight),
-    //                         fit: BoxFit.cover,
-    //                         image: AssetImage(a[i]))),
-    //               ));
-    //         }),
-    //   ),
-    // );
   }
 }
