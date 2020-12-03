@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class ViewRecipeInsTile extends StatelessWidget {
+class ViewRecipeInstructTile extends StatelessWidget {
   final String instruction;
-  ViewRecipeInsTile(this.instruction);
+  ViewRecipeInstructTile(this.instruction);
 
   @override
   Widget build(BuildContext context) {

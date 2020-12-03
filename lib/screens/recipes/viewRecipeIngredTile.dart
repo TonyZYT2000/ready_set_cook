@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class ViewRecipeIngTile extends StatelessWidget {
+class ViewRecipeIngredTile extends StatelessWidget {
   final String name;
   final String quantity;
   final String unit;
-  ViewRecipeIngTile({this.name, this.quantity, this.unit});
+  ViewRecipeIngredTile({this.name, this.quantity, this.unit});
 
   @override
   Widget build(BuildContext context) {
