@@ -18,13 +18,8 @@ class _RecipeState extends State<Recipe> {
 
   @override
   Widget build(BuildContext context) {
-    /*StreamProvider<List<model.Recipe>>.value(
-      value: RecipesDatabaseService().recipes,
-    );*/
 
     final uid = FirebaseAuth.instance.currentUser.uid;
-    print("User id is: ");
-    print(uid);
     final RecipesObject = RecipesDatabaseService(uid: uid);
     String name = "";
     
