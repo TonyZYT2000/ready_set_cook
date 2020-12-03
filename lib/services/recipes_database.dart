@@ -51,15 +51,23 @@ class RecipesDatabaseService {
   Future addCustomRecipe(Recipe recipe) async {
     await allRecipesCollection
         .add({"recipeId": recipe.recipeId, "cookedBefore": recipe.cookedBefore, "name": recipe.name,
-          "rating": recipe.rating});
+          "rating": recipe.rating, "numRatings": recipe.numRatings});
 
-    
-    // await allRecipesCollection.doc(recipe.recipeId).collection("ingredients").
+    int currIngred = 0;
+    while(recipe.ingredients[currIngred] != null) {
+      await allRecipesCollection.doc(recipe.recipeId).collection("ingredients").add({"name": recipe.ingredients[currIngred].nameOfIngredient});
+      await allRecipesCollection.doc(recipe.recipeId).collection("ingredients").add({"quantity": recipe.ingredients[currIngred].quantity});
+      await allRecipesCollection.doc(recipe.recipeId).collection("ingredients").add({"unit": recipe.ingredients[currIngred].unit});
+      currIngred++;
+    }
 
-    await recipeCollection
-        .doc(uid)
-        .collection("recipesList")
-        .add({"recipeId": recipe.recipeId});
+    int currInstruct = 0;
+    while(recipe.instructions[currInstruct] != null && recipe.instructions[currInstruct] != "") {
+      await allRecipesCollection.doc(recipe.recipeId).collection("instructions").add({"instruction": recipe.instructions[currInstruct]});
+      currInstruct++;
+    }
+
+    addRecipe(recipe.recipeId);
   }
 
   Future getRecipesHelper(QueryDocumentSnapshot qds) async {

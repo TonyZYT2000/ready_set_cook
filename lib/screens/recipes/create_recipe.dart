@@ -24,6 +24,7 @@ class _CreateRecipeState extends State<CreateRecipe> {
   int _numRatings = 0;
   List<Ingredient> _ingredients = [];
   int _quantity = 0;
+  String _unit = "";
   List<String> _instructions = [];
 
   @override
@@ -59,6 +60,14 @@ class _CreateRecipeState extends State<CreateRecipe> {
                     },
                   ),
                   SizedBox(height: 20.0),
+                  TextFormField(
+                    decoration: textInputDecoration.copyWith(
+                        hintText: 'Enter Unit'),
+                    onChanged: (val) {
+                      setState(() => _unit = val);
+                    },
+                  ),
+                  SizedBox(height: 20.0),
                   RaisedButton(
                       color: Colors.blue[400],
                       child: Text(
@@ -66,14 +75,9 @@ class _CreateRecipeState extends State<CreateRecipe> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () async {
-                        /*recipeDB.addRecipe({
-                          "ingredientName": _recipeName,
-                          "quantity": _quantity
-                        });*/
-                        recipeDB.addRecipe(_recipeId); // adds to personal collection
                         recipeDB.addCustomRecipe(new Recipe(recipeId: _recipeId, 
                         name: _recipeName, ingredients: _ingredients, instructions: _instructions, 
-                        rating: _rating, cookedBefore: _cookedBefore, numRatings: _numRatings)); // adds to all recipes collection
+                        rating: _rating, cookedBefore: _cookedBefore, numRatings: _numRatings)); // adds to all recipes and personal collection
                       }),
                 ],
               ),

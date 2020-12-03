@@ -8,6 +8,7 @@ class Ingredient {
   int shelfLife;
   int quantity;
   int useDate;
+  String unit;
   Nutrition nutrition;
   bool spoilage;
 
