@@ -27,6 +27,9 @@ class _ReportErrorState extends State<ReportError> {
 
   @override
   Widget build(BuildContext context) {
+    if (_errorDB == null) {
+      _errorDB = ErrorDatabase(context);
+    }
     return Scaffold(
       backgroundColor: Colors.blue[200],
       appBar: AppBar(
@@ -76,7 +79,7 @@ class _ReportErrorState extends State<ReportError> {
                       onPressed: () async {
                         //await _auth.resetPassword(email);
 
-                        _errorDB.addError(ReportedError(title, problem));
+                        _errorDB.addError(new ReportedError(title, problem));
 
                         Navigator.of(context).pop();
                         showDialog(
