@@ -62,8 +62,9 @@ class _ViewState extends State<View> {
                 child: Text(
                   "Spoil in " +
                       (widget._ingredient.shelfLife -
-                              DateTime.now().day +
-                              widget._ingredient.startDate.day)
+                              DateTime.now()
+                                  .difference(widget._ingredient.startDate)
+                                  .inDays)
                           .toString() +
                       " days",
                   style: TextStyle(fontSize: 20),

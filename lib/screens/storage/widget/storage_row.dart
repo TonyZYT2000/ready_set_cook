@@ -66,17 +66,26 @@ class _StorageRowState extends State<StorageRow> {
                                 .difference(widget._ingredient.startDate)
                                 .inDays <
                             widget._ingredient.shelfLife)
-                        ? IconButton(
-                            icon: Icon(Icons.check),
-                            iconSize: 30.0,
-                            color: Colors.green,
-                            onPressed: () {},
-                          )
+                        ? (DateTime.now()
+                                    .difference(widget._ingredient.startDate)
+                                    .inDays <
+                                widget._ingredient.shelfLife - 5
+                            ? IconButton(
+                                icon: Icon(Icons.check),
+                                iconSize: 30.0,
+                                color: Colors.green,
+                                onPressed: () {},
+                              )
+                            : IconButton(
+                                icon: Icon(Icons.warning_amber_outlined),
+                                iconSize: 30.0,
+                                color: Colors.yellow[800],
+                                onPressed: () {}))
                         : IconButton(
-                            icon: Icon(Icons.warning_amber_outlined),
+                            icon: Icon(Icons.close),
                             iconSize: 30.0,
                             color: Colors.red,
-                      onPressed: () {  }     )),
+                            onPressed: () {})),
               ],
             )),
         onTap: () {
@@ -87,24 +96,5 @@ class _StorageRowState extends State<StorageRow> {
                     builder: (context) => View(widget._ingredient)));
           });
         });
-
-    // ListTile(
-    //     leading: Container(
-    //         height: 45,
-    //         width: 45,
-    //         child: (widget._ingredient.imageUrl != null)
-    //             ? Image(
-    //                 image: NetworkImage(widget._ingredient.imageUrl),
-    //               )
-    //             : null),
-    //     title: Text(widget._ingredient.name),
-    //     subtitle:
-    //         Text(widget._ingredient.quantity.toString() + " " + widget._ingredient.unit),
-    //     trailing: Text(DateTime.now().difference(widget._ingredient.startDate).inDays <
-    //             widget._ingredient.shelfLife
-    //         ? "Good"
-    //         : "Bad"),
-
-    // );
   }
 }

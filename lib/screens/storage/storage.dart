@@ -6,7 +6,6 @@ import 'package:ready_set_cook/services/grocery.dart';
 import 'package:ready_set_cook/models/ingredient.dart';
 import 'package:intl/intl.dart';
 
-
 class Storage extends StatefulWidget {
   @override
   _StorageState createState() => _StorageState();
@@ -76,7 +75,7 @@ class _StorageState extends State<Storage> {
         body: Column(
           children: [
             Container(
-                height: 210,
+                height: 180,
                 child: Column(
                   children: <Widget>[
                     SizedBox(height: 15),
@@ -101,7 +100,7 @@ class _StorageState extends State<Storage> {
                           children: <Widget>[
                             ButtonTheme(
                                 minWidth: 100.0,
-                                height: 80.0,
+                                height: 50.0,
                                 child: RaisedButton(
                                   color: (_pressIndex == 0)
                                       ? Colors.blue
@@ -119,7 +118,7 @@ class _StorageState extends State<Storage> {
                                 )),
                             ButtonTheme(
                                 minWidth: 100.0,
-                                height: 80.0,
+                                height: 50.0,
                                 child: RaisedButton(
                                   color: (_pressIndex == 1)
                                       ? Colors.blue
@@ -137,7 +136,7 @@ class _StorageState extends State<Storage> {
                                 )),
                             ButtonTheme(
                                 minWidth: 100.0,
-                                height: 80.0,
+                                height: 50.0,
                                 child: RaisedButton(
                                   color: (_pressIndex == 2)
                                       ? Colors.blue
@@ -215,7 +214,7 @@ class _StorageState extends State<Storage> {
                               final DateTime foodDate =
                                   storageSnap[index]["startDate"].toDate();
                               if (foodDate.isBefore(_timePeriod)) {
-                                return null;
+                                return SizedBox(height: 0);
                               }
                               // return a widget that can be slided
                               return Dismissible(
