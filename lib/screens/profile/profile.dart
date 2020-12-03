@@ -6,6 +6,7 @@ import 'package:ready_set_cook/screens/profile/edit_password.dart';
 import 'package:ready_set_cook/screens/profile/forgot_password.dart';
 import 'package:ready_set_cook/services/auth.dart' as fire;
 import 'package:ready_set_cook/models/user.dart';
+import 'package:ready_set_cook/screens/profile/dietary_preferences.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -61,7 +62,10 @@ class _ProfileState extends State<Profile> {
               title: Text('Dietary Preferences'),
               trailing: Icon(Icons.keyboard_arrow_right),
               onTap: () {
-                // do something
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Allergy()),
+                );
               },
             ),
             SwitchListTile(
