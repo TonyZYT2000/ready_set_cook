@@ -17,15 +17,15 @@ class AddIngredient extends StatefulWidget {
 class _AddIngredientState extends State<AddIngredient> {
   final _formKey = GlobalKey<FormState>();
 
-  String _recipeName = "";
-  String _recipeId = Uuid().toString();
-  bool _cookedBefore = false;
-  double _rating = 0;
-  int _numRatings = 0;
-  List<Ingredient> _ingredients = [];
+  // String _recipeName = "";
+  // String _recipeId = Uuid().toString();
+  // double _rating = 0;
+  // int _numRatings = 0;
+  String _ingredientName = "";
   int _quantity = 0;
   String _unit = "";
-  List<String> _instructions = [];
+  List<Ingredient> ingredient = [];
+  // List<String> _instructions = [];
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class _AddIngredientState extends State<AddIngredient> {
                     decoration: textInputDecoration.copyWith(
                         hintText: 'Enter Ingredient Name'),
                     onChanged: (val) {
-                      setState(() => _recipeName = val);
+                      setState(() => _ingredientName = val);
                     },
                   ),
                   SizedBox(height: 20.0),
@@ -71,15 +71,11 @@ class _AddIngredientState extends State<AddIngredient> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () async {
-                        recipeDB.addCustomRecipe(new Recipe(
-                            recipeId: _recipeId,
-                            name: _recipeName,
-                            ingredients: _ingredients,
-                            instructions: _instructions,
-                            rating: _rating,
-                            cookedBefore: _cookedBefore,
-                            numRatings:
-                                _numRatings)); // adds to all recipes and personal collection
+                        ingredient.add(new Ingredient(
+                            nameOfIngredient: _ingredientName,
+                            quantity: _quantity.toString(),
+                            unit:
+                                _unit)); // adds to all recipes and personal collection
                       }),
                 ],
               ),

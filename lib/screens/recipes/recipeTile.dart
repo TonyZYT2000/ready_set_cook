@@ -3,20 +3,14 @@ import 'package:ready_set_cook/screens/recipes/viewRecipe.dart';
 
 class RecipeTile extends StatelessWidget {
   final String name;
-  final bool cookedBefore;
   final int rating;
   final String recipeId;
   List<String> lst = ['Name: ', 'Cooked before: ', 'Rating:  '];
-  RecipeTile({this.name, this.cookedBefore, this.rating, this.recipeId});
+  RecipeTile({this.name, this.rating, this.recipeId});
 
   @override
   Widget build(BuildContext context) {
     String cooked = "";
-    if (cookedBefore == false) {
-      cooked = "No";
-    } else {
-      cooked = "Yes";
-    }
     return GestureDetector(
         onTap: () {
           Navigator.push(context,

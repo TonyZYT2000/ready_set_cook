@@ -1,11 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:ready_set_cook/models/ingredient.dart';
 import 'package:ready_set_cook/screens/recipes/addIngredient.dart';
 import 'package:ready_set_cook/screens/recipes/addInstruction.dart';
-import 'package:ready_set_cook/screens/recipes/recipe.dart';
+import 'package:ready_set_cook/models/recipe.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ready_set_cook/services/recipes_database.dart';
+import 'package:ready_set_cook/models/recipe.dart';
+import 'package:uuid/uuid.dart';
 
-class CreateRecipe extends StatelessWidget {
+class CreateRecipe extends StatefulWidget {
+  final Function toggleView;
+  CreateRecipe({this.toggleView});
+  @override
+  _CreateRecipeState createState() => _CreateRecipeState();
+}
+
+class _CreateRecipeState extends State<CreateRecipe> {
+  String _recipeName = "";
+  String _recipeId = Uuid().toString();
+  double _rating = 0;
+  int _numRatings = 0;
+  List<Ingredient> _ingredients = [];
+  List<String> _instructions = [];
   @override
   Widget build(BuildContext context) {
+    final _uid = FirebaseAuth.instance.currentUser.uid;
+    final recipeDB = RecipesDatabaseService(uid: _uid);
     final _tabPages = <Widget>[
       Center(child: AddIngredient()),
       Center(child: AddInstruction()),
@@ -26,7 +46,22 @@ class CreateRecipe extends StatelessWidget {
               icon: Icon(Icons.done),
               label: Text('Add Recipe'),
               onPressed: () {
-                Recipe();
+                RaisedButton(
+                    color: Colors.blue[400],
+                    child: Text(
+                      'Add Ingredient',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () async {
+                      recipeDB.addCustomRecipe(new Recipe(
+                          recipeId: _recipeId,
+                          name: _recipeName,
+                          ingredients: _ingredients,
+                          instructions: _instructions,
+                          rating: _rating,
+                          numRatings:
+                              _numRatings)); // adds to all recipes and personal collection
+                    });
               },
             ),
           ],

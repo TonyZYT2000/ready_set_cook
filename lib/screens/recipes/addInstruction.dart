@@ -17,20 +17,11 @@ class AddInstruction extends StatefulWidget {
 class _AddInstructionState extends State<AddInstruction> {
   final _formKey = GlobalKey<FormState>();
 
-  String _recipeName = "";
-  String _recipeId = Uuid().toString();
-  bool _cookedBefore = false;
-  double _rating = 0;
-  int _numRatings = 0;
-  List<Ingredient> _ingredients = [];
-  int _quantity = 0;
-  String _unit = "";
+  String instruction = "";
   List<String> _instructions = [];
 
   @override
   Widget build(BuildContext context) {
-    final uid = FirebaseAuth.instance.currentUser.uid;
-    final recipeDB = RecipesDatabaseService(uid: uid);
     return Scaffold(
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
@@ -44,7 +35,7 @@ class _AddInstructionState extends State<AddInstruction> {
                     decoration: textInputDecoration.copyWith(
                         hintText: 'Enter Instruction'),
                     onChanged: (val) {
-                      setState(() => _unit = val);
+                      setState(() => instruction = val);
                     },
                   ),
                   SizedBox(height: 20.0),
@@ -55,15 +46,8 @@ class _AddInstructionState extends State<AddInstruction> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () async {
-                        recipeDB.addCustomRecipe(new Recipe(
-                            recipeId: _recipeId,
-                            name: _recipeName,
-                            ingredients: _ingredients,
-                            instructions: _instructions,
-                            rating: _rating,
-                            cookedBefore: _cookedBefore,
-                            numRatings:
-                                _numRatings)); // adds to all recipes and personal collection
+                        _instructions.add(
+                            instruction); // adds to all recipes and personal collection
                       }),
                 ],
               ),
