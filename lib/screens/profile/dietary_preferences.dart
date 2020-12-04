@@ -1,3 +1,5 @@
+//import 'dart:html';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ready_set_cook/services/auth.dart';
 import 'package:ready_set_cook/shared/constants.dart';
 import 'package:ready_set_cook/screens/profile/edit_password.dart';
@@ -20,6 +22,8 @@ class _AllergyState extends State<Allergy> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   AllergyDatabase _allergyDB = null;
+  final fireInstance =
+      FirebaseFirestore.instance.collection("dietary preferences");
 
   @override
   Widget build(BuildContext context) {
