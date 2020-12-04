@@ -1,6 +1,5 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:ready_set_cook/services/grocery.dart';
 import 'package:ready_set_cook/models/ingredient.dart';
 import 'package:ready_set_cook/screens/storage/edit.dart';
 
@@ -13,13 +12,7 @@ class View extends StatefulWidget {
 }
 
 class _ViewState extends State<View> {
-  GroceryDatabase _groceryDB = null;
-
   Widget build(BuildContext context) {
-    if (_groceryDB == null) {
-      _groceryDB = GroceryDatabase(context);
-    }
-
     return Scaffold(
         appBar: AppBar(backgroundColor: Colors.cyan),
         floatingActionButton: FloatingActionButton(
