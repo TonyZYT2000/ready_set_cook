@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ready_set_cook/services/grocery.dart';
 import 'package:ready_set_cook/models/ingredient.dart';
 import 'package:ready_set_cook/shared/common_ingredients.dart';
+import 'package:ready_set_cook/screens/storage/widget/ingredient_tile.dart';
 
 class CommonAdd extends StatefulWidget {
   @override
@@ -16,10 +17,10 @@ class _CommonAddState extends State<CommonAdd> {
       _groceryDB = GroceryDatabase(context);
     }
 
-    CommonIngredient common = new CommonIngredient();
+    CommonIngredient common = CommonIngredient();
     return Scaffold(
-        body: GridView.count(crossAxisCount: 2, children: <Widget>[
-      for (Ingredient item in common.commonIngredients) Text(item.name)
+        body: GridView.count(crossAxisCount: 3, children: <Widget>[
+      for (Ingredient item in common.commonIngredients) IngredientTile(item)
     ]));
   }
 }
