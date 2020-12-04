@@ -19,8 +19,22 @@ class _CommonAddState extends State<CommonAdd> {
 
     CommonIngredient common = CommonIngredient();
     return Scaffold(
-        body: GridView.count(crossAxisCount: 3, children: <Widget>[
-      for (Ingredient item in common.commonIngredients) IngredientTile(item)
-    ]));
+        body: SingleChildScrollView(
+            child: Column(
+      children: <Widget>[
+        ExpansionTile(
+          title: Text("Fruit"),
+          children: [
+            GridView.count(
+                crossAxisCount: 4,
+                shrinkWrap: true,
+                children: <Widget>[
+                  for (Ingredient item in common.commonIngredients)
+                    IngredientTile(item)
+                ]),
+          ],
+        )
+      ],
+    )));
   }
 }
