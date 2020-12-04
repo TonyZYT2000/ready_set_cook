@@ -49,6 +49,9 @@ class AuthService {
 
       await RecipesDatabaseService(uid: user.uid).addRecipe("1");
       await RecipesDatabaseService(uid: user.uid).addRecipe("2");
+      await RecipesDatabaseService(uid: user.uid).addRecipe("3");
+      await RecipesDatabaseService(uid: user.uid).addRecipe("4");
+      await RecipesDatabaseService(uid: user.uid).addRecipe("5");
 
       return _userFromFirebaseUser(user);
     } catch (error) {

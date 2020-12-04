@@ -16,11 +16,9 @@ class Recipe extends StatefulWidget {
 class _RecipeState extends State<Recipe> {
   @override
   Widget build(BuildContext context) {
-
     final uid = FirebaseAuth.instance.currentUser.uid;
     final RecipesObject = RecipesDatabaseService(uid: uid);
     String name = "";
-    bool cookedBefore = false;
     int rating = 0;
 
     return StreamBuilder(
@@ -60,13 +58,10 @@ class _RecipeState extends State<Recipe> {
                             builder: (ctx, Rsnapshot) {
                               if (Rsnapshot.data != null) {
                                 name = Rsnapshot.data.get("name");
-                                cookedBefore =
-                                    Rsnapshot.data.get('cookedBefore');
                                 rating = Rsnapshot.data.get('rating');
                               }
                               return RecipeTile(
                                   name: name,
-                                  cookedBefore: cookedBefore,
                                   rating: rating,
                                   recipeId: recipeId);
                             });

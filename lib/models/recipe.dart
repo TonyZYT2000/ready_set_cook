@@ -7,17 +7,14 @@ class Recipe {
   List<String> instructions;
   double rating;
   int numRatings;
-  bool cookedBefore;
 
-  Recipe({
-    this.recipeId,
-    this.name,
-    this.ingredients,
-    this.instructions,
-    this.rating,
-    this.cookedBefore,
-    this.numRatings
-  });
+  Recipe(
+      {this.recipeId,
+      this.name,
+      this.ingredients,
+      this.instructions,
+      this.rating,
+      this.numRatings});
 
   String getRecipeId() {
     return recipeId;

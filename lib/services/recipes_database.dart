@@ -19,7 +19,6 @@ class RecipesDatabaseService {
 
   String _recipeName;
   double _recipeRating;
-  bool _recipeCookedBefore;
 
   // sets entire recipe list
   /*Future updateUserRecipes(List<String> recipeIds) async {
@@ -45,25 +44,61 @@ class RecipesDatabaseService {
         .add({"recipeId": recipeId});
   }
 
-  // work in progress (add numRatings) 
+  deleteRecipe(String recipeId, String uid) {
+    FirebaseFirestore.instance
+        .collection('recipes')
+        .doc(uid)
+        .collection('recipesList')
+        .snapshots()
+        .listen((snapshot) {
+      snapshot.docs.forEach((recipeIdField) {
+        if (recipeIdField['recipeId'] == recipeId) {
+          FirebaseFirestore.instance
+              .collection('recipes')
+              .doc(uid)
+              .collection("recipesList")
+              .doc(recipeIdField.id)
+              .delete();
+        }
+      });
+    });
+  }
+
+  // work in progress (add numRatings)
   // work on adding ingredients to database
   // work on adding instructions to database
   Future addCustomRecipe(Recipe recipe) async {
-    await allRecipesCollection
-        .add({"recipeId": recipe.recipeId, "cookedBefore": recipe.cookedBefore, "name": recipe.name,
-          "rating": recipe.rating, "numRatings": recipe.numRatings});
+    await allRecipesCollection.add({
+      "recipeId": recipe.recipeId,
+      "name": recipe.name,
+      "rating": recipe.rating,
+      "numRatings": recipe.numRatings
+    });
 
     int currIngred = 0;
-    while(recipe.ingredients[currIngred] != null) {
-      await allRecipesCollection.doc(recipe.recipeId).collection("ingredients").add({"name": recipe.ingredients[currIngred].nameOfIngredient});
-      await allRecipesCollection.doc(recipe.recipeId).collection("ingredients").add({"quantity": recipe.ingredients[currIngred].quantity});
-      await allRecipesCollection.doc(recipe.recipeId).collection("ingredients").add({"unit": recipe.ingredients[currIngred].unit});
+    while (recipe.ingredients[currIngred] != null) {
+      await allRecipesCollection
+          .doc(recipe.recipeId)
+          .collection("ingredients")
+          .add({"name": recipe.ingredients[currIngred].nameOfIngredient});
+      await allRecipesCollection
+          .doc(recipe.recipeId)
+          .collection("ingredients")
+          .add({"quantity": recipe.ingredients[currIngred].quantity});
+      await allRecipesCollection
+          .doc(recipe.recipeId)
+          .collection("ingredients")
+          .add({"unit": recipe.ingredients[currIngred].unit});
       currIngred++;
     }
 
     int currInstruct = 0;
-    while(recipe.instructions[currInstruct] != null && recipe.instructions[currInstruct] != "") {
-      await allRecipesCollection.doc(recipe.recipeId).collection("instructions").add({"instruction": recipe.instructions[currInstruct]});
+    while (recipe.instructions[currInstruct] != null &&
+        recipe.instructions[currInstruct] != "") {
+      await allRecipesCollection
+          .doc(recipe.recipeId)
+          .collection("instructions")
+          .add({"instruction": recipe.instructions[currInstruct]});
       currInstruct++;
     }
 
@@ -75,14 +110,6 @@ class RecipesDatabaseService {
         await allRecipesCollection.doc(qds.get('recipeId')).get();
     _recipeName = recipeSnapshot.get('name');
     _recipeRating = recipeSnapshot.get('rating');
-    _recipeCookedBefore = recipeSnapshot.get('cookedBefore');
-
-    debugger(when: true);
-    print('hello debug time');
-    print(qds.get('recipeId'));
-    print('The recipe name is {$_recipeName}');
-    print('The rating is ${_recipeRating}');
-    print('The cookedBefore is ${_recipeCookedBefore}');
   }
 
   // list of recipes from snapshot
@@ -91,12 +118,12 @@ class RecipesDatabaseService {
       getRecipesHelper(doc);
       log('called helper');
       return Recipe(
-          recipeId: doc.get('recipeId'),
-          name: _recipeName,
-          ingredients: null,
-          instructions: null,
-          rating: _recipeRating,
-          cookedBefore: _recipeCookedBefore);
+        recipeId: doc.get('recipeId'),
+        name: _recipeName,
+        ingredients: null,
+        instructions: null,
+        rating: _recipeRating,
+      );
     }).toList();
   }
 

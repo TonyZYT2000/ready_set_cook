@@ -29,10 +29,10 @@ class Ingredient {
   }
 
   setNutrition(int calories, int fat, int carb, int protein) {
-    this.nutrition.calories = calories;
-    this.nutrition.fat = fat;
-    this.nutrition.carb = carb;
-    this.nutrition.protein = protein;
+    this.nutrition.calories = calories.toString();
+    this.nutrition.totalFat = fat.toString();
+    this.nutrition.totalCarbs = carb.toString();
+    this.nutrition.protein = protein.toString();
   }
 
   set setSpoilage(bool spoilage) {

@@ -1,10 +1,16 @@
 class Nutrition {
-  //final String ingredientId;
-  int calories;
-  int fat;
-  int carb;
-  int protein;
+  String calories;
+  String cholesterol;
+  String protein;
+  String sodium;
+  String totalCarbs;
+  String totalFat;
 
   Nutrition(
-      {/*this.ingredientId*/ this.calories, this.fat, this.carb, this.protein});
+      {this.calories,
+      this.cholesterol,
+      this.protein,
+      this.sodium,
+      this.totalCarbs,
+      this.totalFat});
 }
