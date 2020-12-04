@@ -7,38 +7,31 @@ class Edit extends StatefulWidget {
   final Ingredient _ingredient;
   Edit(this._ingredient);
 
-  TextEditingController _controller1 = TextEditingController();
-  TextEditingController _controller2 = TextEditingController();
-  TextEditingController _controller3 = TextEditingController();
-
   @override
   _EditState createState() => _EditState();
 }
 
 class _EditState extends State<Edit> {
   final _formKey = GlobalKey<FormState>();
-  String _name = null;
-  int _quantity = null;
-  String _unit = null;
+  TextEditingController _controller1 = TextEditingController();
+  TextEditingController _controller2 = TextEditingController();
+  TextEditingController _controller3 = TextEditingController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   GroceryDatabase _groceryDB = null;
 
+  @override
+  void initState() {
+    super.initState();
+    _controller1.text = widget._ingredient.name;
+    _controller2.text = widget._ingredient.quantity.toString();
+    _controller3.text = widget._ingredient.unit;
+  }
+
   void _onSubmit() {
-    //final isValid = _formKey.currentState.validate();
-    //if (isValid) {
-    if (_name != null || _quantity != null || _unit != null) {
-      widget._ingredient.name = _name != null ? _name : widget._ingredient.name;
-      widget._ingredient.quantity =
-          _quantity != null ? _quantity : widget._ingredient.quantity;
-      widget._ingredient.unit = _unit != null ? _unit : widget._ingredient.unit;
-
+    final isValid = _formKey.currentState.validate();
+    if (isValid) {
       _groceryDB.updateItem(widget._ingredient.id, widget._ingredient);
-
-      _name = null;
-      _quantity = null;
-      _unit = null;
-      widget._controller1.clear();
-      widget._controller2.clear();
-      widget._controller3.clear();
       _formKey.currentState.save();
     }
     setState(() {});
@@ -52,6 +45,7 @@ class _EditState extends State<Edit> {
     return Scaffold(
         appBar: AppBar(
             title: const Text('Edit Items'), backgroundColor: Colors.cyan),
+        key: _scaffoldKey,
         body: Container(
           padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
           child: Form(
@@ -71,33 +65,46 @@ class _EditState extends State<Edit> {
                                     NetworkImage(widget._ingredient.imageUrl))),
                     SizedBox(height: 20.0),
                     TextFormField(
-                      controller: widget._controller1,
+                      controller: _controller1,
                       key: ValueKey("ingredient name"),
-                      decoration: textInputDecoration.copyWith(
-                          hintText: 'Update Name: ' + widget._ingredient.name),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return "please enter valid ingredient name";
+                        }
+                        return null;
+                      },
+                      decoration:
+                          textInputDecoration.copyWith(hintText: 'Update Name'),
                       onChanged: (val) {
-                        setState(() => _name = val);
+                        setState(() => widget._ingredient.name = val);
                       },
                     ),
                     SizedBox(height: 20.0),
                     TextFormField(
-                      controller: widget._controller2,
+                      controller: _controller2,
                       key: ValueKey("quantity"),
+                      validator: (value) {
+                        if (value.isEmpty || int.tryParse(value) == null) {
+                          return "please enter valid quantity";
+                        }
+                        return null;
+                      },
                       decoration: textInputDecoration.copyWith(
-                          hintText: 'Update Quantity: ' +
-                              widget._ingredient.quantity.toString()),
+                          hintText: 'Update Quantity'),
+                      keyboardType: TextInputType.number,
                       onChanged: (val) {
-                        setState(() => _quantity = int.parse(val));
+                        setState(
+                            () => widget._ingredient.quantity = int.parse(val));
                       },
                     ),
                     SizedBox(height: 20.0),
                     TextFormField(
-                      controller: widget._controller3,
+                      controller: _controller3,
                       key: ValueKey("unit"),
-                      decoration: textInputDecoration.copyWith(
-                          hintText: 'Update Unit: ' + widget._ingredient.unit),
-                      onChanged: ([val]) {
-                        setState(() => _unit = val);
+                      decoration:
+                          textInputDecoration.copyWith(hintText: 'Update Unit'),
+                      onChanged: (val) {
+                        setState(() => widget._ingredient.unit = val);
                       },
                     ),
                     SizedBox(height: 20.0),
@@ -107,7 +114,13 @@ class _EditState extends State<Edit> {
                           'Update',
                           style: TextStyle(color: Colors.white),
                         ),
-                        onPressed: _onSubmit),
+                        onPressed: () {
+                          if (_formKey.currentState.validate()) {
+                            _scaffoldKey.currentState.showSnackBar(
+                                SnackBar(content: Text("Successfully update")));
+                          }
+                          _onSubmit();
+                        }),
                   ],
                 ),
               )),

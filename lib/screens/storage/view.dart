@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
 import 'package:ready_set_cook/services/grocery.dart';
 import 'package:ready_set_cook/models/ingredient.dart';
 import 'package:ready_set_cook/screens/storage/edit.dart';
@@ -24,6 +24,7 @@ class _ViewState extends State<View> {
         appBar: AppBar(backgroundColor: Colors.cyan),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
+            Navigator.pop(context);
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => Edit(widget._ingredient)),

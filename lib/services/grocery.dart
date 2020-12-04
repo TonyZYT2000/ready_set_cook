@@ -1,7 +1,7 @@
+import 'package:provider/provider.dart';
 import 'package:ready_set_cook/models/user.dart';
 import 'package:ready_set_cook/models/ingredient.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:provider/provider.dart';
 
 class GroceryDatabase {
   User _user;
@@ -47,6 +47,9 @@ class GroceryDatabase {
   }
 
   Stream<QuerySnapshot> getGrocerySnap() {
-    return _groceryDoc.collection("groceryList").orderBy('startDate').snapshots();
+    return _groceryDoc
+        .collection("groceryList")
+        .orderBy('startDate')
+        .snapshots();
   }
 }

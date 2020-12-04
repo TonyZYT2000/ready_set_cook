@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ready_set_cook/models/ingredient.dart';
-import 'package:ready_set_cook/screens/storage/view.dart';
+import 'package:ready_set_cook/screens/storage/common_edit.dart';
 
 class IngredientTile extends StatefulWidget {
   final Ingredient _ingredient;
@@ -30,7 +30,7 @@ class _IngredientTileState extends State<IngredientTile> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => View(widget._ingredient)));
+                        builder: (context) => CommonEdit(widget._ingredient)));
               });
             }));
   }
