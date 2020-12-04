@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ready_set_cook/models/ingredient.dart';
-import 'package:ready_set_cook/screens/recipes/viewRecipeIngredTile.dart';
-import 'package:ready_set_cook/screens/recipes/viewRecipeInstructTile.dart';
 import 'editRecipe.dart';
 import 'package:ready_set_cook/screens/recipes/viewRecipeTile.dart';
 

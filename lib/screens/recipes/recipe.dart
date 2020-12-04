@@ -16,7 +16,6 @@ class Recipe extends StatefulWidget {
 class _RecipeState extends State<Recipe> {
   @override
   Widget build(BuildContext context) {
-
     final uid = FirebaseAuth.instance.currentUser.uid;
     final RecipesObject = RecipesDatabaseService(uid: uid);
     String name = "";
