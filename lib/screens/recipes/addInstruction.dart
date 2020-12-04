@@ -20,39 +20,53 @@ class _AddInstructionState extends State<AddInstruction> {
   String instruction = "";
   List<String> _instructions = [];
 
+  void _addInstruction(String instruction) {
+    // Only add the task if the user actually entered something
+    if (instruction.length > 0) {
+      setState(() => _instructions.add(instruction));
+    }
+  }
+
+  Widget _buildInstructions() {
+    return new ListView.builder(
+      // ignore: missing_return
+      itemBuilder: (context, index) {
+        if (index < _instructions.length) {
+          return _buildOneInstruction(_instructions[index]);
+        }
+      },
+    );
+  }
+
+  Widget _buildOneInstruction(String instruction) {
+    return new ListTile(title: new Text(instruction));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-        child: Form(
-            key: _formKey,
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: 20.0),
-                  TextFormField(
-                    decoration: textInputDecoration.copyWith(
-                        hintText: 'Enter Instruction'),
-                    onChanged: (val) {
-                      setState(() => instruction = val);
-                    },
-                  ),
-                  SizedBox(height: 20.0),
-                  RaisedButton(
-                      color: Colors.blue[400],
-                      child: Text(
-                        'Add Instruction',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onPressed: () async {
-                        _instructions.add(
-                            instruction); // adds to all recipes and personal collection
-                      }),
-                ],
-              ),
-            )),
-      ),
+      body: _buildInstructions(),
+      floatingActionButton: new FloatingActionButton(
+          onPressed: _pushAddInstruction,
+          tooltip: 'Add task',
+          child: new Icon(Icons.add)),
     );
+  }
+
+  void _pushAddInstruction() {
+    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
+      return new Scaffold(
+          appBar: new AppBar(title: new Text('Add a new task')),
+          body: new TextField(
+            autofocus: true,
+            onSubmitted: (val) {
+              _addInstruction(val);
+              Navigator.pop(context); // Close the add todo screen
+            },
+            decoration: new InputDecoration(
+                hintText: 'Enter something to do...',
+                contentPadding: const EdgeInsets.all(16.0)),
+          ));
+    }));
   }
 }
