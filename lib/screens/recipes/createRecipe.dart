@@ -3,19 +3,14 @@ import 'package:ready_set_cook/models/ingredient.dart';
 import 'package:ready_set_cook/models/nutrition.dart';
 import 'package:ready_set_cook/models/recipe.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:ready_set_cook/screens/recipes/addInstruction.dart';
 import 'package:ready_set_cook/services/recipes_database.dart';
 import 'package:ready_set_cook/models/recipe.dart';
 import 'package:ready_set_cook/shared/constants.dart';
-import 'package:ready_set_cook/screens/recipes/addIngredient.dart';
-import 'package:ready_set_cook/screens/recipes/addInstruction.dart';
-
 import 'package:uuid/uuid.dart';
 
 class CreateRecipe extends StatefulWidget {
   final Function toggleView;
   CreateRecipe({this.toggleView});
-
   @override
   _CreateRecipeState createState() => _CreateRecipeState();
 }
@@ -33,6 +28,7 @@ class _CreateRecipeState extends State<CreateRecipe> {
   String totalCarbs = "";
   String totalFat = "";
   List<Ingredient> _ingredients = [];
+  List<String> _instructions = [];
   bool instruction_added = false;
   bool ingredient_added = false;
   String _instruction_error = "";
@@ -42,8 +38,6 @@ class _CreateRecipeState extends State<CreateRecipe> {
   String _ingredientName = "";
   int _quantity = 0;
   String _unit = "";
-
-  final List<String> _instructions = [];
   String instruction = "";
 
   TextEditingController _controller1 = TextEditingController();
@@ -54,6 +48,18 @@ class _CreateRecipeState extends State<CreateRecipe> {
   TextEditingController _controller6 = TextEditingController();
   TextEditingController _controller7 = TextEditingController();
   TextEditingController _controller8 = TextEditingController();
+
+  _createIngredient() {
+    ingredient_added = true;
+    _ingredients.add(new Ingredient(
+        nameOfIngredient: _ingredientName,
+        quantity: _quantity.toString(),
+        unit: _unit));
+    _controller1.clear();
+    _controller2.clear();
+    _controller3.clear();
+    setState(() {});
+  }
 
   _createInstruction() {
     instruction_added = true;
@@ -97,55 +103,128 @@ class _CreateRecipeState extends State<CreateRecipe> {
   Widget build(BuildContext context) {
     final _uid = FirebaseAuth.instance.currentUser.uid;
     recipeDB = RecipesDatabaseService(uid: _uid);
-    _ingredients.add(new Ingredient(name: "Cake", quantity: 5, unit: "g"));
-    _ingredients.add(new Ingredient(name: "Fire", quantity: 7, unit: "g"));
 
     final _tabPages = <Widget>[
-      // Ingredients
-      Scaffold(
-        body: ListView.builder(
-            padding: const EdgeInsets.all(0),
-            itemCount: _ingredients.length,
-            itemBuilder: (context, index) {
-              return Text(_ingredients[index].toString());
-            }),
-        floatingActionButton: FloatingActionButton.extended(
-            icon: Icon(Icons.add),
-            label: Text("Add"),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AddIngredientPage()));
-            }),
-      ),
-      // Instructions
-      Scaffold(
-        body: ListView.builder(
-            padding: const EdgeInsets.all(0),
-            itemCount: _instructions.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(_instructions[index].toString()),
-                tileColor: Colors.red,
-              );
-            }),
-        floatingActionButton: FloatingActionButton.extended(
-          icon: Icon(Icons.add),
-          label: Text("Add"),
-          onPressed: () async {
-            dynamic result = await Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AddInstructionsPage()),
-            );
-            if (result != null) {
-              setState(() {
-                _instructions.add(result);
-              });
-            }
-          },
+      Center(
+          child: Scaffold(
+        body: Container(
+          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+          child: Form(
+              key: _ingredientKey,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: 20.0),
+                    TextFormField(
+                      controller: _controller1,
+                      // key: ValueKey("ingredient name"),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return "Please enter an ingredient name";
+                        } else {
+                          return null;
+                        }
+                      },
+                      decoration: textInputDecoration.copyWith(
+                          hintText: 'Enter Ingredient Name'),
+                      onChanged: (val) {
+                        setState(() => _ingredientName = val);
+                      },
+                    ),
+                    SizedBox(height: 20.0),
+                    TextFormField(
+                      controller: _controller2,
+                      // key: ValueKey("quantity"),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return "Please enter a quantity";
+                        } else {
+                          return null;
+                        }
+                      },
+                      decoration: textInputDecoration.copyWith(
+                          hintText: 'Enter Quantity'),
+                      onChanged: (val) {
+                        setState(() => _quantity = int.parse(val));
+                      },
+                    ),
+                    SizedBox(height: 20.0),
+                    TextFormField(
+                      controller: _controller3,
+                      // key: ValueKey("unit"),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return "Please enter a unit";
+                        }
+                        return null;
+                      },
+                      decoration:
+                          textInputDecoration.copyWith(hintText: 'Enter Unit'),
+                      onChanged: (val) {
+                        setState(() => _unit = val);
+                      },
+                    ),
+                    SizedBox(height: 15),
+                    SizedBox(height: 20.0),
+                    RaisedButton(
+                        color: Colors.blue[400],
+                        child: Text(
+                          'Add Ingredient',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () {
+                          if (_ingredientKey.currentState.validate())
+                            _createIngredient();
+                        }),
+                    Text(_ingredient_error,
+                        style: TextStyle(color: Colors.red, fontSize: 14)),
+                  ],
+                ),
+              )),
         ),
-      ),
-
-      // Nutrition
+      )),
+      Center(
+          child: Scaffold(
+        body: Container(
+          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+          child: Form(
+              key: _instructionKey,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: 20.0),
+                    TextFormField(
+                      controller: _controller4,
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return "Please enter an instruction";
+                        }
+                        return null;
+                      },
+                      decoration: textInputDecoration.copyWith(
+                          hintText: 'Enter Instruction'),
+                      onChanged: (val) {
+                        setState(() => instruction = val);
+                      },
+                    ),
+                    SizedBox(height: 20.0),
+                    RaisedButton(
+                        color: Colors.blue[400],
+                        child: Text(
+                          'Add Instruction',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () {
+                          if (_instructionKey.currentState.validate())
+                            _createInstruction();
+                        }),
+                    Text(_instruction_error,
+                        style: TextStyle(color: Colors.red, fontSize: 14)),
+                  ],
+                ),
+              )),
+        ),
+      )),
       Center(
           child: Scaffold(
         body: Container(

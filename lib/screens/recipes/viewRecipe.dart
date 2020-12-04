@@ -69,8 +69,8 @@ class _ViewRecipeState extends State<ViewRecipe> {
 
                   ingredientSnapshot.data.documents.forEach((ingredient) {
                     _ingredientsList.add(new Ingredient(
-                        name: ingredient['name'],
-                        quantity: ingredient['quantity'],
+                        nameOfIngredient: ingredient['name'],
+                        quantity: ingredient['quantity'].toString(),
                         unit: ingredient['unit']));
                   });
 
@@ -107,8 +107,7 @@ class _ViewRecipeState extends State<ViewRecipe> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        EditRecipe(this.recipeId)));
+                                    builder: (context) => EditRecipe()));
                           }),
                       body: Container(
                           child: ViewRecipeTile(
