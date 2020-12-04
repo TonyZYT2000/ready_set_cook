@@ -17,7 +17,7 @@ class _CommonAddState extends State<CommonAdd> {
       _groceryDB = GroceryDatabase(context);
     }
 
-    CommonIngredient common = CommonIngredient();
+    CommonIngredient commonIngredient = CommonIngredient();
     return Scaffold(
         body: SingleChildScrollView(
             child: Column(
@@ -29,7 +29,19 @@ class _CommonAddState extends State<CommonAdd> {
                 crossAxisCount: 4,
                 shrinkWrap: true,
                 children: <Widget>[
-                  for (Ingredient item in common.commonIngredients)
+                  for (Ingredient item in commonIngredient.commonFruits)
+                    IngredientTile(item)
+                ]),
+          ],
+        ),
+        ExpansionTile(
+          title: Text("Vegetables"),
+          children: [
+            GridView.count(
+                crossAxisCount: 4,
+                shrinkWrap: true,
+                children: <Widget>[
+                  for (Ingredient item in commonIngredient.commonVegetables)
                     IngredientTile(item)
                 ]),
           ],

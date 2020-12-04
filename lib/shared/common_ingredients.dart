@@ -14,7 +14,43 @@ class CommonIngredient {
   Ingredient _peach;
   Ingredient _pear;
   Ingredient _pineapple;
-  List<Ingredient> commonIngredients;
+  Ingredient _plum;
+  Ingredient _raisins;
+  Ingredient _raspberry;
+  Ingredient _strawberry;
+  Ingredient _tangerine;
+  Ingredient _watermelon;
+  Ingredient _asparagus;
+  Ingredient _avocado;
+  Ingredient _beans;
+  Ingredient _broccoli;
+  Ingredient _cabbage;
+  Ingredient _carrot;
+  Ingredient _cauliflower;
+  Ingredient _celery;
+  Ingredient _cucumber;
+  Ingredient _eggplant;
+  Ingredient _spinach;
+  Ingredient _garlic;
+  Ingredient _ginger;
+  Ingredient _leek;
+  Ingredient _lettuce;
+  Ingredient _mushrooms;
+  Ingredient _olive;
+  Ingredient _onion;
+  Ingredient _peas;
+  Ingredient _potato;
+  Ingredient _pumpkin;
+  Ingredient _springOnion;
+  Ingredient _squash;
+  Ingredient _sweetCorn;
+  Ingredient _sweetPotato;
+  Ingredient _tomato;
+
+  List<Ingredient> commonFruits;
+  List<Ingredient> commonVegetables;
+  List<Ingredient> commonMeat;
+  List<Ingredient> otherCommonIngredient;
 
   CommonIngredient() {
     _apple = Ingredient(
@@ -63,7 +99,7 @@ class CommonIngredient {
 
     _cherry = Ingredient(
         '',
-        'cherry',
+        'Cherry',
         12,
         '',
         DateTime.now(),
@@ -74,7 +110,7 @@ class CommonIngredient {
 
     _grape = Ingredient(
         '',
-        'grape',
+        'Grape',
         1,
         '',
         DateTime.now(),
@@ -85,7 +121,7 @@ class CommonIngredient {
 
     _grapefruit = Ingredient(
         '',
-        'grapefruit',
+        'Grapefruit',
         1,
         '',
         DateTime.now(),
@@ -96,7 +132,7 @@ class CommonIngredient {
 
     _kiwi = Ingredient(
         '',
-        'kiwi',
+        'Kiwi',
         1,
         '',
         DateTime.now(),
@@ -107,7 +143,7 @@ class CommonIngredient {
 
     _orange = Ingredient(
         '',
-        'orange',
+        'Orange',
         1,
         '',
         DateTime.now(),
@@ -118,7 +154,7 @@ class CommonIngredient {
 
     _peach = Ingredient(
         '',
-        'peach',
+        'Peach',
         1,
         '',
         DateTime.now(),
@@ -129,7 +165,7 @@ class CommonIngredient {
 
     _pear = Ingredient(
         '',
-        'pear',
+        'Pear',
         1,
         '',
         DateTime.now(),
@@ -140,7 +176,7 @@ class CommonIngredient {
 
     _pineapple = Ingredient(
         '',
-        'pineapple',
+        'Pineapple',
         1,
         '',
         DateTime.now(),
@@ -149,7 +185,73 @@ class CommonIngredient {
         false,
         "https://images-na.ssl-images-amazon.com/images/I/71bNsWlkyeL._AC_SX522_.jpg");
 
-    commonIngredients = List.from([
+    _plum = Ingredient(
+        '',
+        'Plum',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(61, 0, 15, 0, 14, 4),
+        5,
+        false,
+        "https://upload.wikimedia.org/wikipedia/commons/2/24/Red-Plums.jpg");
+
+    _raisins = Ingredient(
+        '',
+        'Raisins',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        365,
+        false,
+        "https://i2.wp.com/nypost.com/wp-content/uploads/sites/2/2020/03/raisins-04.jpg?quality=80&strip=all&ssl=1");
+
+    _raspberry = Ingredient(
+        '',
+        'Raspberry',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        2,
+        false,
+        "https://cdn11.bigcommerce.com/s-7ktwhbi/images/stencil/2048x2048/products/87/272/Raspberry__69627.1399585740.jpg?c=2");
+
+    _strawberry = Ingredient(
+        '',
+        'Strawberry',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        5,
+        false,
+        "https://s30386.pcdn.co/wp-content/uploads/2019/08/Strawberries_HNL1306_ts104880701.jpg");
+
+    _tangerine = Ingredient(
+        '',
+        'Tangerine',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        14,
+        false,
+        "https://post.healthline.com/wp-content/uploads/2020/08/difference-between-tangerines-oranges-thumb.jpg");
+
+    _watermelon = Ingredient(
+        '',
+        'Watermelon',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        14,
+        false,
+        "https://i0.wp.com/www.eatthis.com/wp-content/uploads/2020/08/watermelon.jpg?fit=1200%2C879&ssl=1");
+
+    commonFruits = List.from([
       _apple,
       _banana,
       _blackberry,
@@ -161,7 +263,328 @@ class CommonIngredient {
       _orange,
       _peach,
       _pear,
-      _pineapple
+      _pineapple,
+      _plum,
+      _raisins,
+      _raspberry,
+      _strawberry,
+      _tangerine,
+      _watermelon
+    ]);
+
+    _asparagus = Ingredient(
+        '',
+        'Asparagus',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        3,
+        false,
+        "https://media1.s-nbcnews.com/i/newscms/2020_06/3219151/how-to-make-roasted-asparagus-355-1200x800_2cdbbbe84008d453548f4e0775b5861c.jpg");
+
+    _avocado = Ingredient(
+        '',
+        'Avocado',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        3,
+        false,
+        "https://static.toiimg.com/thumb/msid-66866002,width-800,height-600,resizemode-75,imgsize-1441960/66866002.jpg");
+
+    _beans = Ingredient(
+        '',
+        'Beans',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        3,
+        false,
+        "https://www.jessicagavin.com/wp-content/uploads/2020/05/types-of-beans-1200.jpg");
+
+    _broccoli = Ingredient(
+        '',
+        'Broccoli',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        4,
+        false,
+        "https://www.cookforyourlife.org/wp-content/uploads/2018/08/shutterstock_294838064-min.jpg");
+
+    _cabbage = Ingredient(
+        '',
+        'Cabbage',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        30,
+        false,
+        "https://images.heb.com/is/image/HEBGrocery/000374791");
+
+    _carrot = Ingredient(
+        '',
+        'Carrot',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        90,
+        false,
+        "https://www.jessicagavin.com/wp-content/uploads/2019/02/carrots-7-1200.jpg");
+
+    _cauliflower = Ingredient(
+        '',
+        'Cauliflower',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        14,
+        false,
+        "https://www.yummytoddlerfood.com/wp-content/uploads/2019/02/cauliflower.jpg");
+
+    _celery = Ingredient(
+        '',
+        'Celery',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        14,
+        false,
+        "https://www.welcometothetable.coop/sites/default/files/styles/amp_metadata_content_image_min_696px_wide/public/wp-content/uploads/2011/06/Celery_0.jpg?itok=0J5T9aZB");
+
+    _cucumber = Ingredient(
+        '',
+        'Cucumber',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        7,
+        false,
+        "https://cdn.mos.cms.futurecdn.net/EBEXFvqez44hySrWqNs3CZ.jpg");
+
+    _eggplant = Ingredient(
+        '',
+        'Eggplant',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        5,
+        false,
+        "https://www.tasteofhome.com/wp-content/uploads/2019/07/Chinese-eggplant-shutterstock_2033421.jpg");
+
+    _garlic = Ingredient(
+        '',
+        'Garlic',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        21,
+        false,
+        "https://i.insider.com/5f73ab9a0ab50d00184ad298?width=1136&format=jpeg");
+
+    _ginger = Ingredient(
+        '',
+        'Ginger',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        21,
+        false,
+        "https://www.thespruceeats.com/thmb/QxqFC_PtR8hR7I9-tsCB3S9b7R8=/2128x1409/filters:fill(auto,1)/GettyImages-116360266-57fa9c005f9b586c357e92cd.jpg");
+
+    _leek = Ingredient(
+        '',
+        'Leek',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        14,
+        false,
+        "https://www.historic-uk.com/wp-content/uploads/2017/11/basket-leeks.jpg");
+
+    _lettuce = Ingredient(
+        '',
+        'Lettuce',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        7,
+        false,
+        "https://i0.wp.com/post.healthline.com/wp-content/uploads/2020/03/romaine-lettuce-1296x728-body.jpg?w=1155&h=1528");
+
+    _mushrooms = Ingredient(
+        '',
+        'Mushroom',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        10,
+        false,
+        "https://post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/02/278858_2200-732x549.jpg");
+
+    _olive = Ingredient(
+        '',
+        'Olive',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        365,
+        false,
+        "https://www.thespruceeats.com/thmb/7JCmh1Ec7JiRDbl9Jm55bjLJtkE=/1976x1111/smart/filters:no_upscale()/greenolives-5a85e5dfa18d9e0037a56ce5.jpg");
+
+    _onion = Ingredient(
+        '',
+        'Onion',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        14,
+        false,
+        "https://images-na.ssl-images-amazon.com/images/I/81UeYuulNjL._SX466_.jpg");
+
+    _peas = Ingredient(
+        '',
+        'Peas',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        2,
+        false,
+        "https://assets.tmecosys.com/image/upload/t_web767x639/img/recipe/ras/Assets/b09aa6c8-cfcb-4423-b2c9-e5abb6070312/Derivates/deb92468-6554-4de4-b141-b4318958d1d4.jpg");
+
+    _potato = Ingredient(
+        '',
+        'Potato',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        21,
+        false,
+        "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/are-potatoes-healthy-1570222022.jpg?crop=1.00xw:0.752xh;0.00160xw,0.248xh&resize=1200:*");
+
+    _pumpkin = Ingredient(
+        '',
+        'Pumpkin',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        365,
+        false,
+        "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/facts-about-pumpkins-1534518871.jpg");
+
+    _spinach = Ingredient(
+        '',
+        'Spinach',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        5,
+        false,
+        "https://www.farmflavor.com/wp-content/uploads/2020/05/iStock-916931074-2-scaled.jpg");
+
+    _springOnion = Ingredient(
+        '',
+        'Spring Onion',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        14,
+        false,
+        "https://static.toiimg.com/thumb/msid-75736189,width-1200,height-900,imgsize-327934/75736189.jpg");
+
+    _squash = Ingredient(
+        '',
+        'Squash',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        30,
+        false,
+        "https://imagesvc.meredithcorp.io/v3/mm/image?q=85&c=sc&poi=face&w=2000&h=1047&url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F43%2F2020%2F04%2F06%2FGettyImages-187102725-2000.jpg");
+
+    _sweetCorn = Ingredient(
+        '',
+        'Sweet Corn',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        300,
+        false,
+        "https://www.thegunnysack.com/wp-content/uploads/2018/06/Boiled-Corn-On-The-Cob-Recipe-720x540.jpg");
+
+    _sweetPotato = Ingredient(
+        '',
+        'Sweet Potato',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        60,
+        false,
+        "https://upload.wikimedia.org/wikipedia/commons/5/58/Ipomoea_batatas_006.JPG");
+
+    _tomato = Ingredient(
+        '',
+        'Tomato',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        14,
+        false,
+        "https://post.healthline.com/wp-content/uploads/2020/09/tomatoes-1200x628-facebook-1200x628.jpg");
+
+    commonVegetables = List.from([
+      _asparagus,
+      _avocado,
+      _beans,
+      _broccoli,
+      _cabbage,
+      _carrot,
+      _cauliflower,
+      _celery,
+      _cucumber,
+      _eggplant,
+      _spinach,
+      _garlic,
+      _ginger,
+      _leek,
+      _lettuce,
+      _mushrooms,
+      _olive,
+      _onion,
+      _peas,
+      _potato,
+      _pumpkin,
+      _springOnion,
+      _squash,
+      _sweetCorn,
+      _sweetPotato,
+      _tomato
     ]);
   }
 }
