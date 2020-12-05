@@ -97,8 +97,6 @@ class _CreateRecipeState extends State<CreateRecipe> {
   Widget build(BuildContext context) {
     final _uid = FirebaseAuth.instance.currentUser.uid;
     recipeDB = RecipesDatabaseService(uid: _uid);
-    _ingredients.add(new Ingredient(name: "Cake", quantity: 5, unit: "g"));
-    _ingredients.add(new Ingredient(name: "Fire", quantity: 7, unit: "g"));
 
     final _tabPages = <Widget>[
       // Ingredients
@@ -107,15 +105,30 @@ class _CreateRecipeState extends State<CreateRecipe> {
             padding: const EdgeInsets.all(0),
             itemCount: _ingredients.length,
             itemBuilder: (context, index) {
-              return Text(_ingredients[index].toString());
+              return new ListTile(
+                leading: new Text((index + 1).toString() + ")"),
+                title: new Text(_ingredients[index].name +
+                    " " +
+                    _ingredients[index].quantity.toString() +
+                    _ingredients[index].unit),
+                tileColor: Colors.blue,
+              );
             }),
         floatingActionButton: FloatingActionButton.extended(
-            icon: Icon(Icons.add),
-            label: Text("Add"),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AddIngredientPage()));
-            }),
+          icon: Icon(Icons.add),
+          label: Text("Add"),
+          onPressed: () async {
+            dynamic result = await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AddIngredientPage()),
+            );
+            if (result != null) {
+              setState(() {
+                _ingredients.add(result);
+              });
+            }
+          },
+        ),
       ),
       // Instructions
       Scaffold(
@@ -124,6 +137,8 @@ class _CreateRecipeState extends State<CreateRecipe> {
             itemCount: _instructions.length,
             itemBuilder: (context, index) {
               return new ListTile(
+                leading:
+                    new Text("Instruction " + (index + 1).toString() + ")"),
                 title: new Text(_instructions[index]),
                 tileColor: Colors.blue,
               );
@@ -144,7 +159,6 @@ class _CreateRecipeState extends State<CreateRecipe> {
           },
         ),
       ),
-
       // Nutrition
       Center(
           child: Scaffold(

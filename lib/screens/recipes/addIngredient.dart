@@ -17,9 +17,6 @@ class AddIngredientPage extends StatefulWidget {
 }
 
 class _AddIngredientPage extends State<AddIngredientPage> {
-  List<Ingredient> _ingredients = [];
-  bool ingredient_added = false;
-  String _ingredient_error = "";
 
   String _ingredientName = "";
   int _quantity = 0;
@@ -28,16 +25,6 @@ class _AddIngredientPage extends State<AddIngredientPage> {
   final _controller1 = TextEditingController();
   final _controller2 = TextEditingController();
   final _controller3 = TextEditingController();
-
-  _createIngredient() {
-    ingredient_added = true;
-    _ingredients.add(new Ingredient(
-        name: _ingredientName, quantity: _quantity, unit: _unit));
-    _controller1.clear();
-    _controller2.clear();
-    _controller3.clear();
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,19 +80,10 @@ class _AddIngredientPage extends State<AddIngredientPage> {
                 if (_controller1.text == "") {
                   print("Ingredient Name Not Found");
                 } else {
-                  _createIngredient() {
-                    ingredient_added = true;
-                    _ingredients.add(new Ingredient(
-                        name: _ingredientName,
-                        quantity: _quantity,
-                        unit: _unit));
-                    _controller1.clear();
-                    _controller2.clear();
-                    _controller3.clear();
-                    setState(() {});
-                  }
+                  final newIngedient = new Ingredient(
+                      name: _controller1.text, quantity: int.parse(_controller2.text), unit: _controller3.text);
 
-                  Navigator.of(context).pop(_ingredients);
+                  Navigator.of(context).pop(newIngedient);
                 }
               },
             )
