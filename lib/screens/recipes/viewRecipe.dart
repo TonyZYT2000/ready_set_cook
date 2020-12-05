@@ -71,8 +71,8 @@ class _ViewRecipeState extends State<ViewRecipe> {
 
                   ingredientSnapshot.data.documents.forEach((ingredient) {
                     _ingredientsList.add(new Ingredient(
-                        nameOfIngredient: ingredient['name'],
-                        quantity: ingredient['quantity'].toString(),
+                        name: ingredient['name'],
+                        quantity: ingredient['quantity'],
                         unit: ingredient['unit']));
                   });
 

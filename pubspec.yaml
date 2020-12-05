@@ -36,6 +36,8 @@ dependencies:
   # provider: ^4.3.2+2
   intl: ^0.16.1
   uuid: 2.2.2
+  image_picker: ^0.6.7+14
+  firebase_storage: ^5.0.1
 
 
 dev_dependencies:
@@ -61,6 +63,7 @@ flutter:
     - assets/images/chicken breast.jpg
     - assets/images/salad.jpg
     - assets/images/apple.png
+    - assets/images/noImage.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

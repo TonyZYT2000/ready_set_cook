@@ -30,7 +30,7 @@ class ViewRecipeTile extends StatelessWidget {
                     children: [
                       TableRow(children: [
                         TableCell(
-                            child: Text(ingredient[i].nameOfIngredient,
+                            child: Text(ingredient[i].name,
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                     color: Colors.blue[700],
@@ -87,7 +87,7 @@ class ViewRecipeTile extends StatelessWidget {
                       TableRow(children: [
                         TableCell(
                             child: Text(
-                              'Calories: ' +
+                          'Calories: ' +
                               '\nProtein: ' +
                               '\nTotal Carbs: ' +
                               '\nTotal Fat: ',
@@ -99,7 +99,7 @@ class ViewRecipeTile extends StatelessWidget {
                         )),
                         TableCell(
                             child: Text(
-                          nutrition[i].calories +
+                          nutrition[i].calories.toString() +
                               '\n' +
                               nutrition[i].protein +
                               '\n' +

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:ready_set_cook/screens/storage/barcode.dart';
 import 'package:ready_set_cook/screens/storage/manual.dart';
+import 'package:ready_set_cook/screens/storage/common_add.dart';
 
 class Add extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _tabPages = <Widget>[
-      Center(child: Barcode()),
+      Center(child: CommonAdd()),
       Center(child: Manual()),
     ];
     final _tabs = <Tab>[
-      const Tab(icon: Icon(Icons.camera_alt), text: 'Scan the Barcode'),
+      const Tab(icon: Icon(Icons.fastfood), text: 'Common Ingredients'),
       const Tab(icon: Icon(Icons.accessibility), text: 'Enter Manually')
     ];
     return DefaultTabController(

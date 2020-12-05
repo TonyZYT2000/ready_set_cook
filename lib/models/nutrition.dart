@@ -4,9 +4,5 @@ class Nutrition {
   String totalCarbs;
   String totalFat;
 
-  Nutrition(
-      {this.calories,
-      this.protein,
-      this.totalCarbs,
-      this.totalFat});
+  Nutrition({this.calories, this.protein, this.totalCarbs, this.totalFat});
 }

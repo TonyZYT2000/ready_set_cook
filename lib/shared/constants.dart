@@ -12,23 +12,34 @@ const textInputDecoration = InputDecoration(
   ),
 );
 
-
 class BigLogo extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     AssetImage logo = AssetImage('assets/images/readysetcooklogo.png');
-    Image image = Image(image: logo, width: 500, height: 255,);
-    return Container(child: image,);
+    Image image = Image(
+      image: logo,
+      width: 500,
+      height: 255,
+    );
+    return Container(
+      child: image,
+    );
   }
 }
 
 class SmallLogo extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     AssetImage logo = AssetImage('assets/images/readysetcooklogo.png');
-    Image image = Image(image: logo, width: 20, height: 20,);
-    return Container(child: image,);
+    Image image = Image(
+      image: logo,
+      width: 20,
+      height: 20,
+    );
+    return Container(
+      child: image,
+    );
   }
 }
+
+//Info for fruit, shelflife unit is days.

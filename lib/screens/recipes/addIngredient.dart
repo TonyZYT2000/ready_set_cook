@@ -67,8 +67,8 @@ class _AddIngredientState extends State<AddIngredient> {
                       ),
                       onPressed: () async {
                         ingredient.add(new Ingredient(
-                            nameOfIngredient: _ingredientName,
-                            quantity: _quantity.toString(),
+                            name: _ingredientName,
+                            quantity: _quantity,
                             unit:
                                 _unit)); // adds to all recipes and personal collection
                       }),

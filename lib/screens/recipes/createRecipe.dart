@@ -23,7 +23,7 @@ class _CreateRecipeState extends State<CreateRecipe> {
   String _recipeName = "";
   double _rating = 0;
   int _numRatings = 0;
-  String calories = "";
+  int calories = 0;
   String protein = "";
   String totalCarbs = "";
   String totalFat = "";
@@ -52,9 +52,7 @@ class _CreateRecipeState extends State<CreateRecipe> {
   _createIngredient() {
     ingredient_added = true;
     _ingredients.add(new Ingredient(
-        nameOfIngredient: _ingredientName,
-        quantity: _quantity.toString(),
-        unit: _unit));
+        name: _ingredientName, quantity: _quantity, unit: _unit));
     _controller1.clear();
     _controller2.clear();
     _controller3.clear();
@@ -72,7 +70,7 @@ class _CreateRecipeState extends State<CreateRecipe> {
     // final isValid = _formKey.currentState.validate();
     // if (isValid) {
     nutrition = new Nutrition(
-        calories: calories,
+        calories: calories.toString(),
         protein: protein,
         totalCarbs: totalCarbs,
         totalFat: totalFat);
@@ -239,7 +237,7 @@ class _CreateRecipeState extends State<CreateRecipe> {
                   decoration:
                       textInputDecoration.copyWith(hintText: 'Enter Calories'),
                   onChanged: (val) {
-                    setState(() => calories = val);
+                    setState(() => calories = int.parse(val));
                   },
                 ),
                 SizedBox(height: 20.0),

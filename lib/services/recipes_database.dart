@@ -70,11 +70,10 @@ class RecipesDatabaseService {
   // work on adding instructions to database
   Future addCustomRecipe(Recipe recipe) async {
     recipe.ingredients.forEach((ing) {
-      allRecipesCollection.doc(recipe.recipeId).collection("ingredients").add({
-        "name": ing.nameOfIngredient,
-        "quantity": ing.quantity,
-        "unit": ing.unit
-      });
+      allRecipesCollection
+          .doc(recipe.recipeId)
+          .collection("ingredients")
+          .add({"name": ing.name, "quantity": ing.quantity, "unit": ing.unit});
     });
 
     recipe.instructions.forEach((ins) {
@@ -84,12 +83,12 @@ class RecipesDatabaseService {
           .add({"instruction": ins});
     });
 
-      allRecipesCollection.doc(recipe.recipeId).collection("nutrition").add({
-        "Calories": recipe.nutrition.calories,
-        "Protein": recipe.nutrition.protein,
-        "Total Fat": recipe.nutrition.totalFat,
-        "Total Carbohydrate": recipe.nutrition.totalCarbs,
-      });
+    allRecipesCollection.doc(recipe.recipeId).collection("nutrition").add({
+      "Calories": recipe.nutrition.calories,
+      "Protein": recipe.nutrition.protein,
+      "Total Fat": recipe.nutrition.totalFat,
+      "Total Carbohydrate": recipe.nutrition.totalCarbs,
+    });
 
     await allRecipesCollection.doc(recipe.recipeId).set({
       "recipeId": recipe.recipeId,
