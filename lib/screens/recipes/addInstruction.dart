@@ -14,7 +14,6 @@ class AddInstructionsPage extends StatefulWidget {
 }
 
 class _AddInstructionsPage extends State<AddInstructionsPage> {
-  String instruction = "";
   final _controller1 = TextEditingController();
 
   @override
@@ -54,7 +53,7 @@ class _AddInstructionsPage extends State<AddInstructionsPage> {
                 if (_controller1.text == "") {
                   print("Didn't Enter Anything");
                 } else {
-                  Navigator.pop(context, instruction);
+                  Navigator.pop(context, _controller1.text);
                 }
               },
             )

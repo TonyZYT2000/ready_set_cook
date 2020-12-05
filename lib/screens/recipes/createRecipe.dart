@@ -123,9 +123,9 @@ class _CreateRecipeState extends State<CreateRecipe> {
             padding: const EdgeInsets.all(0),
             itemCount: _instructions.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(_instructions[index].toString()),
-                tileColor: Colors.red,
+              return new ListTile(
+                title: new Text(_instructions[index]),
+                tileColor: Colors.blue,
               );
             }),
         floatingActionButton: FloatingActionButton.extended(
