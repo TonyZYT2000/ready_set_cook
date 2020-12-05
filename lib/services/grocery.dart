@@ -33,8 +33,8 @@ class GroceryDatabase {
     _groceryDoc.collection("groceryList").doc(id).delete();
   }
 
-  void updateItem(String id, Ingredient ingredient) {
-    _groceryDoc.collection("groceryList").doc(id).update({
+  void updateItem(Ingredient ingredient) {
+    _groceryDoc.collection("groceryList").doc(ingredient.id).update({
       "name": ingredient.name,
       "quantity": ingredient.quantity,
       "unit": ingredient.unit,

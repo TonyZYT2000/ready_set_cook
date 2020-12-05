@@ -12,13 +12,16 @@ class Edit extends StatefulWidget {
 }
 
 class _EditState extends State<Edit> {
+  GroceryDatabase _groceryDB = null;
   final _formKey = GlobalKey<FormState>();
   TextEditingController _controller1 = TextEditingController();
   TextEditingController _controller2 = TextEditingController();
   TextEditingController _controller3 = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  GroceryDatabase _groceryDB = null;
+  String _name;
+  int _quantity;
+  String _unit;
 
   @override
   void initState() {
@@ -26,12 +29,19 @@ class _EditState extends State<Edit> {
     _controller1.text = widget._ingredient.name;
     _controller2.text = widget._ingredient.quantity.toString();
     _controller3.text = widget._ingredient.unit;
+    // initial value to hold
+    _name = widget._ingredient.name;
+    _quantity = widget._ingredient.quantity;
+    _unit = widget._ingredient.unit;
   }
 
   void _onSubmit() {
     final isValid = _formKey.currentState.validate();
     if (isValid) {
-      _groceryDB.updateItem(widget._ingredient.id, widget._ingredient);
+      widget._ingredient.name = _name;
+      widget._ingredient.quantity = _quantity;
+      widget._ingredient.unit = _unit;
+      _groceryDB.updateItem(widget._ingredient);
       _formKey.currentState.save();
     }
     setState(() {});
@@ -76,7 +86,7 @@ class _EditState extends State<Edit> {
                       decoration:
                           textInputDecoration.copyWith(hintText: 'Update Name'),
                       onChanged: (val) {
-                        setState(() => widget._ingredient.name = val);
+                        setState(() => _name = val);
                       },
                     ),
                     SizedBox(height: 20.0),
@@ -94,7 +104,7 @@ class _EditState extends State<Edit> {
                       keyboardType: TextInputType.number,
                       onChanged: (val) {
                         setState(
-                            () => widget._ingredient.quantity = int.parse(val));
+                            () => _quantity = int.parse(val));
                       },
                     ),
                     SizedBox(height: 20.0),
@@ -104,7 +114,7 @@ class _EditState extends State<Edit> {
                       decoration:
                           textInputDecoration.copyWith(hintText: 'Update Unit'),
                       onChanged: (val) {
-                        setState(() => widget._ingredient.unit = val);
+                        setState(() => _unit = val);
                       },
                     ),
                     SizedBox(height: 20.0),

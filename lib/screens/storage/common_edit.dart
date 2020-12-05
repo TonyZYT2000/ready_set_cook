@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:ready_set_cook/models/nutrition.dart';
 import 'package:ready_set_cook/shared/constants.dart';
 import 'package:ready_set_cook/services/grocery.dart';
 import 'package:ready_set_cook/models/ingredient.dart';
 
 class CommonEdit extends StatefulWidget {
-  Ingredient _ingredient;
+  final Ingredient _ingredient;
   CommonEdit(this._ingredient);
 
   @override
@@ -12,17 +13,36 @@ class CommonEdit extends StatefulWidget {
 }
 
 class _CommonEditState extends State<CommonEdit> {
+  GroceryDatabase _groceryDB = null;
   final _formKey = GlobalKey<FormState>();
   TextEditingController _controller1 = TextEditingController();
   TextEditingController _controller2 = TextEditingController();
   TextEditingController _controller3 = TextEditingController();
 
-  GroceryDatabase _groceryDB = null;
+  String _name;
+  int _quantity;
+  String _unit;
+  DateTime _startDate;
+  Nutrition _nutrient;
+  int _shelfLife;
+  String _imageUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _name = widget._ingredient.name;
+    _quantity = widget._ingredient.quantity;
+    _unit = widget._ingredient.unit;
+    _startDate = DateTime.now();
+    _shelfLife = widget._ingredient.shelfLife;
+    _imageUrl = widget._ingredient.imageUrl;
+  }
 
   Future<void> _onSubmit() async {
     final isValid = _formKey.currentState.validate();
     if (isValid) {
-      _groceryDB.addItem(widget._ingredient);
+      _groceryDB.addItem(Ingredient(null, _name, _quantity, _unit, _startDate,
+          _nutrient, _shelfLife, false, _imageUrl));
       _controller1.clear();
       _controller2.clear();
       _controller3.clear();
@@ -37,6 +57,7 @@ class _CommonEditState extends State<CommonEdit> {
     if (_groceryDB == null) {
       _groceryDB = GroceryDatabase(context);
     }
+
     return Scaffold(
       appBar: AppBar(
           title: Text('Add ' + widget._ingredient.name),
@@ -69,8 +90,7 @@ class _CommonEditState extends State<CommonEdit> {
                         hintText: 'Enter Quantity'),
                     keyboardType: TextInputType.number,
                     onChanged: (val) {
-                      setState(
-                          () => widget._ingredient.quantity = int.parse(val));
+                      setState(() => _quantity = int.parse(val));
                     },
                   ),
                   SizedBox(height: 15.0),
@@ -80,7 +100,7 @@ class _CommonEditState extends State<CommonEdit> {
                     decoration: textInputDecoration.copyWith(
                         hintText: 'Enter Unit (Optional)'),
                     onChanged: (val) {
-                      setState(() => widget._ingredient.unit = val);
+                      setState(() => _unit = val);
                     },
                   ),
                   SizedBox(height: 15.0),
@@ -97,8 +117,7 @@ class _CommonEditState extends State<CommonEdit> {
                         hintText: 'Enter Shelf Life (Optional)'),
                     keyboardType: TextInputType.number,
                     onChanged: (val) {
-                      setState(
-                          () => widget._ingredient.shelfLife = int.parse(val));
+                      setState(() => _shelfLife = int.parse(val));
                     },
                   ),
                   SizedBox(height: 15.0),

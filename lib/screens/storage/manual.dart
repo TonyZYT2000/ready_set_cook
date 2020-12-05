@@ -22,7 +22,7 @@ class _ManualState extends State<Manual> {
   String _name = '';
   int _quantity = 0;
   String _unit = '';
-  int _shelfLife = 0;
+  int _shelfLife = 15;
   DateTime _startDate = DateTime.now();
 
   File _image = null;
