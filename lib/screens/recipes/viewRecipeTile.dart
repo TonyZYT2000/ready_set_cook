@@ -3,9 +3,9 @@ import 'package:ready_set_cook/models/ingredient.dart';
 import 'package:ready_set_cook/models/nutrition.dart';
 
 class ViewRecipeTile extends StatelessWidget {
-  List<Ingredient> ingredient;
-  List<String> instruction;
-  List<Nutrition> nutrition;
+  final List<Ingredient> ingredient;
+  final List<String> instruction;
+  final Nutrition nutrition;
   ViewRecipeTile({this.ingredient, this.instruction, this.nutrition});
 
   @override
@@ -78,7 +78,6 @@ class ViewRecipeTile extends StatelessWidget {
                 style: TextStyle(color: Colors.blue[700], fontSize: 26),
               ),
               SizedBox(height: 50),
-              for (int i = 0; i < (nutrition.length); i++)
                 Table(
                     border: TableBorder.symmetric(
                         inside: BorderSide.none, outside: BorderSide.none),
@@ -99,13 +98,13 @@ class ViewRecipeTile extends StatelessWidget {
                         )),
                         TableCell(
                             child: Text(
-                          nutrition[i].calories.toString() +
+                          nutrition.calories.toString() +
                               '\n' +
-                              nutrition[i].protein +
+                              nutrition.protein +
                               '\n' +
-                              nutrition[i].totalCarbs +
+                              nutrition.totalCarbs +
                               '\n' +
-                              nutrition[i].totalFat +
+                              nutrition.totalFat +
                               '\n',
                           style: TextStyle(
                               color: Colors.blue[700],

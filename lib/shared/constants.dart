@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 const COLOR_BLUE = Colors.blue;
+const COLOR_BLACK = Colors.black;
+const COLOR_WHITE = Colors.white;
+const COLOR_GREY = Colors.grey;
 
 const textInputDecoration = InputDecoration(
   fillColor: Colors.white,
