@@ -796,7 +796,7 @@ class CommonIngredient {
         '',
         DateTime.now(),
         Nutrition(82, 0, 22, 0, 16, 2),
-        270,
+        35,
         false,
         "https://images-prod.healthline.com/hlcmsresource/images/AN_images/health-benefits-of-eggs-1296x728-feature.jpg");
 
@@ -807,7 +807,7 @@ class CommonIngredient {
         '',
         DateTime.now(),
         Nutrition(82, 0, 22, 0, 16, 2),
-        270,
+        5,
         false,
         "https://www.seriouseats.com/2019/09/20190530-ramen-noodles-vicky-wasik-76-1500x1125.jpg");
 
@@ -818,7 +818,7 @@ class CommonIngredient {
         '',
         DateTime.now(),
         Nutrition(82, 0, 22, 0, 16, 2),
-        270,
+        1400,
         false,
         "https://i.guim.co.uk/img/media/fe11954af9f0feb91e8c975620a98a09f80e3490/0_187_5616_3370/master/5616.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=e63d2edc6117fa7d8ac79dd0a1ab0153");
 
@@ -829,7 +829,7 @@ class CommonIngredient {
         '',
         DateTime.now(),
         Nutrition(82, 0, 22, 0, 16, 2),
-        270,
+        5,
         false,
         "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/the-health-benefits-of-tofu-700-350-1550d79.jpg?quality=90&resize=960,872");
 
