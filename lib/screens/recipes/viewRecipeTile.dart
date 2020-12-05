@@ -11,11 +11,11 @@ class ViewRecipeTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(children: <Widget>[
-      SizedBox(height: 20),
+      SizedBox(height: 10),
       Container(
           child: Column(children: <Widget>[
         Container(
-            padding: EdgeInsets.all(35.0),
+            padding: EdgeInsets.all(10.0),
             child: Wrap(children: <Widget>[
               Text(
                 "Ingredients",
@@ -87,10 +87,8 @@ class ViewRecipeTile extends StatelessWidget {
                       TableRow(children: [
                         TableCell(
                             child: Text(
-                          'Calories: ' +
-                              '\nCholesterol: ' +
+                              'Calories: ' +
                               '\nProtein: ' +
-                              '\nSodium: ' +
                               '\nTotal Carbs: ' +
                               '\nTotal Fat: ',
                           style: TextStyle(
@@ -103,11 +101,7 @@ class ViewRecipeTile extends StatelessWidget {
                             child: Text(
                           nutrition[i].calories +
                               '\n' +
-                              nutrition[i].cholesterol +
-                              '\n' +
                               nutrition[i].protein +
-                              '\n' +
-                              nutrition[i].sodium +
                               '\n' +
                               nutrition[i].totalCarbs +
                               '\n' +

@@ -17,38 +17,40 @@ class RecipeTile extends StatelessWidget {
               MaterialPageRoute(builder: (context) => ViewRecipe(recipeId)));
         },
         child: Container(
-          padding: EdgeInsets.all(18),
-          margin: EdgeInsets.all(20),
-          child: Wrap(children: [
+          padding: EdgeInsets.all(5),
+          margin: EdgeInsets.fromLTRB(15, 5, 15, 10),
+          child: Column(children: [
             Column(children: <Widget>[
-              new Container(
-                  height: 140,
+              Container(
+                  child: Text(name,
+                      style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.blueGrey))),
+              Container(
+                  height: 160,
                   decoration: new BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage("assets/images/apple.png"),
                       ),
-                      borderRadius: new BorderRadius.circular(8)))
+                      borderRadius: new BorderRadius.circular(8))),
+              SizedBox(height: 2),
             ]),
-
-            SizedBox(height: 10),
-
-            //Center(
-
-            //child:
-
-            Text(name + '\n' + "Rate: " + rating.toString(),
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                    fontStyle: FontStyle.italic,
-                    fontSize: 18,
-                    color: Colors.blueGrey)),
-
+            Center(
+              child: Text("Rating: " + rating.toString(),
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      fontStyle: FontStyle.italic,
+                      fontSize: 18,
+                      color: Colors.blueGrey)),
+            ),
             _buildRatingStar(rating),
           ]),
-          width: 150,
-          height: 260,
+          constraints: BoxConstraints(
+              minWidth: 10, maxWidth: 50, minHeight: 50, maxHeight: 250),
           decoration: BoxDecoration(
-              color: Colors.blue[100], borderRadius: BorderRadius.circular(10)),
+              color: Colors.blue[100], borderRadius: BorderRadius.circular(15)),
         ));
   }
 }
@@ -70,34 +72,7 @@ Widget _buildRatingStar(rating) {
   }
 
   return new Padding(
-    padding: EdgeInsets.fromLTRB(70, 0, 0, 10),
+    padding: EdgeInsets.fromLTRB(90, 5, 70, 0),
     child: new Row(children: icons),
   );
 }
-
-// padding: EdgeInsets.all(10.0),
-// width: 120,
-// height: 120,
-// decoration: BoxDecoration(
-//   border: Border.all(color: Colors.blue[100], width: 10),
-//   borderRadius: BorderRadius.circular(20),
-//   image:
-//       DecorationImage(image: AssetImage("assets/images/apple.png")),
-// ),
-// child: Center(
-//     child: Text(
-//         lst[0] +
-//             name +
-//             '   ' +
-//             lst[1] +
-//             cooked +
-//             '   ' +
-//             lst[2] +
-//             rating.toString(),
-//         textAlign: TextAlign.left,
-//         style: TextStyle(fontSize: 18))),
-// image: DecorationImage(
-//     colorFilter: ColorFilter.mode(
-//         Colors.blue.withOpacity(1.0), BlendMode.softLight),
-//     fit: BoxFit.cover,
-//     image: AssetImage("assets/images/apple.png"))),

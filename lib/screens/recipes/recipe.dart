@@ -18,6 +18,7 @@ class _RecipeState extends State<Recipe> {
   Widget build(BuildContext context) {
     final uid = FirebaseAuth.instance.currentUser.uid;
     final RecipesObject = RecipesDatabaseService(uid: uid);
+    List<Recipe> _recipes = [];
     String name = "";
     double rating = 0;
 

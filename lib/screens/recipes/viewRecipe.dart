@@ -5,6 +5,7 @@ import 'package:ready_set_cook/screens/recipes/deleteConfirmation.dart';
 import 'editRecipe.dart';
 import 'package:ready_set_cook/screens/recipes/viewRecipeTile.dart';
 import 'package:ready_set_cook/models/nutrition.dart';
+import 'package:ready_set_cook/models/recipe.dart';
 
 class ViewRecipe extends StatefulWidget {
   final Function toggleView;
@@ -19,6 +20,7 @@ class _ViewRecipeState extends State<ViewRecipe> {
   List<Ingredient> _ingredientsList = [];
   List<String> _instructionsList = [];
   List<Nutrition> _nutritionList = [];
+  List<Recipe> _recipes = [];
 
   @override
   void initState() {
@@ -77,9 +79,7 @@ class _ViewRecipeState extends State<ViewRecipe> {
                   nutritionSnapshot.data.documents.forEach((nutrition) {
                     _nutritionList.add(new Nutrition(
                         calories: nutrition['Calories'].toString(),
-                        cholesterol: nutrition['Cholesterol'],
                         protein: nutrition['Protein'],
-                        sodium: nutrition['Sodium'],
                         totalCarbs: nutrition['Total Carbohydrate'],
                         totalFat: nutrition['Total Fat']));
                   });
