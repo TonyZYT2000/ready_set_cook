@@ -45,7 +45,32 @@ class _CommonAddState extends State<CommonAdd> {
                     IngredientTile(item)
                 ]),
           ],
-        )
+        ),
+        ExpansionTile(
+          title: Text("Meat and Seafood"),
+          children: [
+            GridView.count(
+                crossAxisCount: 4,
+                shrinkWrap: true,
+                children: <Widget>[
+                  for (Ingredient item in commonIngredient.commonMeatAndSeafood)
+                    IngredientTile(item)
+                ]),
+          ],
+        ),
+        ExpansionTile(
+          title: Text("Others"),
+          children: [
+            GridView.count(
+                crossAxisCount: 4,
+                shrinkWrap: true,
+                children: <Widget>[
+                  for (Ingredient item
+                      in commonIngredient.commonOtherIngredient)
+                    IngredientTile(item)
+                ]),
+          ],
+        ),
       ],
     )));
   }

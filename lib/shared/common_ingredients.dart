@@ -46,11 +46,30 @@ class CommonIngredient {
   Ingredient _sweetCorn;
   Ingredient _sweetPotato;
   Ingredient _tomato;
+  Ingredient _bacon;
+  Ingredient _beef;
+  Ingredient _caviar;
+  Ingredient _chicken;
+  Ingredient _cod;
+  Ingredient _duckMeat;
+  Ingredient _eel;
+  Ingredient _ham;
+  Ingredient _lamb;
+  Ingredient _pork;
+  Ingredient _salmon;
+  Ingredient _sardine;
+  Ingredient _sausage;
+  Ingredient _shrimp;
+  Ingredient _tuna;
+  Ingredient _eggs;
+  Ingredient _noodles;
+  Ingredient _rice;
+  Ingredient _tofu;
 
   List<Ingredient> commonFruits;
   List<Ingredient> commonVegetables;
-  List<Ingredient> commonMeat;
-  List<Ingredient> otherCommonIngredient;
+  List<Ingredient> commonMeatAndSeafood;
+  List<Ingredient> commonOtherIngredient;
 
   CommonIngredient() {
     _apple = Ingredient(
@@ -585,6 +604,240 @@ class CommonIngredient {
       _sweetCorn,
       _sweetPotato,
       _tomato
+    ]);
+
+    _bacon = Ingredient(
+        '',
+        'Bacon',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        240,
+        false,
+        "https://i.ytimg.com/vi/yjDpBnPuCnM/maxresdefault.jpg");
+
+    _beef = Ingredient(
+        '',
+        'Beef',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        90,
+        false,
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Rostas_%28ready_and_served%29.JPG/1200px-Rostas_%28ready_and_served%29.JPG");
+
+    _caviar = Ingredient(
+        '',
+        'Caviar',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        5,
+        false,
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYVajJ7Tm6D2BAsFVDczYRU9Pua_T7_uq83w&usqp=CAU");
+
+    _chicken = Ingredient(
+        '',
+        'Chicken',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        90,
+        false,
+        "https://www.maangchi.com/wp-content/uploads/2018/02/roasted-chicken-1.jpg");
+
+    _cod = Ingredient(
+        '',
+        'Cod',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        200,
+        false,
+        "https://cdn.shopify.com/s/files/1/0126/6076/8825/products/93cef06809c59c109aa02e3a480ab330_2700x.jpg?v=1539826157");
+
+    _duckMeat = Ingredient(
+        '',
+        'Duck Meat',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        60,
+        false,
+        "https://images-gmi-pmc.edge-generalmills.com/a161bab7-e468-4591-9717-1129814f5d4a.jpg");
+
+    _eel = Ingredient(
+        '',
+        'Eel',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        180,
+        false,
+        "https://images.japancentre.com/recipes/pics/1434/main/unagidon-edited.jpg?1469573896");
+
+    _ham = Ingredient(
+        '',
+        'Ham',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        180,
+        false,
+        "https://food.fnr.sndimg.com/content/dam/images/food/fullset/2015/8/14/0/WU1104H_Honey-Glazed-Ham_s4x3.jpg.rend.hgtvcom.616.462.suffix/1439583024885.jpeg");
+
+    _lamb = Ingredient(
+        '',
+        'Lamb',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        180,
+        false,
+        "https://img.apmcdn.org/ca50983f9e3aa3a807e3d33629b3ba9ba2d5bc6d/uncropped/ba80ff-splendid-table-redrubbedbabylambchops-lede.jpg");
+
+    _pork = Ingredient(
+        '',
+        'Pork',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        120,
+        false,
+        "https://justcook.butcherbox.com/wp-content/uploads/2019/06/Boneless-Porkchops-800x500.jpg");
+
+    _salmon = Ingredient(
+        '',
+        'Salmon',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        60,
+        false,
+        "https://www.onceuponachef.com/images/2018/02/pan-seared-salmon--1200x988.jpg");
+
+    _sardine = Ingredient(
+        '',
+        'Sardine',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        90,
+        false,
+        "https://image.made-in-china.com/2f0j00uniEUtIPJNqk/Canned-Sardine-in-Oil-425g-235g-Cylinder-Can-Canned-Fish-Manufacturer.jpg");
+
+    _sausage = Ingredient(
+        '',
+        'Sausage',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        30,
+        false,
+        "https://www.southsidemarket.com/wp-content/uploads/2017/07/HeroFinal-36.jpg");
+
+    _shrimp = Ingredient(
+        '',
+        'Shrimp',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        540,
+        false,
+        "https://images-prod.healthline.com/hlcmsresource/images/AN_images/shrimp-on-wooden-platter-1296x728.jpg");
+
+    _tuna = Ingredient(
+        '',
+        'Tuna',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        270,
+        false,
+        "https://cdn.shopify.com/s/files/1/0280/3011/products/IMG_7587_2048x.jpg?v=1529541706");
+
+    commonMeatAndSeafood = List.from([
+      _bacon,
+      _beef,
+      _caviar,
+      _chicken,
+      _cod,
+      _duckMeat,
+      _eel,
+      _ham,
+      _lamb,
+      _pork,
+      _salmon,
+      _sardine,
+      _sausage,
+      _shrimp,
+      _tuna
+    ]);
+
+    _eggs = Ingredient(
+        '',
+        'Eggs',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        270,
+        false,
+        "https://images-prod.healthline.com/hlcmsresource/images/AN_images/health-benefits-of-eggs-1296x728-feature.jpg");
+
+    _noodles = Ingredient(
+        '',
+        'Noodles',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        270,
+        false,
+        "https://www.seriouseats.com/2019/09/20190530-ramen-noodles-vicky-wasik-76-1500x1125.jpg");
+
+    _rice = Ingredient(
+        '',
+        'Rice',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        270,
+        false,
+        "https://i.guim.co.uk/img/media/fe11954af9f0feb91e8c975620a98a09f80e3490/0_187_5616_3370/master/5616.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=e63d2edc6117fa7d8ac79dd0a1ab0153");
+
+    _tofu = Ingredient(
+        '',
+        'Tofu',
+        1,
+        '',
+        DateTime.now(),
+        Nutrition(82, 0, 22, 0, 16, 2),
+        270,
+        false,
+        "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/the-health-benefits-of-tofu-700-350-1550d79.jpg?quality=90&resize=960,872");
+
+    commonOtherIngredient = List.from([
+      _eggs,
+      _noodles,
+      _rice,
+      _tofu,
     ]);
   }
 }
