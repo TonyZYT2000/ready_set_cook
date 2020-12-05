@@ -5,53 +5,60 @@ import 'package:uuid/uuid.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ready_set_cook/services/recipes_database.dart';
 import 'package:ready_set_cook/models/recipe.dart';
+import 'package:ready_set_cook/screens/recipes/createRecipe.dart';
 import 'package:ready_set_cook/models/ingredient.dart';
 
-class AddInstruction extends StatefulWidget {
-  final Function toggleView;
-  AddInstruction({this.toggleView});
+class AddInstructionsPage extends StatefulWidget {
   @override
-  _AddInstructionState createState() => _AddInstructionState();
+  _AddInstructionsPage createState() => _AddInstructionsPage();
 }
 
-class _AddInstructionState extends State<AddInstruction> {
-  final _formKey = GlobalKey<FormState>();
-
-  String instruction = "";
-  List<String> _instructions = [];
+class _AddInstructionsPage extends State<AddInstructionsPage> {
+  final _controller1 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-        child: Form(
-            key: _formKey,
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: 20.0),
-                  TextFormField(
-                    decoration: textInputDecoration.copyWith(
-                        hintText: 'Enter Instruction'),
-                    onChanged: (val) {
-                      setState(() => instruction = val);
-                    },
-                  ),
-                  SizedBox(height: 20.0),
-                  RaisedButton(
-                      color: Colors.blue[400],
-                      child: Text(
-                        'Add Instruction',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onPressed: () async {
-                        _instructions.add(
-                            instruction); // adds to all recipes and personal collection
-                      }),
-                ],
+    _controller1.clear();
+    return new Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text("Add New Instruction"),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: new Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            SizedBox(
+              height: 24,
+            ),
+            TextField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Enter Instruction'),
+                controller: _controller1),
+            SizedBox(
+              height: 24,
+            ),
+            RaisedButton(
+              color: Colors.blue[400],
+              child: Text(
+                'Add Instruction',
+                style: TextStyle(color: Colors.white),
               ),
-            )),
+              onPressed: () {
+                if (_controller1.text == "") {
+                  print("Didn't Enter Anything");
+                } else {
+                  Navigator.pop(context, _controller1.text);
+                }
+              },
+            )
+          ],
+        ),
       ),
     );
   }

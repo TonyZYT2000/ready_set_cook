@@ -1,7 +1,6 @@
 import 'package:ready_set_cook/models/user.dart' as u;
 import 'package:firebase_auth/firebase_auth.dart' as fire;
 import 'package:ready_set_cook/services/recipes_database.dart';
-import 'package:ready_set_cook/models/recipe.dart';
 
 class AuthService {
   final fire.FirebaseAuth _auth = fire.FirebaseAuth.instance;
@@ -17,6 +16,26 @@ class AuthService {
         .authStateChanges()
         //.map((FirebaseUser user) => _userFromFirebaseUser(user));
         .map(_userFromFirebaseUser);
+  }
+
+  String getCurrentUserEmail() {
+    return _auth.currentUser.email;
+  }
+
+  String getCurrentUserFirstName() {
+    return _auth.currentUser.displayName;
+  }
+
+  // sign in anon
+  Future signInAnon() async {
+    try {
+      fire.UserCredential result = await _auth.signInAnonymously();
+      fire.User user = result.user;
+      return _userFromFirebaseUser(user);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
   }
 
   // sign in with email and password
@@ -58,6 +77,11 @@ class AuthService {
       print(error.toString());
       return null;
     }
+  }
+
+  // send password reset email
+  Future<void> resetPassword(String email) async {
+    await _auth.sendPasswordResetEmail(email: email);
   }
 
   // sign out

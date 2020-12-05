@@ -57,6 +57,7 @@ class _RecipeState extends State<Recipe> {
                                 .collection('allRecipes')
                                 .doc(recipeId)
                                 .get(),
+                            // ignore: non_constant_identifier_names
                             builder: (ctx, Rsnapshot) {
                               if (Rsnapshot.data != null) {
                                 name = Rsnapshot.data.get('name');

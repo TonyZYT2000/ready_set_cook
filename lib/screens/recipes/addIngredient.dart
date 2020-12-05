@@ -5,76 +5,90 @@ import 'package:uuid/uuid.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ready_set_cook/services/recipes_database.dart';
 import 'package:ready_set_cook/models/recipe.dart';
+import 'package:ready_set_cook/screens/recipes/createRecipe.dart';
 import 'package:ready_set_cook/models/ingredient.dart';
 
-class AddIngredient extends StatefulWidget {
-  final Function toggleView;
-  AddIngredient({this.toggleView});
+class AddIngredientPage extends StatefulWidget {
+  final String instruction;
+  AddIngredientPage({this.instruction});
+
   @override
-  _AddIngredientState createState() => _AddIngredientState();
+  _AddIngredientPage createState() => _AddIngredientPage();
 }
 
-class _AddIngredientState extends State<AddIngredient> {
-  final _formKey = GlobalKey<FormState>();
+class _AddIngredientPage extends State<AddIngredientPage> {
 
   String _ingredientName = "";
   int _quantity = 0;
   String _unit = "";
-  List<Ingredient> ingredient = [];
+
+  final _controller1 = TextEditingController();
+  final _controller2 = TextEditingController();
+  final _controller3 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final uid = FirebaseAuth.instance.currentUser.uid;
-    final recipeDB = RecipesDatabaseService(uid: uid);
-    return Scaffold(
-      body: Container(
-        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-        child: Form(
-            key: _formKey,
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: 20.0),
-                  TextFormField(
-                    decoration: textInputDecoration.copyWith(
-                        hintText: 'Enter Ingredient Name'),
-                    onChanged: (val) {
-                      setState(() => _ingredientName = val);
-                    },
-                  ),
-                  SizedBox(height: 20.0),
-                  TextFormField(
-                    decoration: textInputDecoration.copyWith(
-                        hintText: 'Enter Quantity'),
-                    onChanged: (val) {
-                      setState(() => _quantity = int.parse(val));
-                    },
-                  ),
-                  SizedBox(height: 20.0),
-                  TextFormField(
-                    decoration:
-                        textInputDecoration.copyWith(hintText: 'Enter Unit'),
-                    onChanged: (val) {
-                      setState(() => _unit = val);
-                    },
-                  ),
-                  SizedBox(height: 20.0),
-                  RaisedButton(
-                      color: Colors.blue[400],
-                      child: Text(
-                        'Add Ingredient',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onPressed: () async {
-                        ingredient.add(new Ingredient(
-                            nameOfIngredient: _ingredientName,
-                            quantity: _quantity.toString(),
-                            unit:
-                                _unit)); // adds to all recipes and personal collection
-                      }),
-                ],
+    _controller1.clear();
+    _controller2.clear();
+    _controller3.clear();
+    return new Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text("Add New Ingredient"),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: new Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            SizedBox(
+              height: 24,
+            ),
+            TextField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Enter Ingredient Name'),
+                controller: _controller1),
+            SizedBox(height: 12),
+            SizedBox(
+              height: 24,
+            ),
+            TextField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(), labelText: 'Enter Quantity'),
+                controller: _controller2),
+            SizedBox(
+              height: 24,
+            ),
+            TextField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(), labelText: 'Enter Units'),
+                controller: _controller3),
+            SizedBox(
+              height: 24,
+            ),
+            RaisedButton(
+              color: Colors.blue[400],
+              child: Text(
+                'Add Ingredient',
+                style: TextStyle(color: Colors.white),
               ),
-            )),
+              onPressed: () {
+                if (_controller1.text == "") {
+                  print("Ingredient Name Not Found");
+                } else {
+                  final newIngedient = new Ingredient(
+                      name: _controller1.text, quantity: int.parse(_controller2.text), unit: _controller3.text);
+
+                  Navigator.of(context).pop(newIngedient);
+                }
+              },
+            )
+          ],
+        ),
       ),
     );
   }

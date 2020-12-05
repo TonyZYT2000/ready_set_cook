@@ -1,60 +1,45 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:ready_set_cook/models/nutrition.dart';
 import 'package:ready_set_cook/shared/constants.dart';
 import 'package:ready_set_cook/services/grocery.dart';
 import 'package:ready_set_cook/models/ingredient.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
-class Manual extends StatefulWidget {
+class CommonEdit extends StatefulWidget {
+  final Ingredient _ingredient;
+  CommonEdit(this._ingredient);
+
   @override
-  _ManualState createState() => _ManualState();
+  _CommonEditState createState() => _CommonEditState();
 }
 
-class _ManualState extends State<Manual> {
+class _CommonEditState extends State<CommonEdit> {
   GroceryDatabase _groceryDB = null;
   final _formKey = GlobalKey<FormState>();
   TextEditingController _controller1 = TextEditingController();
   TextEditingController _controller2 = TextEditingController();
   TextEditingController _controller3 = TextEditingController();
-  TextEditingController _controller4 = TextEditingController();
 
-  String _name = '';
-  int _quantity = 0;
-  String _unit = '';
-  int _shelfLife = 15;
-  DateTime _startDate = DateTime.now();
+  String _name;
+  int _quantity;
+  String _unit;
+  DateTime _startDate;
+  int _shelfLife;
+  String _imageUrl;
 
-  File _image = null;
-  String _imageUrl = null;
-  String _filePath = null;
-  final _picker = ImagePicker();
-
-  void getImage() async {
-    final pickedFile =
-        await _picker.getImage(source: ImageSource.gallery, imageQuality: 50);
-    _filePath = pickedFile.path;
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      } else {
-        print('No image selected.');
-      }
-    });
+  @override
+  void initState() {
+    super.initState();
+    _name = widget._ingredient.name;
+    _quantity = widget._ingredient.quantity;
+    _unit = widget._ingredient.unit;
+    _startDate = DateTime.now();
+    _shelfLife = widget._ingredient.shelfLife;
+    _imageUrl = widget._ingredient.imageUrl;
   }
 
   Future<void> _onSubmit() async {
     final isValid = _formKey.currentState.validate();
     if (isValid) {
-      if (_image != null) {
-        var ref = FirebaseStorage.instance
-            .ref()
-            .child('storage_image')
-            .child(_filePath);
-        await ref.putFile(_image).whenComplete(() => null);
-        _imageUrl = await ref.getDownloadURL();
-      }
-
       _groceryDB.addItem(Ingredient(
           name: _name,
           quantity: _quantity,
@@ -62,13 +47,9 @@ class _ManualState extends State<Manual> {
           startDate: _startDate,
           shelfLife: _shelfLife,
           imageUrl: _imageUrl));
-      _image = null;
-      _imageUrl = null;
       _controller1.clear();
       _controller2.clear();
       _controller3.clear();
-      _controller4.clear();
-
       _formKey.currentState.save();
     }
 
@@ -82,6 +63,9 @@ class _ManualState extends State<Manual> {
     }
 
     return Scaffold(
+      appBar: AppBar(
+          title: Text('Add ' + widget._ingredient.name),
+          backgroundColor: Colors.cyan),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         child: Form(
@@ -90,38 +74,15 @@ class _ManualState extends State<Manual> {
               child: Column(
                 children: <Widget>[
                   Container(
-                    height: 200,
-                    width: 200,
-                    child: (_image == null)
-                        ? Image(
-                            image: NetworkImage(
-                                "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png"))
-                        : Image.file(_image),
-                  ),
-                  FlatButton(
-                    color: Colors.grey[300],
-                    child: Text("Add Image"),
-                    onPressed: getImage,
-                  ),
+                      height: 240,
+                      width: 250,
+                      child: Image(
+                          image: NetworkImage(widget._ingredient.imageUrl))),
+                  SizedBox(height: 15.0),
+                  Text(widget._ingredient.name, style: TextStyle(fontSize: 16)),
                   SizedBox(height: 15.0),
                   TextFormField(
                     controller: _controller1,
-                    key: ValueKey("ingredient name"),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return "please enter valid ingredient name";
-                      }
-                      return null;
-                    },
-                    decoration: textInputDecoration.copyWith(
-                        hintText: 'Enter Ingredient Name'),
-                    onChanged: (val) {
-                      setState(() => _name = val);
-                    },
-                  ),
-                  SizedBox(height: 15.0),
-                  TextFormField(
-                    controller: _controller2,
                     key: ValueKey("quantity"),
                     validator: (value) {
                       if (value.isEmpty || int.tryParse(value) == null) {
@@ -138,7 +99,7 @@ class _ManualState extends State<Manual> {
                   ),
                   SizedBox(height: 15.0),
                   TextFormField(
-                    controller: _controller3,
+                    controller: _controller2,
                     key: ValueKey("unit"),
                     decoration: textInputDecoration.copyWith(
                         hintText: 'Enter Unit (Optional)'),
@@ -148,7 +109,7 @@ class _ManualState extends State<Manual> {
                   ),
                   SizedBox(height: 15.0),
                   TextFormField(
-                    controller: _controller4,
+                    controller: _controller3,
                     key: ValueKey("Shelf Life"),
                     validator: (value) {
                       if (value.isNotEmpty && int.tryParse(value) == null) {
