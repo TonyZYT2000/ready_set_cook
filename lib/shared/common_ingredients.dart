@@ -114,7 +114,7 @@ class CommonIngredient {
         Nutrition(84, 0, 22, 0, 15, 4),
         5,
         false,
-        "https://backyardberryplants.com/wp-content/uploads/2018/09/TripleCrown.jpg");
+        "https://www.aces.edu/wp-content/uploads/2018/08/shutterstock_637387888-blueberries.jpg");
 
     _cherry = Ingredient(
         '',
@@ -147,7 +147,7 @@ class CommonIngredient {
         Nutrition(52, 0, 13, 1, 8, 2),
         42,
         false,
-        "https://images.ctfassets.net/cnu0m8re1exe/6uSVPiUx1FloQ23j38x2aM/0eafe5c0d6b3ce7e3aae6b389a997423/Grapes.jpg?w=650&h=433&fit=fill");
+        "https://www.usnews.com/dims4/USNEWS/4f50f38/2147483647/resize/1200x%3E/quality/85/?url=http%3A%2F%2Fmedia.beam.usnews.com%2Fbb%2F3c%2Fc76be92d4b84aaab13584f1197c6%2Fgrapefruit.jpg");
 
     _kiwi = Ingredient(
         '',
@@ -213,7 +213,7 @@ class CommonIngredient {
         Nutrition(61, 0, 15, 0, 14, 4),
         5,
         false,
-        "https://upload.wikimedia.org/wikipedia/commons/2/24/Red-Plums.jpg");
+        "https://www.healthbenefitstimes.com/9/uploads/2012/10/Health-benefits-of-Plums-1.png");
 
     _raisins = Ingredient(
         '',
