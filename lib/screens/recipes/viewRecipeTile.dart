@@ -17,85 +17,108 @@ class ViewRecipeTile extends StatelessWidget {
         Container(
             padding: EdgeInsets.all(35.0),
             child: Wrap(children: <Widget>[
+              Text(
+                "Ingredients",
+                style: TextStyle(color: Colors.blue[700], fontSize: 26),
+              ),
+              SizedBox(height: 50),
               for (int i = 0; i < (ingredient.length); i++)
                 Table(
                     border: TableBorder.symmetric(
-                        inside: BorderSide(width: 3, color: Colors.blue[200]),
-                        outside: BorderSide(width: 3, color: Colors.blue[200])),
-                    defaultColumnWidth: FixedColumnWidth(150),
+                        inside: BorderSide.none, outside: BorderSide.none),
+                    defaultColumnWidth: FixedColumnWidth(180),
                     children: [
                       TableRow(children: [
                         TableCell(
-                            child: Center(
-                                child: Text(ingredient[i].nameOfIngredient,
-                                    style: TextStyle(
-                                        color: Colors.blueGrey,
-                                        fontSize: 18,
-                                        height: 1.8)))),
+                            child: Text(ingredient[i].nameOfIngredient,
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    color: Colors.blue[700],
+                                    fontSize: 19,
+                                    height: 1.8))),
                         TableCell(
-                            child: Center(
-                                child: Text(
-                                    (ingredient[i].quantity).toString() +
-                                        '   ' +
-                                        ingredient[i].unit,
-                                    style: TextStyle(
-                                        color: Colors.blueGrey,
-                                        fontSize: 18,
-                                        height: 1.8)))),
+                            child: Text(
+                                (ingredient[i].quantity).toString() +
+                                    ' ' +
+                                    ingredient[i].unit,
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                    color: Colors.blue[700],
+                                    fontSize: 19,
+                                    height: 1.8))),
                       ])
                     ]),
+              SizedBox(height: 100),
+              Text(
+                "Instructions",
+                style: TextStyle(color: Colors.blue[700], fontSize: 26),
+              ),
               SizedBox(height: 50),
               for (int i = 0; i < (instruction.length); i++)
                 Table(
                     border: TableBorder.symmetric(
-                        inside: BorderSide(width: 3, color: Colors.blue[200]),
-                        outside: BorderSide(width: 3, color: Colors.blue[200])),
-                    defaultColumnWidth: FixedColumnWidth(300),
+                        inside: BorderSide.none, outside: BorderSide.none),
+                    defaultColumnWidth: FixedColumnWidth(350),
                     children: [
                       TableRow(children: [
                         TableCell(
-                            child: Center(
-                                child: Text(
-                          instruction[i],
+                            child: Text(
+                          (i + 1).toString() + ':  ' + instruction[i],
                           style: TextStyle(
-                              color: Colors.blueGrey,
+                              color: Colors.blue[700],
                               fontSize: 18,
                               height: 1.8),
-                          textAlign: TextAlign.center,
-                        ))),
+                          textAlign: TextAlign.left,
+                        )),
                       ])
                     ]),
+              SizedBox(height: 100),
+              Text(
+                "Nutritional Facts (per serving)",
+                style: TextStyle(color: Colors.blue[700], fontSize: 26),
+              ),
               SizedBox(height: 50),
               for (int i = 0; i < (nutrition.length); i++)
                 Table(
                     border: TableBorder.symmetric(
-                        inside: BorderSide(width: 3, color: Colors.blue[200]),
-                        outside: BorderSide(width: 3, color: Colors.blue[200])),
-                    defaultColumnWidth: FixedColumnWidth(300),
+                        inside: BorderSide.none, outside: BorderSide.none),
+                    defaultColumnWidth: FixedColumnWidth(180),
                     children: [
                       TableRow(children: [
                         TableCell(
-                            child: Center(
-                                child: Text(
-                          'Nutrition Facts (per serving): ' +
-                              '\nCalories: ' +
-                              nutrition[i].calories +
+                            child: Text(
+                          'Calories: ' +
                               '\nCholesterol: ' +
-                              nutrition[i].cholesterol +
                               '\nProtein: ' +
-                              nutrition[i].protein +
                               '\nSodium: ' +
-                              nutrition[i].sodium +
                               '\nTotal Carbs: ' +
-                              nutrition[i].totalCarbs +
-                              '\nTotal Fat: ' +
-                              nutrition[i].totalFat,
+                              '\nTotal Fat: ',
                           style: TextStyle(
-                              color: Colors.blueGrey,
-                              fontSize: 18,
+                              color: Colors.blue[700],
+                              fontSize: 19,
                               height: 1.8),
                           textAlign: TextAlign.left,
-                        ))),
+                        )),
+                        TableCell(
+                            child: Text(
+                          nutrition[i].calories +
+                              '\n' +
+                              nutrition[i].cholesterol +
+                              '\n' +
+                              nutrition[i].protein +
+                              '\n' +
+                              nutrition[i].sodium +
+                              '\n' +
+                              nutrition[i].totalCarbs +
+                              '\n' +
+                              nutrition[i].totalFat +
+                              '\n',
+                          style: TextStyle(
+                              color: Colors.blue[700],
+                              fontSize: 19,
+                              height: 1.8),
+                          textAlign: TextAlign.right,
+                        )),
                       ])
                     ])
             ]))

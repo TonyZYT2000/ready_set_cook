@@ -3,7 +3,7 @@ import 'package:ready_set_cook/screens/recipes/viewRecipe.dart';
 
 class RecipeTile extends StatelessWidget {
   final String name;
-  final int rating;
+  final double rating;
   final String recipeId;
   List<String> lst = ['Name: ', 'Rating:  '];
   RecipeTile({this.name, this.rating, this.recipeId});

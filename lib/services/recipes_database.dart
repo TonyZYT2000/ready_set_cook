@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/number_symbols_data.dart';
 import 'package:ready_set_cook/models/recipe.dart';
 import 'dart:developer';
 
@@ -68,41 +69,37 @@ class RecipesDatabaseService {
   // work on adding ingredients to database
   // work on adding instructions to database
   Future addCustomRecipe(Recipe recipe) async {
-    await allRecipesCollection.add({
+    recipe.ingredients.forEach((ing) {
+      allRecipesCollection.doc(recipe.recipeId).collection("ingredients").add({
+        "name": ing.nameOfIngredient,
+        "quantity": ing.quantity,
+        "unit": ing.unit
+      });
+    });
+
+    recipe.instructions.forEach((ins) {
+      allRecipesCollection
+          .doc(recipe.recipeId)
+          .collection("instructions")
+          .add({"instruction": ins});
+    });
+
+      allRecipesCollection.doc(recipe.recipeId).collection("nutrition").add({
+        "Calories": recipe.nutrition.calories,
+        "Protein": recipe.nutrition.protein,
+        "Total Fat": recipe.nutrition.totalFat,
+        "Total Carbohydrate": recipe.nutrition.totalCarbs,
+      });
+
+    await allRecipesCollection.doc(recipe.recipeId).set({
       "recipeId": recipe.recipeId,
       "name": recipe.name,
       "rating": recipe.rating,
       "numRatings": recipe.numRatings
     });
-
-    int currIngred = 0;
-    while (recipe.ingredients[currIngred] != null) {
-      await allRecipesCollection
-          .doc(recipe.recipeId)
-          .collection("ingredients")
-          .add({"name": recipe.ingredients[currIngred].nameOfIngredient});
-      await allRecipesCollection
-          .doc(recipe.recipeId)
-          .collection("ingredients")
-          .add({"quantity": recipe.ingredients[currIngred].quantity});
-      await allRecipesCollection
-          .doc(recipe.recipeId)
-          .collection("ingredients")
-          .add({"unit": recipe.ingredients[currIngred].unit});
-      currIngred++;
-    }
-
-    int currInstruct = 0;
-    while (recipe.instructions[currInstruct] != null &&
-        recipe.instructions[currInstruct] != "") {
-      await allRecipesCollection
-          .doc(recipe.recipeId)
-          .collection("instructions")
-          .add({"instruction": recipe.instructions[currInstruct]});
-      currInstruct++;
-    }
-
     addRecipe(recipe.recipeId);
+    recipe.ingredients.clear();
+    recipe.instructions.clear();
   }
 
   Future getRecipesHelper(QueryDocumentSnapshot qds) async {

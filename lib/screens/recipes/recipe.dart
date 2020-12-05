@@ -19,7 +19,7 @@ class _RecipeState extends State<Recipe> {
     final uid = FirebaseAuth.instance.currentUser.uid;
     final RecipesObject = RecipesDatabaseService(uid: uid);
     String name = "";
-    int rating = 0;
+    double rating = 0;
 
     return StreamBuilder(
         stream: FirebaseFirestore.instance
@@ -57,8 +57,9 @@ class _RecipeState extends State<Recipe> {
                                 .get(),
                             builder: (ctx, Rsnapshot) {
                               if (Rsnapshot.data != null) {
-                                name = Rsnapshot.data.get("name");
-                                rating = Rsnapshot.data.get('rating');
+                                name = Rsnapshot.data.get('name');
+                                var temp = Rsnapshot.data.get('rating');
+                                rating = temp.toDouble();
                               }
                               return RecipeTile(
                                   name: name,
