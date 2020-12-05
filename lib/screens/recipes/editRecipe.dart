@@ -1,70 +1,98 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import 'package:ready_set_cook/shared/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ready_set_cook/shared/constants.dart';
+import 'package:ready_set_cook/models/recipe.dart';
+import 'package:ready_set_cook/models/ingredient.dart';
+import 'package:ready_set_cook/services/recipes_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class EditRecipe extends StatefulWidget {
-  final Function toggleView;
-  EditRecipe({this.toggleView});
-  @override
-  _EditRecipeState createState() => _EditRecipeState();
-}
+  final String recipeId;
+  EditRecipe(this.recipeId);
 
-class _EditRecipeState extends State<EditRecipe> {
+  @override
+  _EditState createState() => _EditState();
+} // EditRecipe
+
+class _EditState extends State<EditRecipe> {
+  String _recipeName = null;
+  double _rating = null;
+  List<Ingredient> _ingredients = null;
+  List<String> _instructions = null;
+
   final _formKey = GlobalKey<FormState>();
-  final recipeDB = FirebaseFirestore.instance;
 
-  String _recipeName = "";
-  List<String> _ingredient = [];
-  int _quantity = 0;
+  TextEditingController _controller1 = TextEditingController();
+  TextEditingController _controller2 = TextEditingController();
+  TextEditingController _controller3 = TextEditingController();
+  TextEditingController _controller4 = TextEditingController();
 
-  @override
+  void _onSubmit() {
+    final currentRec =
+        RecipesDatabaseService().allRecipesCollection.doc(widget.recipeId);
+    currentRec.update({"name": _recipeName});
+
+    _recipeName = null;
+    _rating = null;
+    _ingredients = null;
+    _instructions = null;
+    _controller1.clear();
+    _controller2.clear();
+    _controller3.clear();
+    _controller4.clear();
+    _formKey.currentState.save();
+  }
+
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Update Recipe'),
-        backgroundColor: Colors.cyan,
-      ),
-      body: Container(
-        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-        child: Form(
-            key: _formKey,
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: 20.0),
-                  TextFormField(
-                    decoration: textInputDecoration.copyWith(
-                        hintText: 'Enter Ingredient Name'),
-                    onChanged: (val) {
-                      setState(() => _recipeName = val);
-                    },
-                  ),
-                  SizedBox(height: 20.0),
-                  TextFormField(
-                    decoration: textInputDecoration.copyWith(
-                        hintText: 'Enter Quantity'),
-                    onChanged: (val) {
-                      setState(() => _quantity = int.parse(val));
-                    },
-                  ),
-                  SizedBox(height: 20.0),
-                  RaisedButton(
-                      color: Colors.blue[400],
-                      child: Text(
-                        'Save changes',
-                        style: TextStyle(color: Colors.white),
+    String uid = FirebaseAuth.instance.currentUser.uid;
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('recipes')
+            .doc(uid)
+            .collection('allrecipe')
+            .doc(widget.recipeId)
+            .snapshots(),
+        builder: (ctx, recipesSnapshot) {
+          if (recipesSnapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          final recipeName = recipesSnapshot.data['name'];
+          final recipeRating = recipesSnapshot.data['rating'];
+          return Scaffold(
+            appBar: AppBar(
+                title: const Text('Edit Items'), backgroundColor: Colors.cyan),
+            body: Container(
+              child: Form(
+                key: _formKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(height: 20.0),
+                      TextFormField(
+                        controller: _controller1,
+                        key: ValueKey("Recipe Name"),
+                        decoration: textInputDecoration.copyWith(
+                            hintText: 'Update Name: ' + recipeName),
+                        onChanged: (val) {
+                          setState(() => _recipeName = val);
+                        },
                       ),
-                      onPressed: () async {
-                        recipeDB.collection("recipeList").add({
-                          "ingredientName": _recipeName,
-                          "quantity": _quantity
-                        });
-                        //传到database
-                      }),
-                ],
+                      SizedBox(height: 20.0),
+                      RaisedButton(
+                          color: Colors.blue[400],
+                          child: Text(
+                            'Update',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          onPressed: _onSubmit),
+                    ],
+                  ),
+                ),
               ),
-            )),
-      ),
-    );
+            ),
+          );
+        });
   }
 }
