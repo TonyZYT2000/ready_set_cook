@@ -16,10 +16,8 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
 
   static List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Recommended Recipes',
-      style: TextStyle(fontSize: 12),
-    ),
+    Recommend(),
+    Text("Recommend"),
     Recipe(),
     Storage(),
     Profile(),
