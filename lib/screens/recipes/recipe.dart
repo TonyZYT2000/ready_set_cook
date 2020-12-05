@@ -122,6 +122,7 @@ class _RecipeState extends State<Recipe> {
                   child: Padding(
                     padding: sidePadding,
                     child: ListView.builder(
+                      physics: BouncingScrollPhysics(),
                       itemCount: recipesdoc.length,
                       itemBuilder: (ctx, index) {
                         final recipeId = recipesdoc[index]['recipeId'];
@@ -167,7 +168,7 @@ class RecipeItem extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => ViewRecipe(
-                  recipeId
+                  recipeId, name
                 )));
       },
       child: Container(

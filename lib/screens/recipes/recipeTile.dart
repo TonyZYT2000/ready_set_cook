@@ -14,7 +14,7 @@ class RecipeTile extends StatelessWidget {
     return GestureDetector(
         onTap: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ViewRecipe(recipeId)));
+              MaterialPageRoute(builder: (context) => ViewRecipe(recipeId, name)));
         },
         child: Container(
           padding: EdgeInsets.all(5),

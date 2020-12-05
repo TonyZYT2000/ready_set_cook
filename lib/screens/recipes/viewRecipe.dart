@@ -4,11 +4,13 @@ import 'package:ready_set_cook/models/ingredient.dart';
 import 'editRecipe.dart';
 import 'package:ready_set_cook/screens/recipes/viewRecipeTile.dart';
 import 'package:ready_set_cook/models/nutrition.dart';
+import 'package:ready_set_cook/screens/recipes/deleteConfirmation.dart';
 
 class ViewRecipe extends StatefulWidget {
   final Function toggleView;
   String recipeId = "";
-  ViewRecipe(this.recipeId, {this.toggleView});
+  String name = "";
+  ViewRecipe(this.recipeId, this.name, {this.toggleView});
   @override
   _ViewRecipeState createState() => _ViewRecipeState();
 }
@@ -29,6 +31,7 @@ class _ViewRecipeState extends State<ViewRecipe> {
   void initState() {
     super.initState();
     this.recipeId = widget.recipeId;
+    this.name = widget.name;
   }
 
   Widget build(BuildContext context) {
@@ -87,7 +90,17 @@ class _ViewRecipeState extends State<ViewRecipe> {
             });
 
             return Scaffold(
-                appBar: AppBar(title: Text("View Recipe")),
+                appBar: AppBar(title: Text(name), elevation: 0,
+                        actions: <Widget>[
+                          FlatButton(
+                            minWidth: 20,
+                            child: Text('Delete', style: TextStyle(color: Colors.white, fontSize: 14),),
+                            onPressed: () async {
+                              DeleteConfirmation(context)
+                                  .showDeleteConfirmation(context, recipeId);
+                            },
+                          ),
+                        ],),
                 floatingActionButton: FloatingActionButton.extended(
                     icon: Icon(Icons.edit),
                     label: Text("Edit"),
@@ -102,10 +115,56 @@ class _ViewRecipeState extends State<ViewRecipe> {
                         ingredient: _ingredientsList,
                         instruction: _instructionsList,
                         nutrition: nutrition))
+                /*body: Container(
+                  // height: 100000,
+                  padding: EdgeInsets.symmetric(vertical: 0),
+                  // foregroundDecoration: BoxDecoration(
+                  //     image: DecorationImage(
+                  //         scale: 0.9,
+                  //         colorFilter: ColorFilter.mode(
+                  //             Colors.blue.withOpacity(1.0),
+                  //             BlendMode.softLight),
+                  //         alignment: Alignment.topCenter,
+                  //         image:
+                  //             AssetImage("assets/images/chicken breast.jpg"))),
+                  // child: SingleChildScrollView(
+                  child: Column(children: <Widget>[
+                    SizedBox(
+                      height: 300,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemCount: ingredientDoc.length,
+                        itemBuilder: (ctx, index) {
+                          if (ingredientDoc[index].data != null) {
+                            name = ingredientDoc[index]['name'];
+                            quantity = ingredientDoc[index]['quantity'];
+                            unit = ingredientDoc[index]['unit'];
+                          }
+                          return ViewRecipeIngredTile(
+                              name: name, quantity: quantity, unit: unit);
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: instructionDoc.length,
+                            itemBuilder: (ctx, index) {
+                              if (instructionDoc[index].data != null) {
+                                instruction =
+                                    instructionDoc[index]['instruction'];
+                              }
+                              return ViewRecipeInstructTile(instruction);
+                            }))
+                  ]),
+                ));*/
                 );
           },
         );
       },
     );
-  });
-}}
+  }
+    );}
+}

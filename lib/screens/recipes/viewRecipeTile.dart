@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ready_set_cook/models/ingredient.dart';
 import 'package:ready_set_cook/models/nutrition.dart';
+import 'package:ready_set_cook/screens/recipes/BorderIcon.dart';
+import 'package:ready_set_cook/shared/constants.dart';
 
 class ViewRecipeTile extends StatelessWidget {
   final List<Ingredient> ingredient;
@@ -10,16 +12,38 @@ class ViewRecipeTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(children: <Widget>[
-      SizedBox(height: 10),
+    final Size size = MediaQuery.of(context).size;
+    final ThemeData themeData = Theme.of(context);
+    final double padding = 25;
+    final sidePadding = EdgeInsets.symmetric(horizontal: padding);
+    return ListView(
+      physics: BouncingScrollPhysics(),
+      children: <Widget>[
       Container(
           child: Column(children: <Widget>[
+        Stack(
+                      children: [
+                        Image.asset("assets/images/chicken_breast.png"),
+                        Positioned(
+                          width: size.width,
+                          top: padding,
+                          child: Padding(padding: sidePadding,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end, 
+                            children: [
+                              BorderIcon(height: 50, width: 50, 
+                              child: Icon(Icons.favorite_border, color: COLOR_BLACK, ))],))
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 15),
         Container(
-            padding: EdgeInsets.all(10.0),
-            child: Wrap(children: <Widget>[
+            padding: EdgeInsets.all(12.0),
+            child: Column(children: [
+            Wrap(children: <Widget>[
               Text(
                 "Ingredients",
-                style: TextStyle(color: Colors.blue[700], fontSize: 26),
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
               ),
               SizedBox(height: 50),
               for (int i = 0; i < (ingredient.length); i++)
@@ -33,7 +57,7 @@ class ViewRecipeTile extends StatelessWidget {
                             child: Text(ingredient[i].name,
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
-                                    color: Colors.blue[700],
+                                    // color: Colors.blue[700],
                                     fontSize: 19,
                                     height: 1.8))),
                         TableCell(
@@ -43,7 +67,7 @@ class ViewRecipeTile extends StatelessWidget {
                                     ingredient[i].unit,
                                 textAlign: TextAlign.right,
                                 style: TextStyle(
-                                    color: Colors.blue[700],
+                                    // color: Colors.blue[700],
                                     fontSize: 19,
                                     height: 1.8))),
                       ])
@@ -51,7 +75,7 @@ class ViewRecipeTile extends StatelessWidget {
               SizedBox(height: 100),
               Text(
                 "Instructions",
-                style: TextStyle(color: Colors.blue[700], fontSize: 26),
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
               ),
               SizedBox(height: 50),
               for (int i = 0; i < (instruction.length); i++)
@@ -65,7 +89,7 @@ class ViewRecipeTile extends StatelessWidget {
                             child: Text(
                           (i + 1).toString() + ':  ' + instruction[i],
                           style: TextStyle(
-                              color: Colors.blue[700],
+                              // color: Colors.blue[700],
                               fontSize: 18,
                               height: 1.8),
                           textAlign: TextAlign.left,
@@ -75,7 +99,7 @@ class ViewRecipeTile extends StatelessWidget {
               SizedBox(height: 100),
               Text(
                 "Nutritional Facts (per serving)",
-                style: TextStyle(color: Colors.blue[700], fontSize: 26),
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
               ),
               SizedBox(height: 50),
                 Table(
@@ -91,7 +115,7 @@ class ViewRecipeTile extends StatelessWidget {
                               '\nTotal Carbs: ' +
                               '\nTotal Fat: ',
                           style: TextStyle(
-                              color: Colors.blue[700],
+                              // color: Colors.blue[700],
                               fontSize: 19,
                               height: 1.8),
                           textAlign: TextAlign.left,
@@ -107,15 +131,16 @@ class ViewRecipeTile extends StatelessWidget {
                               nutrition.totalFat +
                               '\n',
                           style: TextStyle(
-                              color: Colors.blue[700],
+                              // color: Colors.blue[700],
                               fontSize: 19,
                               height: 1.8),
                           textAlign: TextAlign.right,
                         )),
                       ])
-                    ])
-            ]))
-      ]))
+                    ]),
+                    SizedBox(height: 200),
+            ])])
+      )]))
     ]);
   }
 }
