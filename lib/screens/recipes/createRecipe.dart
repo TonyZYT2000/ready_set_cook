@@ -105,122 +105,141 @@ class _CreateRecipeState extends State<CreateRecipe> {
     final _tabPages = <Widget>[
       Center(
           child: Scaffold(
-        body: Container(
-          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-          child: Form(
-              key: _ingredientKey,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(height: 20.0),
-                    TextFormField(
-                      controller: _controller1,
-                      // key: ValueKey("ingredient name"),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return "Please enter an ingredient name";
-                        } else {
+        body: Column(
+          children: <Widget>[
+            Expanded(
+                child: ListView.builder(
+                    itemCount: _ingredients.length,
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) =>
+                        Text(_ingredients[index].name))),
+            Form(
+                key: _ingredientKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(height: 20.0),
+                      TextFormField(
+                        controller: _controller1,
+                        // key: ValueKey("ingredient name"),
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return "Please enter an ingredient name";
+                          } else {
+                            return null;
+                          }
+                        },
+                        decoration: textInputDecoration.copyWith(
+                            hintText: 'Enter Ingredient Name'),
+                        onChanged: (val) {
+                          setState(() => _ingredientName = val);
+                        },
+                      ),
+                      SizedBox(height: 20.0),
+                      TextFormField(
+                        controller: _controller2,
+                        // key: ValueKey("quantity"),
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return "Please enter a quantity";
+                          } else {
+                            return null;
+                          }
+                        },
+                        decoration: textInputDecoration.copyWith(
+                            hintText: 'Enter Quantity'),
+                        onChanged: (val) {
+                          setState(() => _quantity = int.parse(val));
+                        },
+                      ),
+                      SizedBox(height: 20.0),
+                      TextFormField(
+                        controller: _controller3,
+                        // key: ValueKey("unit"),
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return "Please enter a unit";
+                          }
                           return null;
-                        }
-                      },
-                      decoration: textInputDecoration.copyWith(
-                          hintText: 'Enter Ingredient Name'),
-                      onChanged: (val) {
-                        setState(() => _ingredientName = val);
-                      },
-                    ),
-                    SizedBox(height: 20.0),
-                    TextFormField(
-                      controller: _controller2,
-                      // key: ValueKey("quantity"),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return "Please enter a quantity";
-                        } else {
-                          return null;
-                        }
-                      },
-                      decoration: textInputDecoration.copyWith(
-                          hintText: 'Enter Quantity'),
-                      onChanged: (val) {
-                        setState(() => _quantity = int.parse(val));
-                      },
-                    ),
-                    SizedBox(height: 20.0),
-                    TextFormField(
-                      controller: _controller3,
-                      // key: ValueKey("unit"),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return "Please enter a unit";
-                        }
-                        return null;
-                      },
-                      decoration:
-                          textInputDecoration.copyWith(hintText: 'Enter Unit'),
-                      onChanged: (val) {
-                        setState(() => _unit = val);
-                      },
-                    ),
-                    SizedBox(height: 15),
-                    SizedBox(height: 20.0),
-                    RaisedButton(
-                        color: Colors.blue[400],
-                        child: Text(
-                          'Add Ingredient',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onPressed: () {
-                          if (_ingredientKey.currentState.validate())
-                            _createIngredient();
-                        }),
-                    Text(_ingredient_error,
-                        style: TextStyle(color: Colors.red, fontSize: 14)),
-                  ],
-                ),
-              )),
+                        },
+                        decoration: textInputDecoration.copyWith(
+                            hintText: 'Enter Unit'),
+                        onChanged: (val) {
+                          setState(() => _unit = val);
+                        },
+                      ),
+                      SizedBox(height: 15),
+                      SizedBox(height: 20.0),
+                      RaisedButton(
+                          color: Colors.blue[400],
+                          child: Text(
+                            'Add Ingredient',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          onPressed: () {
+                            if (_ingredientKey.currentState.validate())
+                              _createIngredient();
+                          }),
+                      Text(_ingredient_error,
+                          style: TextStyle(color: Colors.red, fontSize: 14)),
+                    ],
+                  ),
+                ))
+          ],
         ),
       )),
       Center(
           child: Scaffold(
-        body: Container(
-          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-          child: Form(
-              key: _instructionKey,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(height: 20.0),
-                    TextFormField(
-                      controller: _controller4,
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return "Please enter an instruction";
-                        }
-                        return null;
-                      },
-                      decoration: textInputDecoration.copyWith(
-                          hintText: 'Enter Instruction'),
-                      onChanged: (val) {
-                        setState(() => instruction = val);
-                      },
-                    ),
-                    SizedBox(height: 20.0),
-                    RaisedButton(
-                        color: Colors.blue[400],
-                        child: Text(
-                          'Add Instruction',
-                          style: TextStyle(color: Colors.white),
+        body: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            Expanded(
+                child: ListView.builder(
+                    itemCount: _instructions.length,
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) =>
+                        Text(_instructions[index]))),
+            Expanded(
+              child: Form(
+                  key: _instructionKey,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        SizedBox(height: 20.0),
+                        TextFormField(
+                          controller: _controller4,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return "Please enter an instruction";
+                            }
+                            return null;
+                          },
+                          decoration: textInputDecoration.copyWith(
+                              hintText: 'Enter Instruction'),
+                          onChanged: (val) {
+                            setState(() => instruction = val);
+                          },
                         ),
-                        onPressed: () {
-                          if (_instructionKey.currentState.validate())
-                            _createInstruction();
-                        }),
-                    Text(_instruction_error,
-                        style: TextStyle(color: Colors.red, fontSize: 14)),
-                  ],
-                ),
-              )),
+                        SizedBox(height: 20.0),
+                        RaisedButton(
+                            color: Colors.blue[400],
+                            child: Text(
+                              'Add Instruction',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            onPressed: () {
+                              if (_instructionKey.currentState.validate())
+                                _createInstruction();
+                            }),
+                        Text(_instruction_error,
+                            style: TextStyle(color: Colors.red, fontSize: 14)),
+                      ],
+                    ),
+                  )),
+            )
+          ],
         ),
       )),
       Center(
