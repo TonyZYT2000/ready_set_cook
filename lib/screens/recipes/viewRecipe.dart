@@ -15,13 +15,7 @@ class ViewRecipe extends StatefulWidget {
 }
 
 class _ViewRecipeState extends State<ViewRecipe> {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   String recipeId = "";
-  String name = "";
-  String quantity = "";
-  String unit = "";
-  String instruction = "";
   List<Ingredient> _ingredientsList = [];
   List<String> _instructionsList = [];
   List<Nutrition> _nutritionList = [];
@@ -127,10 +121,3 @@ class _ViewRecipeState extends State<ViewRecipe> {
         });
   }
 }
-
-/*Future<bool> getConfirmation(BuildContext context) async {
-  bool cap2 = await DeleteConfirmation(context: context)
-      .showDeleteConfirmation(context);
-  print("CAP2 IS: " + cap2.toString());
-  return cap2;
-}*/

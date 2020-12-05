@@ -44,7 +44,6 @@ class RecipesDatabaseService {
         .add({"recipeId": recipeId});
   }
 
-<<<<<<< HEAD
   deleteRecipe(String recipeId, String uid) {
     FirebaseFirestore.instance
         .collection('recipes')
@@ -65,8 +64,6 @@ class RecipesDatabaseService {
     });
   }
 
-=======
->>>>>>> 495cf66b27fa01ce43802ae5b5e63065c77c5d46
   // work in progress (add numRatings)
   // work on adding ingredients to database
   // work on adding instructions to database
@@ -113,15 +110,6 @@ class RecipesDatabaseService {
         await allRecipesCollection.doc(qds.get('recipeId')).get();
     _recipeName = recipeSnapshot.get('name');
     _recipeRating = recipeSnapshot.get('rating');
-<<<<<<< HEAD
-=======
-
-    debugger(when: true);
-    print('hello debug time');
-    print(qds.get('recipeId'));
-    print('The recipe name is {$_recipeName}');
-    print('The rating is ${_recipeRating}');
->>>>>>> 495cf66b27fa01ce43802ae5b5e63065c77c5d46
   }
 
   // list of recipes from snapshot
