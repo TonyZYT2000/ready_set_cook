@@ -5,68 +5,62 @@ import 'package:uuid/uuid.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ready_set_cook/services/recipes_database.dart';
 import 'package:ready_set_cook/models/recipe.dart';
+import 'package:ready_set_cook/screens/recipes/createRecipe.dart';
 import 'package:ready_set_cook/models/ingredient.dart';
 
-class AddInstruction extends StatefulWidget {
-  final Function toggleView;
-  AddInstruction({this.toggleView});
+class AddInstructionsPage extends StatefulWidget {
   @override
-  _AddInstructionState createState() => _AddInstructionState();
+  _AddInstructionsPage createState() => _AddInstructionsPage();
 }
 
-class _AddInstructionState extends State<AddInstruction> {
-  final _formKey = GlobalKey<FormState>();
-
+class _AddInstructionsPage extends State<AddInstructionsPage> {
   String instruction = "";
-  List<String> _instructions = [];
-
-  void _addInstruction(String instruction) {
-    // Only add the task if the user actually entered something
-    if (instruction.length > 0) {
-      setState(() => _instructions.add(instruction));
-    }
-  }
-
-  Widget _buildInstructions() {
-    return new ListView.builder(
-      // ignore: missing_return
-      itemBuilder: (context, index) {
-        if (index < _instructions.length) {
-          return _buildOneInstruction(_instructions[index]);
-        }
-      },
-    );
-  }
-
-  Widget _buildOneInstruction(String instruction) {
-    return new ListTile(title: new Text(instruction));
-  }
+  final _controller1 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildInstructions(),
-      floatingActionButton: new FloatingActionButton(
-          onPressed: _pushAddInstruction,
-          tooltip: 'Add task',
-          child: new Icon(Icons.add)),
+    _controller1.clear();
+    return new Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text("Add New Instruction"),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: new Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            SizedBox(
+              height: 24,
+            ),
+            TextField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Enter Instruction'),
+                controller: _controller1),
+            SizedBox(
+              height: 24,
+            ),
+            RaisedButton(
+              color: Colors.blue[400],
+              child: Text(
+                'Add Instruction',
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () {
+                if (_controller1.text == "") {
+                  print("Didn't Enter Anything");
+                } else {
+                  Navigator.pop(context, instruction);
+                }
+              },
+            )
+          ],
+        ),
+      ),
     );
-  }
-
-  void _pushAddInstruction() {
-    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-      return new Scaffold(
-          appBar: new AppBar(title: new Text('Add a new task')),
-          body: new TextField(
-            autofocus: true,
-            onSubmitted: (val) {
-              _addInstruction(val);
-              Navigator.pop(context); // Close the add todo screen
-            },
-            decoration: new InputDecoration(
-                hintText: 'Enter something to do...',
-                contentPadding: const EdgeInsets.all(16.0)),
-          ));
-    }));
   }
 }
