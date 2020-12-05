@@ -39,7 +39,6 @@ class RecipesDatabaseService {
   }*/
 
   Future addRecipe(String recipeId) async {
-    print("break 2");
     return await recipeCollection
         .doc(uid)
         .collection("recipesList")
@@ -70,11 +69,7 @@ class RecipesDatabaseService {
   // work on adding ingredients to database
   // work on adding instructions to database
   Future addCustomRecipe(Recipe recipe) async {
-    print("Recipe IDD:" + recipe.recipeId);
-    print("ingredient legnth =");
-    print(recipe.ingredients.length);
     recipe.ingredients.forEach((ing) {
-      print("in ingredient");
       allRecipesCollection.doc(recipe.recipeId).collection("ingredients").add({
         "name": ing.nameOfIngredient,
         "quantity": ing.quantity,
@@ -88,17 +83,14 @@ class RecipesDatabaseService {
           .collection("instructions")
           .add({"instruction": ins});
     });
-    recipe.nutritions.forEach((nut) {
-      print("in ingredient");
-      allRecipesCollection.doc(recipe.recipeId).collection("nutrition").add({
-        "Calories": nut.calories,
-        "Protein": nut.protein,
-        "Total Fat": nut.totalFat,
-        "Total Carbohydrate": nut.totalCarbs,
-      });
-    });
 
-    print("break 1 ");
+      allRecipesCollection.doc(recipe.recipeId).collection("nutrition").add({
+        "Calories": recipe.nutrition.calories,
+        "Protein": recipe.nutrition.protein,
+        "Total Fat": recipe.nutrition.totalFat,
+        "Total Carbohydrate": recipe.nutrition.totalCarbs,
+      });
+
     await allRecipesCollection.doc(recipe.recipeId).set({
       "recipeId": recipe.recipeId,
       "name": recipe.name,

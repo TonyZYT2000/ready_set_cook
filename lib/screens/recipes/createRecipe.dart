@@ -29,11 +29,11 @@ class _CreateRecipeState extends State<CreateRecipe> {
   String totalFat = "";
   List<Ingredient> _ingredients = [];
   List<String> _instructions = [];
-  List<Nutrition> _nutritions = [];
   bool instruction_added = false;
   bool ingredient_added = false;
   String _instruction_error = "";
   String _ingredient_error = "";
+  Nutrition nutrition;
 
   String _ingredientName = "";
   int _quantity = 0;
@@ -68,26 +68,21 @@ class _CreateRecipeState extends State<CreateRecipe> {
     setState(() {});
   }
 
-  _createNutrients() {
-    _nutritions.add(new Nutrition(
+  Future<void> _createRecipe() async {
+    // final isValid = _formKey.currentState.validate();
+    // if (isValid) {
+    nutrition = new Nutrition(
         calories: calories,
         protein: protein,
-        totalFat: totalFat,
-        totalCarbs: totalCarbs));
-    _controller5.clear();
-    _controller6.clear();
-    _controller7.clear();
-    _controller8.clear();
-  }
-
-  Future<void> _createRecipe() async {
+        totalCarbs: totalCarbs,
+        totalFat: totalFat);
     var _recipeId = Uuid().v4();
     recipeDB.addCustomRecipe(new Recipe(
         recipeId: _recipeId,
         name: _recipeName,
         ingredients: _ingredients,
         instructions: _instructions,
-        nutritions: _nutritions,
+        nutrition: nutrition,
         rating: _rating,
         numRatings: _numRatings));
     _controller1.clear();
@@ -101,6 +96,7 @@ class _CreateRecipeState extends State<CreateRecipe> {
     _instructionKey.currentState.save();
     // }
     setState(() {});
+    Navigator.of(context).pop();
   }
 
   @override
@@ -273,14 +269,6 @@ class _CreateRecipeState extends State<CreateRecipe> {
                     setState(() => totalCarbs = val);
                   },
                 ),
-                SizedBox(height: 20.0),
-                RaisedButton(
-                    color: Colors.blue[400],
-                    child: Text(
-                      'Add Nutrients',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    onPressed: _createNutrients),
               ],
             ),
           )),
@@ -299,9 +287,9 @@ class _CreateRecipeState extends State<CreateRecipe> {
           title: const Text('Create Recipe'),
           backgroundColor: Colors.cyan,
           actions: <Widget>[
-            FlatButton.icon(
-              icon: Icon(Icons.done),
-              label: Text('Add Recipe'),
+            FlatButton(
+              textColor: Colors.white,
+              child: Text('Done', style: TextStyle(fontSize: 16)),
               onPressed: () {
                 if (ingredient_added && instruction_added) {
                   _createRecipe();
@@ -318,12 +306,8 @@ class _CreateRecipeState extends State<CreateRecipe> {
                   });
                 }
               },
-            ),
+            )
           ],
-          // If `TabController controller` is not provided, then a
-          // DefaultTabController ancestor must be provided instead.
-          // Another way is to use a self-defined controller, c.f. "Bottom tab
-          // bar" example.
           bottom: TabBar(
             tabs: _tabs,
           ),

@@ -17,15 +17,10 @@ class AddIngredient extends StatefulWidget {
 class _AddIngredientState extends State<AddIngredient> {
   final _formKey = GlobalKey<FormState>();
 
-  // String _recipeName = "";
-  // String _recipeId = Uuid().toString();
-  // double _rating = 0;
-  // int _numRatings = 0;
   String _ingredientName = "";
   int _quantity = 0;
   String _unit = "";
   List<Ingredient> ingredient = [];
-  // List<String> _instructions = [];
 
   @override
   Widget build(BuildContext context) {

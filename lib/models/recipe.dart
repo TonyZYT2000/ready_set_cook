@@ -7,7 +7,7 @@ class Recipe {
   String name;
   List<Ingredient> ingredients;
   List<String> instructions;
-  List<Nutrition> nutritions;
+  Nutrition nutrition;
   double rating;
   int numRatings;
 
@@ -16,7 +16,7 @@ class Recipe {
       this.name,
       this.ingredients,
       this.instructions,
-      this.nutritions,
+      this.nutrition,
       this.rating,
       this.numRatings});
 
