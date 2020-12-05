@@ -282,8 +282,9 @@ class _CreateRecipeState extends State<CreateRecipe> {
               textColor: Colors.white,
               child: Text('Done', style: TextStyle(fontSize: 16)),
               onPressed: () {
-                _createRecipe;
-                Navigator.of(context).pop();}
+                _createRecipe();
+                Navigator.of(context).pop();
+                }
             ),
           ],
           // If `TabController controller` is not provided, then a
