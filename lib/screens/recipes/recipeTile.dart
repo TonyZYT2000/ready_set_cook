@@ -8,6 +8,22 @@ class RecipeTile extends StatelessWidget {
   List<String> lst = ['Name: ', 'Rating:  '];
   RecipeTile({this.name, this.rating, this.recipeId});
 
+  Widget _buildRatingStar(rating) {
+    List<Widget> icons = [];
+    int i = 0;
+    while (i < rating) {
+      icons.add(new Icon(Icons.star, color: Colors.yellow));
+
+      i++;
+    }
+
+    while (icons.length != 5) {
+      icons.add(new Icon(Icons.star_border));
+    }
+
+    return new Row(children: icons);
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -25,6 +41,14 @@ class RecipeTile extends StatelessWidget {
                 alignment: Alignment.centerLeft,
               ),
               SizedBox(height: 10),
+              // Text(lst[0] + name,
+              //     textAlign: TextAlign.left,
+              //     style: TextStyle(
+              //         fontStyle: FontStyle.italic,
+              //         fontSize: 18,
+              //         color: Colors.blueGrey)),
+
+              // _buildRatingStar(rating),
               Center(
                   child: Text(name + '\n' + lst[1] + rating.toString(),
                       textAlign: TextAlign.center,
@@ -33,6 +57,7 @@ class RecipeTile extends StatelessWidget {
                           fontSize: 18,
                           color: Colors.blueGrey)))
             ]))));
+
     // padding: EdgeInsets.all(10.0),
     // width: 120,
     // height: 120,
