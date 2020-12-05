@@ -3,6 +3,7 @@ import 'package:ready_set_cook/services/recipes_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ready_set_cook/screens/recipes/recipeTile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ready_set_cook/shared/constants.dart';
 
 import 'createRecipe.dart';
 
@@ -69,5 +70,28 @@ class _RecipeState extends State<Recipe> {
                             });
                       })));
         });
+  }
+}
+
+class ChoiceOption extends StatelessWidget {
+  final String text;
+
+  const ChoiceOption({Key key, this.text}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
+    return Container(
+      decoration: BoxDecoration(
+        color: COLOR_BLUE.withAlpha(25),
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
+      margin: const EdgeInsets.only(left: 20),
+      child: Text(
+        text,
+        style: themeData.textTheme.headline5,
+      ),
+    );
   }
 }

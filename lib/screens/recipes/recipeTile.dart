@@ -42,6 +42,7 @@ class RecipeTile extends StatelessWidget {
                   textAlign: TextAlign.left,
                   style: TextStyle(
                       fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.bold,
                       fontSize: 18,
                       color: Colors.blueGrey)),
             ),
