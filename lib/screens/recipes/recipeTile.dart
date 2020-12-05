@@ -56,12 +56,12 @@ class RecipeTile extends StatelessWidget {
 Widget _buildRatingStar(rating) {
   List<Widget> icons = [];
   double i = 0;
-  while (i < rating / 2 - 0.5) {
+  while (i < rating - 0.5) {
     icons.add(new Icon(Icons.star, color: Colors.blue));
 
     i = i + 1;
   }
-  if (rating / 2 - i >= 0.5) {
+  if (rating - i >= 0.5) {
     icons.add(new Icon(Icons.star_half, color: Colors.blue));
   }
 
