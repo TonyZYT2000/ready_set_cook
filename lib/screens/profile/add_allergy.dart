@@ -19,6 +19,7 @@ class _Add_allergyState extends State<Add_allergy> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   AllergyDatabase _allergyDB = null;
+  bool addedFlag = false;
 
   String dropdownValue = 'Vegan';
 
@@ -62,6 +63,7 @@ class _Add_allergyState extends State<Add_allergy> {
                       color: Colors.deepPurpleAccent,
                     ),
                     onChanged: (String newValue) {
+                      addedFlag = false;
                       setState(() {
                         dropdownValue = newValue;
                       });
@@ -78,6 +80,23 @@ class _Add_allergyState extends State<Add_allergy> {
                       );
                     }).toList(),
                   ),
+                  StreamBuilder(
+                      stream: _allergyDB.getAllergySnap(),
+                      builder: (ctx, allergySnapshot) {
+                        if (allergySnapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        final allergySnap = allergySnapshot.data.documents;
+
+                        allergySnap.forEach((aller) {
+                          print(aller["allergy"]);
+                          if (aller["allergy"] == dropdownValue) {
+                            addedFlag = true;
+                          }
+                        });
+                        return Container();
+                      }),
                   SizedBox(height: 40.0),
                   RaisedButton(
                       color: Colors.blue[400],
@@ -88,15 +107,27 @@ class _Add_allergyState extends State<Add_allergy> {
                       //onPressed: () async {}
 
                       onPressed: () async {
-                        _allergyDB.addAllergy(DiePref(dropdownValue));
+                        if (addedFlag == false) {
+                          _allergyDB.addAllergy(DiePref(dropdownValue));
 
-                        //Navigator.of(context).pop();
-                        showDialog(
-                            context: context,
-                            builder: (_) => AlertDialog(
-                                  title: Text('Added ' + dropdownValue + '!'),
-                                  content: Text('You can add more or delete'),
-                                ));
+                          //Navigator.of(context).pop();
+                          showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                    title: Text('Added ' + dropdownValue + '!'),
+                                    content: Text(
+                                        'You can add more or left swipe to delete'),
+                                  ));
+                        } else {
+                          showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                    title: Text(
+                                        'Already Added ' + dropdownValue + '!'),
+                                    content: Text(
+                                        'You can add other preference instead.'),
+                                  ));
+                        }
                       }),
                   SizedBox(height: 12.0),
                 ],

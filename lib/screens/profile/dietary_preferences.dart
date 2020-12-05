@@ -64,6 +64,8 @@ class _AllergyState extends State<Allergy> {
                       itemCount: allergySnap.length,
                       itemBuilder: (ctx, index) {
                         final String allergy_id = allergySnap[index].id;
+                        final String allergy_name =
+                            allergySnap[index]["allergy"];
 
                         return Dismissible(
                           onDismissed: (DismissDirection direction) {
@@ -73,11 +75,11 @@ class _AllergyState extends State<Allergy> {
                             showDialog(
                                 context: context,
                                 builder: (_) => AlertDialog(
-                                      title: Text("Allergy deleted"),
+                                      title: Text(allergy_name + " deleted"),
                                     ));
                           },
                           background: Container(color: Colors.red),
-                          child: ListTile(title: Text('$allergy_id')),
+                          child: ListTile(title: Text('$allergy_name')),
                           key: Key(allergy_id),
                         );
                       });
