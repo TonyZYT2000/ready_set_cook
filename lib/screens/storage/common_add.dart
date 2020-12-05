@@ -28,6 +28,7 @@ class _CommonAddState extends State<CommonAdd> {
             GridView.count(
                 crossAxisCount: 4,
                 shrinkWrap: true,
+                physics: ClampingScrollPhysics(),
                 children: <Widget>[
                   for (Ingredient item in commonIngredient.commonFruits)
                     IngredientTile(item)
@@ -40,6 +41,7 @@ class _CommonAddState extends State<CommonAdd> {
             GridView.count(
                 crossAxisCount: 4,
                 shrinkWrap: true,
+                physics: ClampingScrollPhysics(),
                 children: <Widget>[
                   for (Ingredient item in commonIngredient.commonVegetables)
                     IngredientTile(item)
@@ -52,6 +54,7 @@ class _CommonAddState extends State<CommonAdd> {
             GridView.count(
                 crossAxisCount: 4,
                 shrinkWrap: true,
+                physics: ClampingScrollPhysics(),
                 children: <Widget>[
                   for (Ingredient item in commonIngredient.commonMeatAndSeafood)
                     IngredientTile(item)
@@ -64,6 +67,7 @@ class _CommonAddState extends State<CommonAdd> {
             GridView.count(
                 crossAxisCount: 4,
                 shrinkWrap: true,
+                physics: ClampingScrollPhysics(),
                 children: <Widget>[
                   for (Ingredient item
                       in commonIngredient.commonOtherIngredient)
