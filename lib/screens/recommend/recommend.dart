@@ -35,17 +35,8 @@ class APIrecipe {
 
 class RecipeMapper {
   final List<APIrecipe> meals;
-  final double calories;
-  final double carbs;
-  final double fat;
-  final double protein;
-
   RecipeMapper({
     this.meals,
-    this.calories,
-    this.carbs,
-    this.fat,
-    this.protein,
   });
 
   factory RecipeMapper.fromMap(Map<String, dynamic> map) {
@@ -53,13 +44,51 @@ class RecipeMapper {
     map['meals'].forEach((mealMap) => meals.add(APIrecipe.fromMap(mealMap)));
     return RecipeMapper(
       meals: meals,
-      calories: map['nutrients']['calories'],
-      carbs: map['nutrients']['carbohydrates'],
-      fat: map['nutrients']['fat'],
-      protein: map['nutrients']['protein'],
     );
   }
 }
+
+class RandomRecipe {
+  int id;
+  String image;
+  String title;
+  int readyInMinutes;
+  int servings;
+  String sourceUrl;
+
+  RandomRecipe(
+      {this.id,
+      this.image,
+      this.title,
+      this.readyInMinutes,
+      this.servings,
+      this.sourceUrl});
+
+  RandomRecipe.fromMap(Map<String, dynamic> json) {
+    id = json['id'];
+    image = json['imageType'];
+    title = json['title'];
+    readyInMinutes = json['readyInMinutes'];
+    servings = json['servings'];
+    sourceUrl = json['sourceUrl'];
+  }
+}
+
+class RandomRecipeMapper {
+  final List<RandomRecipe> recipes;
+  RandomRecipeMapper({
+    this.recipes,
+  });
+
+  factory RandomRecipeMapper.fromMap(Map<String, dynamic> map) {
+    List<RandomRecipe> recList = [];
+map['recipes'].forEach((recMap) => recList.add(RandomRecipe.fromMap(recMap)));
+    return RandomRecipeMapper(
+      recipes: recList,
+    );
+  }
+}
+
 
 Future<RecipeMapper> getRecipesForDay() async {
     final response =
@@ -72,7 +101,22 @@ Future<RecipeMapper> getRecipesForDay() async {
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
-    throw Exception('Failed to load album');
+    throw Exception('Failed to load recipes');
+  }
+}
+
+Future<RandomRecipeMapper> getRandomRecipes() async {
+    final response =
+      await http.get('$apiURL/recipes/random?number=4&tags=vegetarian&apiKey=$apiKey');
+
+  if (response.statusCode == 200) {
+      Map<String, dynamic> recData = json.decode(response.body);
+      RandomRecipeMapper randomList = RandomRecipeMapper.fromMap(recData);
+      return randomList;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load recipes');
   }
 }
 
@@ -108,13 +152,39 @@ class _Recommend extends State<Recommend> {
   );
 }
 
+  Widget randomRecipeBuilder() {
+  return FutureBuilder(
+    builder: (context, futureRecipe) {
+      if (futureRecipe.connectionState == ConnectionState.none &&
+          futureRecipe.hasData == null) {
+        return Container();
+      }
+      return ListView.builder(
+        itemCount: futureRecipe.data.recipes.length,
+        itemBuilder: (context, index) {
+          RandomRecipeMapper randRec = futureRecipe.data;
+          return Column(
+            children: <Widget>[
+              ListTile(
+                title: new Text(randRec.recipes[index].title),
+              ),
+            ],
+          );
+        },
+      );
+    },
+    future: getRandomRecipes(),
+  );
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Recommended Recipes'),
-      ),
-      body: recommendRecipeBuilder(),
+      body: Column(
+        children: <Widget>[
+          recommendRecipeBuilder()
+        ],
+      )
     );
   }
 }
