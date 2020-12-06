@@ -15,51 +15,63 @@ class AddInstructionsPage extends StatefulWidget {
 
 class _AddInstructionsPage extends State<AddInstructionsPage> {
   final _controller1 = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     _controller1.clear();
-    return new Scaffold(
+    return Scaffold(
+      backgroundColor: Colors.blue[120],
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text("Add New Instruction"),
-        centerTitle: true,
+        title: Text("Add an Instruction"),
       ),
-      body: SingleChildScrollView(
-        child: new Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            SizedBox(
-              height: 24,
+      body: Container(
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 15),
+                TextFormField(
+                      decoration: new InputDecoration(
+                        labelText: "Enter Instruction Here",
+                        border: new OutlineInputBorder(
+                          borderSide: new BorderSide(
+                          ),
+                        ),
+                      ),
+                      controller: _controller1,
+                      validator: (value){
+                        if(value.isEmpty) {
+                          return "Please enter an Instruction";
+                        }
+                        return null;
+                      }
+                ),
+                SizedBox(
+                  height: 24,
+                ),
+                RaisedButton(
+                  color: Colors.blue[400],
+                  child: Text(
+                    'Add Instruction',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () {
+                    if(_formKey.currentState.validate()) {
+                    Navigator.pop(context, _controller1.text);
+                    }
+                  },
+                ),
+              ],
             ),
-            TextField(
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Enter Instruction'),
-                controller: _controller1),
-            SizedBox(
-              height: 24,
-            ),
-            RaisedButton(
-              color: Colors.blue[400],
-              child: Text(
-                'Add Instruction',
-                style: TextStyle(color: Colors.white),
-              ),
-              onPressed: () {
-                if (_controller1.text == "") {
-                  print("Didn't Enter Anything");
-                } else {
-                  Navigator.pop(context, _controller1.text);
-                }
-              },
-            )
-          ],
-        ),
-      ),
-    );
+          ),
+    ),
+      ));
   }
 }
