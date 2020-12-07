@@ -111,6 +111,7 @@ class _Recommend extends State<Recommend> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue[50],
       body: recommendRecipeBuilder(),
     );
   }

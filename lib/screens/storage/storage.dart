@@ -13,9 +13,14 @@ class Storage extends StatefulWidget {
 
 class _StorageState extends State<Storage> {
   GroceryDatabase _groceryDB = null;
+  /*
   var _timePeriod = DateTime.now().subtract(const Duration(days: 7));
   var _displayText = "Last Week until now";
   var _pressIndex = 0;
+  */
+  var  _timePeriod = DateTime(DateTime.now().year, DateTime.now().month - 1, DateTime.now().day);
+  var  _displayText = "Last Month until now";
+  var  _pressIndex = 1;
 
   void _weekTapped() {
     _pressIndex = 0;
