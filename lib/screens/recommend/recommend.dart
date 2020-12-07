@@ -94,14 +94,12 @@ class _Recommend extends State<Recommend> {
           itemCount: recipeCheck.data.meals.length,
           itemBuilder: (context, index) {
             RecipeMapper recipes = recipeCheck.data;
-            return Column(
-              children: <Widget>[
-                new RecommendTile(
-                  name: recipes.meals[index].title,
-                  recipeId: recipes.meals[index].id.toString(),
-                  imageType: recipes.meals[index].imageType,
-                ),
-              ],
+            return SingleChildScrollView(
+              child: new RecommendTile(
+                name: recipes.meals[index].title,
+                recipeId: recipes.meals[index].id.toString(),
+                imageType: recipes.meals[index].imageType,
+              ),
             );
           },
         );
