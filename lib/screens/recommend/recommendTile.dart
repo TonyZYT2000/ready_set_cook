@@ -9,14 +9,17 @@ class RecommendTile extends StatelessWidget {
   final String name;
   final String recipeId;
   final String imageType;
-  RecommendTile({this.name, this.recipeId, this.imageType});
+  double rating;
+  RecommendTile({this.name, this.recipeId, this.imageType, this.rating});
 
   @override
   Widget build(BuildContext context) {
     // Generate Random Rating
-    Random r = new Random();
-    double rating = 1.0 + (5.0 - 1.0) * r.nextDouble();
-    rating = double.parse((rating).toStringAsFixed(1));
+    if (rating == 0.0) {
+      Random r = new Random();
+      this.rating = 1.0 + (5.0 - 1.0) * r.nextDouble();
+      this.rating = double.parse((this.rating).toStringAsFixed(1));
+    }
 
     // How the tiles look
     final Size size = MediaQuery.of(context).size;
@@ -42,7 +45,7 @@ class RecommendTile extends StatelessWidget {
                             imageType))),
                 Positioned(
                     top: 20,
-                    right: 60,
+                    right: 30,
                     child: BorderIcon(
                         child: Icon(
                       Icons.favorite_border,
