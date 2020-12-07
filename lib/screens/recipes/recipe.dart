@@ -6,6 +6,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ready_set_cook/shared/constants.dart';
 import 'package:ready_set_cook/screens/recipes/BorderIcon.dart';
 import 'package:ready_set_cook/screens/recipes/viewRecipe.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+
 
 import 'createRecipe.dart';
 
@@ -16,66 +19,25 @@ class Recipe extends StatefulWidget {
   _RecipeState createState() => _RecipeState();
 }
 
-/*class _RecipeState extends State<Recipe> {
-  @override
-  Widget build(BuildContext context) {
-    final uid = FirebaseAuth.instance.currentUser.uid;
-    final RecipesObject = RecipesDatabaseService(uid: uid);
-    String name = "";
-    double rating = 0;
-
-    return StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('recipes')
-            .doc(uid)
-            .collection('recipesList')
-            .snapshots(),
-        builder: (ctx, recipesSnapshot) {
-          if (recipesSnapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
-
-          final recipesdoc = recipesSnapshot.data.documents;
-          return Scaffold(
-              floatingActionButton: FloatingActionButton.extended(
-                  icon: Icon(Icons.add),
-                  label: Text("Create"),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CreateRecipe()));
-                  }),
-              resizeToAvoidBottomPadding: false,
-              body: Container(
-                  padding: EdgeInsets.all(20),
-                  child: ListView.builder(
-                      itemCount: recipesdoc.length,
-                      itemBuilder: (ctx, index) {
-                        final recipeId = recipesdoc[index]['recipeId'];
-                        return FutureBuilder<DocumentSnapshot>(
-                            future: FirebaseFirestore.instance
-                                .collection('allRecipes')
-                                .doc(recipeId)
-                                .get(),
-                            // ignore: non_constant_identifier_names
-                            builder: (ctx, Rsnapshot) {
-                              if (Rsnapshot.data != null) {
-                                name = Rsnapshot.data.get('name');
-                                var temp = Rsnapshot.data.get('rating');
-                                rating = temp.toDouble();
-                              }
-                              return RecipeTile(
-                                  name: name,
-                                  rating: rating,
-                                  recipeId: recipeId);
-                            });
-                      })));
-        });
-  }
-}*/
-
 class _RecipeState extends State<Recipe> {
+    File _image;
+    String _imageUrl;
+    String _filePath;
+    final _picker = ImagePicker();
+
+    void getImage() async {
+      final pickedFile =
+          await _picker.getImage(source: ImageSource.gallery, imageQuality: 50);
+      _filePath = pickedFile.path;
+      setState(() {
+        if (pickedFile != null) {
+          _image = File(pickedFile.path);
+        } else {
+          print('No image selected.');
+        }
+      });
+    }
+
   @override
   Widget build(BuildContext context) {
     final uid = FirebaseAuth.instance.currentUser.uid;
@@ -85,6 +47,7 @@ class _RecipeState extends State<Recipe> {
     final Size size = MediaQuery.of(context).size;
     double padding = 25;
     final sidePadding = EdgeInsets.symmetric(horizontal: padding);
+
 
     return StreamBuilder(
         stream: FirebaseFirestore.instance
@@ -137,11 +100,13 @@ class _RecipeState extends State<Recipe> {
                                 name = Rsnapshot.data.get('name');
                                 var temp = Rsnapshot.data.get('rating');
                                 rating = temp.toDouble();
+                                _imageUrl = Rsnapshot.data.get('imageUrl');
                               }
                               return RecipeItem(
                                   name: name,
                                   rating: rating,
-                                  recipeId: recipeId);
+                                  recipeId: recipeId,
+                                  imageUrl: _imageUrl);
                             });
                       }),
                   ),
@@ -158,8 +123,9 @@ class RecipeItem extends StatelessWidget {
   final String name;
   final double rating;
   final String recipeId;
+  final String imageUrl;
 
-  const RecipeItem({Key key, this.name, this.rating, this.recipeId}) : super(key: key);
+  const RecipeItem({Key key, this.name, this.rating, this.recipeId, this.imageUrl}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +134,7 @@ class RecipeItem extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => ViewRecipe(
-                  recipeId, name
+                  recipeId, name, imageUrl
                 )));
       },
       child: Container(
@@ -178,7 +144,11 @@ class RecipeItem extends StatelessWidget {
           children: [
             Stack(
               children: [
-                Center(child: ClipRRect(borderRadius: BorderRadius.circular(25.0), child: Image.asset("assets/images/chicken_breast.png"))),
+                Center(child: ClipRRect(borderRadius: BorderRadius.circular(25.0), child: (imageUrl == null)
+                ? Image(
+                    image: NetworkImage(
+                        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png"))
+                : Image(image: NetworkImage(imageUrl)),)),
                 Positioned(
                     top: 15,
                     right: 15,
@@ -193,7 +163,7 @@ class RecipeItem extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  "$name",
+                  " $name",
                   style: themeData.textTheme.headline5,
                 ),
               ],
@@ -201,7 +171,7 @@ class RecipeItem extends StatelessWidget {
             SizedBox(height: 7),
             Row(
               children: [ Text(
-                "$rating / 5.0",
+                "  $rating / 5.0",
                 style: themeData.textTheme.subtitle1,
                 
               ),

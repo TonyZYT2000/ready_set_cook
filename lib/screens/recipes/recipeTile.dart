@@ -6,15 +6,16 @@ class RecipeTile extends StatelessWidget {
   final String name;
   final double rating;
   final String recipeId;
+  final String imageUrl;
   List<String> lst = ['Name: ', 'Rating:  '];
-  RecipeTile({this.name, this.rating, this.recipeId});
+  RecipeTile({this.name, this.rating, this.recipeId, this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ViewRecipe(recipeId, name)));
+              MaterialPageRoute(builder: (context) => ViewRecipe(recipeId, name, imageUrl)));
         },
         child: Container(
           padding: EdgeInsets.all(5),
