@@ -99,6 +99,7 @@ class _RecipeState extends State<Recipe> {
 
           final recipesdoc = recipesSnapshot.data.documents;
           return Scaffold(
+              backgroundColor: Colors.blue[50],
               floatingActionButton: FloatingActionButton.extended(
                   icon: Icon(Icons.add),
                   label: Text("Create"),
@@ -203,9 +204,9 @@ class RecipeItem extends StatelessWidget {
               children: [ Text(
                 "$rating / 5.0",
                 style: themeData.textTheme.subtitle1,
-                
+
               ),
-              
+
             _buildRatingStar(rating)]
             ),
           ],

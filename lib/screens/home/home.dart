@@ -17,8 +17,7 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
 
   static List<Widget> _widgetOptions = <Widget>[
-    Recommend(),
-    // Text("Recommend"),
+    Recipe(),
     Recipe(),
     Storage(),
     Profile(),
@@ -39,15 +38,6 @@ class _HomeState extends State<Home> {
         title: Text('ReadySetCook!'),
         backgroundColor: Colors.blue[120],
         elevation: 0.0,
-        actions: <Widget>[
-          FlatButton.icon(
-            icon: Icon(Icons.person, color: Colors.white),
-            label: Text('Logout', style: TextStyle(color: Colors.white),),
-            onPressed: () async {
-              await _auth.signOut();
-            },
-          ),
-        ],
         leading:
             Padding(padding: const EdgeInsets.all(8.0), child: SmallLogo()),
       ),

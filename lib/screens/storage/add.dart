@@ -16,9 +16,9 @@ class Add extends StatelessWidget {
     return DefaultTabController(
       length: _tabs.length,
       child: Scaffold(
+        backgroundColor: Colors.blue[50],
         appBar: AppBar(
           title: const Text('Add Items'),
-          backgroundColor: Colors.cyan,
           // If `TabController controller` is not provided, then a
           // DefaultTabController ancestor must be provided instead.
           // Another way is to use a self-defined controller, c.f. "Bottom tab
