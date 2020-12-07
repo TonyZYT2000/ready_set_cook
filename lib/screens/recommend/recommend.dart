@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'recommendTile.dart';
+import "package:charcode/charcode.dart";
 
 const apiKey = '4b2f81fdb7cd4dcdb1c96fb533073092';
 const apiURL = 'https://api.spoonacular.com';

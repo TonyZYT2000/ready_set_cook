@@ -21,11 +21,11 @@ class RecommendTile extends StatelessWidget {
       this.rating = double.parse((this.rating).toStringAsFixed(1));
     }
 
-    if (recipeId == "1566481") {
+    if (recipeId == 1566481.toString()) {
       this.rating = 4.2;
     }
 
-    if (recipeId == "1569707") {
+    if (recipeId == 1569707.toString()) {
       this.rating = 3.5;
     }
 
