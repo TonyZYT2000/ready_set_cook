@@ -1,5 +1,3 @@
-import 'package:ready_set_cook/models/nutrition.dart';
-
 class Ingredient {
   String id;
   String name;
@@ -7,7 +5,6 @@ class Ingredient {
   String unit;
   DateTime startDate;
   int shelfLife;
-  bool spoilage;
   String imageUrl;
 
   Ingredient(
@@ -17,6 +14,5 @@ class Ingredient {
       this.unit,
       this.startDate,
       this.shelfLife,
-      this.spoilage,
       this.imageUrl});
 }

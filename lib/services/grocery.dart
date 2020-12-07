@@ -17,14 +17,14 @@ class GroceryDatabase {
   }
 
   void addItem(Ingredient ingredient) {
+    DateTime deadline = ingredient.startDate.add(Duration(days: ingredient.shelfLife));
     _groceryDoc.collection("groceryList").add({
       "name": ingredient.name,
       "quantity": ingredient.quantity,
       "unit": ingredient.unit,
       "startDate": ingredient.startDate,
-      "nutrition": null,
       "shelfLife": ingredient.shelfLife,
-      "spoilage": ingredient.spoilage,
+      "deadline": deadline,
       "imageUrl": ingredient.imageUrl
     });
   }
@@ -34,14 +34,14 @@ class GroceryDatabase {
   }
 
   void updateItem(Ingredient ingredient) {
+    DateTime deadline = ingredient.startDate.add(Duration(days: ingredient.shelfLife));
     _groceryDoc.collection("groceryList").doc(ingredient.id).update({
       "name": ingredient.name,
       "quantity": ingredient.quantity,
       "unit": ingredient.unit,
       "startDate": ingredient.startDate,
-      "nutrition": null,
       "shelfLife": ingredient.shelfLife,
-      "spoilage": ingredient.spoilage,
+      "deadline": deadline,
       "imageUrl": ingredient.imageUrl
     });
   }
@@ -49,7 +49,7 @@ class GroceryDatabase {
   Stream<QuerySnapshot> getGrocerySnap() {
     return _groceryDoc
         .collection("groceryList")
-        .orderBy('startDate')
+        .orderBy('deadline')
         .snapshots();
   }
 }
