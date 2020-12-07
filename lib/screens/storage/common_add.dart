@@ -19,63 +19,65 @@ class _CommonAddState extends State<CommonAdd> {
 
     CommonIngredient commonIngredient = CommonIngredient();
     return Scaffold(
+        backgroundColor: Colors.blue[50],
         body: SingleChildScrollView(
             child: Column(
-      children: <Widget>[
-        ExpansionTile(
-          title: Text("Fruit"),
-          children: [
-            GridView.count(
-                crossAxisCount: 4,
-                shrinkWrap: true,
-                physics: ClampingScrollPhysics(),
-                children: <Widget>[
-                  for (Ingredient item in commonIngredient.commonFruits)
-                    IngredientTile(item)
-                ]),
+          children: <Widget>[
+            ExpansionTile(
+              title: Text("Fruit"),
+              children: [
+                GridView.count(
+                    crossAxisCount: 4,
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                    children: <Widget>[
+                      for (Ingredient item in commonIngredient.commonFruits)
+                        IngredientTile(item)
+                    ]),
+              ],
+            ),
+            ExpansionTile(
+              title: Text("Vegetables"),
+              children: [
+                GridView.count(
+                    crossAxisCount: 4,
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                    children: <Widget>[
+                      for (Ingredient item in commonIngredient.commonVegetables)
+                        IngredientTile(item)
+                    ]),
+              ],
+            ),
+            ExpansionTile(
+              title: Text("Meat and Seafood"),
+              children: [
+                GridView.count(
+                    crossAxisCount: 4,
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                    children: <Widget>[
+                      for (Ingredient item
+                          in commonIngredient.commonMeatAndSeafood)
+                        IngredientTile(item)
+                    ]),
+              ],
+            ),
+            ExpansionTile(
+              title: Text("Others"),
+              children: [
+                GridView.count(
+                    crossAxisCount: 4,
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                    children: <Widget>[
+                      for (Ingredient item
+                          in commonIngredient.commonOtherIngredient)
+                        IngredientTile(item)
+                    ]),
+              ],
+            ),
           ],
-        ),
-        ExpansionTile(
-          title: Text("Vegetables"),
-          children: [
-            GridView.count(
-                crossAxisCount: 4,
-                shrinkWrap: true,
-                physics: ClampingScrollPhysics(),
-                children: <Widget>[
-                  for (Ingredient item in commonIngredient.commonVegetables)
-                    IngredientTile(item)
-                ]),
-          ],
-        ),
-        ExpansionTile(
-          title: Text("Meat and Seafood"),
-          children: [
-            GridView.count(
-                crossAxisCount: 4,
-                shrinkWrap: true,
-                physics: ClampingScrollPhysics(),
-                children: <Widget>[
-                  for (Ingredient item in commonIngredient.commonMeatAndSeafood)
-                    IngredientTile(item)
-                ]),
-          ],
-        ),
-        ExpansionTile(
-          title: Text("Others"),
-          children: [
-            GridView.count(
-                crossAxisCount: 4,
-                shrinkWrap: true,
-                physics: ClampingScrollPhysics(),
-                children: <Widget>[
-                  for (Ingredient item
-                      in commonIngredient.commonOtherIngredient)
-                    IngredientTile(item)
-                ]),
-          ],
-        ),
-      ],
-    )));
+        )));
   }
 }

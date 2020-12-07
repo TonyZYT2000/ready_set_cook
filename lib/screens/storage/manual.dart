@@ -82,6 +82,7 @@ class _ManualState extends State<Manual> {
     }
 
     return Scaffold(
+      backgroundColor: Colors.blue[50],
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         child: Form(

@@ -32,20 +32,20 @@ class _AllergyState extends State<Allergy> {
     }
 
     return Scaffold(
-        backgroundColor: Colors.blue[200],
+        backgroundColor: Colors.blue[50],
         appBar: AppBar(
-          backgroundColor: Colors.blue[120],
           elevation: 0.0,
           title: Text('Dietary Preference'),
         ),
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => Add_allergy()),
             );
           },
-          child: Icon(Icons.add),
+          icon: Icon(Icons.add),
+          label: Text("Add"),
         ),
         body: Container(
             decoration: BoxDecoration(

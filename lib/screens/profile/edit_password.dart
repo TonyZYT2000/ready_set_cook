@@ -25,10 +25,8 @@ class _ChangePasswordState extends State<ChangePassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[200],
+      backgroundColor: Colors.blue[50],
       appBar: AppBar(
-        backgroundColor: Colors.blue[120],
-        elevation: 0.0,
         title: Text('Change Password'),
         //actions: <Widget>[],
         //leading:

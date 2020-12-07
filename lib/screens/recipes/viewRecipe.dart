@@ -93,6 +93,7 @@ class _ViewRecipeState extends State<ViewRecipe> {
             });
 
             return Scaffold(
+                backgroundColor: Colors.blue[50],
                 appBar: AppBar(title: Text(name), elevation: 0,
                         actions: <Widget>[
                           FlatButton(

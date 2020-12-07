@@ -30,9 +30,8 @@ class _Add_allergyState extends State<Add_allergy> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.blue[200],
+      backgroundColor: Colors.blue[50],
       appBar: AppBar(
-        backgroundColor: Colors.blue[120],
         elevation: 0.0,
         title: Text('Dietary Preference'),
       ),

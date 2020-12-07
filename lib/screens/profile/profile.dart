@@ -38,7 +38,7 @@ class _ProfileState extends State<Profile> {
               trailing: CircleAvatar(
                 backgroundImage: NetworkImage(_profilePicURL),
               ),
-              title: Text('User Name'),
+              title: Text('Username'),
               subtitle: Text('$_userName'),
               onTap: () {
                 // do something
@@ -84,6 +84,16 @@ class _ProfileState extends State<Profile> {
                   context,
                   MaterialPageRoute(builder: (context) => ReportError()),
                 );
+              },
+            ),
+            FlatButton.icon(
+              icon: Icon(Icons.person, color: Colors.red),
+              label: Text(
+                'Logout',
+                style: TextStyle(color: Colors.red),
+              ),
+              onPressed: () async {
+                await _auth.signOut();
               },
             ),
           ])),
