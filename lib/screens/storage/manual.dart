@@ -20,7 +20,7 @@ class _ManualState extends State<Manual> {
   TextEditingController _controller4 = TextEditingController();
 
   String _name = '';
-  int _quantity = 0;
+  String _quantity = "";
   String _unit = '';
   int _shelfLife = 15;
   DateTime _startDate = DateTime.now();
@@ -134,7 +134,7 @@ class _ManualState extends State<Manual> {
                         hintText: 'Enter Quantity'),
                     keyboardType: TextInputType.number,
                     onChanged: (val) {
-                      setState(() => _quantity = int.parse(val));
+                      setState(() => _quantity = val);
                     },
                   ),
                   SizedBox(height: 15.0),

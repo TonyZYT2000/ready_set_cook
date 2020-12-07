@@ -19,7 +19,7 @@ class AddIngredientPage extends StatefulWidget {
 
 class _AddIngredientPage extends State<AddIngredientPage> {
   String _ingredientName = "";
-  int _quantity = 0;
+  String _quantity = "";
   String _unit = "";
   final _ingredKey = GlobalKey<FormState>();
 
@@ -126,7 +126,7 @@ class _AddIngredientPage extends State<AddIngredientPage> {
                     if (_ingredKey.currentState.validate()) {
                       final newIngredient = new Ingredient(
                           name: _controller1.text,
-                          quantity: int.parse(_controller2.text),
+                          quantity: _controller2.text,
                           unit: _controller3.text);
                       _controller1.clear();
                       _controller2.clear();

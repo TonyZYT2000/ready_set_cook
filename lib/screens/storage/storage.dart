@@ -64,15 +64,14 @@ class _StorageState extends State<Storage> {
     return Scaffold(
         backgroundColor: Colors.blue[50],
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Add()),
-            );
-          },
-          icon: Icon(Icons.add),
-          label: Text("Add")
-        ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Add()),
+              );
+            },
+            icon: Icon(Icons.add),
+            label: Text("Add")),
         body: Column(
           children: [
             Container(
@@ -190,7 +189,8 @@ class _StorageState extends State<Storage> {
                             itemBuilder: (ctx, index) {
                               final String id = storageSnap[index].id;
                               final String name = storageSnap[index]["name"];
-                              final int quant = storageSnap[index]['quantity'];
+                              final String quant =
+                                  storageSnap[index]['quantity'];
                               final String unit = storageSnap[index]['unit'];
                               final int shelfLife =
                                   storageSnap[index]['shelfLife'];

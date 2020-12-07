@@ -20,7 +20,7 @@ class _EditState extends State<Edit> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   String _name;
-  int _quantity;
+  String _quantity;
   String _unit;
 
   @override
@@ -54,8 +54,7 @@ class _EditState extends State<Edit> {
 
     return Scaffold(
         backgroundColor: Colors.blue[50],
-        appBar: AppBar(
-            title: Text('Edit ' + widget._ingredient.name)),
+        appBar: AppBar(title: Text('Edit ' + widget._ingredient.name)),
         key: _scaffoldKey,
         body: Container(
           padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
@@ -80,7 +79,7 @@ class _EditState extends State<Edit> {
                       key: ValueKey("ingredient name"),
                       validator: (value) {
                         if (value.isEmpty) {
-                          return "please enter valid ingredient name";
+                          return "Please enter valid ingredient name";
                         }
                         return null;
                       },
@@ -96,7 +95,7 @@ class _EditState extends State<Edit> {
                       key: ValueKey("quantity"),
                       validator: (value) {
                         if (value.isEmpty || int.tryParse(value) == null) {
-                          return "please enter valid quantity";
+                          return "Please enter a valid quantity";
                         }
                         return null;
                       },
@@ -104,8 +103,7 @@ class _EditState extends State<Edit> {
                           hintText: 'Update Quantity'),
                       keyboardType: TextInputType.number,
                       onChanged: (val) {
-                        setState(
-                            () => _quantity = int.parse(val));
+                        setState(() => _quantity = val);
                       },
                     ),
                     SizedBox(height: 20.0),
@@ -127,8 +125,8 @@ class _EditState extends State<Edit> {
                         ),
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
-                            _scaffoldKey.currentState.showSnackBar(
-                                SnackBar(content: Text("Successfully update")));
+                            _scaffoldKey.currentState.showSnackBar(SnackBar(
+                                content: Text("Successfully updated")));
                           }
                           _onSubmit();
                         }),

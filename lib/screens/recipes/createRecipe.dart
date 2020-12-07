@@ -40,7 +40,7 @@ class _CreateRecipeState extends State<CreateRecipe> {
   Nutrition nutrition;
 
   String _ingredientName = "";
-  int _quantity = 0;
+  String _quantity = "";
   String _unit = "";
 
   final List<String> _instructions = [];

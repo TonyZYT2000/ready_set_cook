@@ -20,7 +20,7 @@ class _CommonEditState extends State<CommonEdit> {
   TextEditingController _controller3 = TextEditingController();
 
   String _name;
-  int _quantity;
+  String _quantity;
   String _unit;
   DateTime _startDate;
   int _shelfLife;
@@ -64,8 +64,7 @@ class _CommonEditState extends State<CommonEdit> {
 
     return Scaffold(
       backgroundColor: Colors.blue[50],
-      appBar: AppBar(
-          title: Text('Add ' + widget._ingredient.name)),
+      appBar: AppBar(title: Text('Add ' + widget._ingredient.name)),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         child: Form(
@@ -94,7 +93,7 @@ class _CommonEditState extends State<CommonEdit> {
                         hintText: 'Enter Quantity'),
                     keyboardType: TextInputType.number,
                     onChanged: (val) {
-                      setState(() => _quantity = int.parse(val));
+                      setState(() => _quantity = val);
                     },
                   ),
                   SizedBox(height: 15.0),
