@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
+import 'recommendTile.dart';
 
 const apiKey = '88391b173f7a4ae99bf83c54ab1e4381';
 const apiURL = 'https://api.spoonacular.com';
@@ -35,8 +36,17 @@ class APIrecipe {
 
 class RecipeMapper {
   final List<APIrecipe> meals;
+  final double calories;
+  final double carbs;
+  final double fat;
+  final double protein;
+
   RecipeMapper({
     this.meals,
+    this.calories,
+    this.carbs,
+    this.fat,
+    this.protein,
   });
 
   factory RecipeMapper.fromMap(Map<String, dynamic> map) {
@@ -44,79 +54,26 @@ class RecipeMapper {
     map['meals'].forEach((mealMap) => meals.add(APIrecipe.fromMap(mealMap)));
     return RecipeMapper(
       meals: meals,
+      calories: map['nutrients']['calories'],
+      carbs: map['nutrients']['carbohydrates'],
+      fat: map['nutrients']['fat'],
+      protein: map['nutrients']['protein'],
     );
   }
 }
-
-class RandomRecipe {
-  int id;
-  String image;
-  String title;
-  int readyInMinutes;
-  int servings;
-  String sourceUrl;
-
-  RandomRecipe(
-      {this.id,
-      this.image,
-      this.title,
-      this.readyInMinutes,
-      this.servings,
-      this.sourceUrl});
-
-  RandomRecipe.fromMap(Map<String, dynamic> json) {
-    id = json['id'];
-    image = json['imageType'];
-    title = json['title'];
-    readyInMinutes = json['readyInMinutes'];
-    servings = json['servings'];
-    sourceUrl = json['sourceUrl'];
-  }
-}
-
-class RandomRecipeMapper {
-  final List<RandomRecipe> recipes;
-  RandomRecipeMapper({
-    this.recipes,
-  });
-
-  factory RandomRecipeMapper.fromMap(Map<String, dynamic> map) {
-    List<RandomRecipe> recList = [];
-map['recipes'].forEach((recMap) => recList.add(RandomRecipe.fromMap(recMap)));
-    return RandomRecipeMapper(
-      recipes: recList,
-    );
-  }
-}
-
 
 Future<RecipeMapper> getRecipesForDay() async {
-    final response =
-      await http.get('$apiURL/recipes/mealplans/generate?timeFrame=day&apiKey=$apiKey');
+  final response = await http
+      .get('$apiURL/recipes/mealplans/generate?timeFrame=day&apiKey=$apiKey');
 
   if (response.statusCode == 200) {
-      Map<String, dynamic> recipesData = json.decode(response.body);
-      RecipeMapper recipeList = RecipeMapper.fromMap(recipesData);
-      return recipeList;
+    Map<String, dynamic> recipesData = json.decode(response.body);
+    RecipeMapper recipeList = RecipeMapper.fromMap(recipesData);
+    return recipeList;
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
-    throw Exception('Failed to load recipes');
-  }
-}
-
-Future<RandomRecipeMapper> getRandomRecipes() async {
-    final response =
-      await http.get('$apiURL/recipes/random?number=4&tags=vegetarian&apiKey=$apiKey');
-
-  if (response.statusCode == 200) {
-      Map<String, dynamic> recData = json.decode(response.body);
-      RandomRecipeMapper randomList = RandomRecipeMapper.fromMap(recData);
-      return randomList;
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load recipes');
+    throw Exception('Failed to load album');
   }
 }
 
@@ -126,65 +83,37 @@ class Recommend extends StatefulWidget {
 }
 
 class _Recommend extends State<Recommend> {
-
   Widget recommendRecipeBuilder() {
-  return FutureBuilder(
-    builder: (context, recipeCheck) {
-      if (recipeCheck.connectionState == ConnectionState.none &&
-          recipeCheck.hasData == null) {
-        return Container();
-      }
-      return ListView.builder(
-        itemCount: recipeCheck.data.meals.length,
-        itemBuilder: (context, index) {
-          RecipeMapper recipes = recipeCheck.data;
-          return Column(
-            children: <Widget>[
-              ListTile(
-                title: new Text(recipes.meals[index].title),
-              ),
-            ],
-          );
-        },
-      );
-    },
-    future: getRecipesForDay(),
-  );
-}
-
-  Widget randomRecipeBuilder() {
-  return FutureBuilder(
-    builder: (context, futureRecipe) {
-      if (futureRecipe.connectionState == ConnectionState.none &&
-          futureRecipe.hasData == null) {
-        return Container();
-      }
-      return ListView.builder(
-        itemCount: futureRecipe.data.recipes.length,
-        itemBuilder: (context, index) {
-          RandomRecipeMapper randRec = futureRecipe.data;
-          return Column(
-            children: <Widget>[
-              ListTile(
-                title: new Text(randRec.recipes[index].title),
-              ),
-            ],
-          );
-        },
-      );
-    },
-    future: getRandomRecipes(),
-  );
-}
+    return FutureBuilder(
+      builder: (context, recipeCheck) {
+        if (recipeCheck.connectionState == ConnectionState.none &&
+            recipeCheck.hasData == null) {
+          return Container();
+        }
+        return ListView.builder(
+          itemCount: recipeCheck.data.meals.length,
+          itemBuilder: (context, index) {
+            RecipeMapper recipes = recipeCheck.data;
+            return Column(
+              children: <Widget>[
+                new RecommendTile(
+                  name: recipes.meals[index].title,
+                  recipeId: recipes.meals[index].id.toString(),
+                  imageType: recipes.meals[index].imageType,
+                ),
+              ],
+            );
+          },
+        );
+      },
+      future: getRecipesForDay(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          recommendRecipeBuilder()
-        ],
-      )
+      body: recommendRecipeBuilder(),
     );
   }
 }
