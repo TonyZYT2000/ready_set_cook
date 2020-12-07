@@ -33,8 +33,8 @@ class _RegisterState extends State<Register> {
         title: Text('Register'),
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.person),
-            label: Text('Sign In'),
+            icon: Icon(Icons.person, color: Colors.white),
+            label: Text('Sign In', style: TextStyle(color: Colors.white)),
             onPressed: () => widget.toggleView(),
           ),
         ],
