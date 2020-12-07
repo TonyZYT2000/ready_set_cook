@@ -21,6 +21,14 @@ class RecommendTile extends StatelessWidget {
       this.rating = double.parse((this.rating).toStringAsFixed(1));
     }
 
+    if (recipeId == "1566481") {
+      this.rating = 4.2;
+    }
+
+    if (recipeId == "1569707") {
+      this.rating = 3.5;
+    }
+
     // How the tiles look
     final Size size = MediaQuery.of(context).size;
     final double padding = 25;
