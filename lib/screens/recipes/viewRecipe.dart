@@ -10,7 +10,8 @@ class ViewRecipe extends StatefulWidget {
   final Function toggleView;
   String recipeId = "";
   String name = "";
-  ViewRecipe(this.recipeId, this.name, {this.toggleView});
+  String imageUrl = "";
+  ViewRecipe(this.recipeId, this.name, this.imageUrl, {this.toggleView});
   @override
   _ViewRecipeState createState() => _ViewRecipeState();
 }
@@ -23,6 +24,7 @@ class _ViewRecipeState extends State<ViewRecipe> {
   String quantity = "";
   String unit = "";
   String instruction = "";
+  String imageUrl = "";
   List<Ingredient> _ingredientsList = [];
   List<String> _instructionsList = [];
   Nutrition nutrition;
@@ -32,6 +34,7 @@ class _ViewRecipeState extends State<ViewRecipe> {
     super.initState();
     this.recipeId = widget.recipeId;
     this.name = widget.name;
+    this.imageUrl = widget.imageUrl;
   }
 
   Widget build(BuildContext context) {
@@ -115,52 +118,8 @@ class _ViewRecipeState extends State<ViewRecipe> {
                     child: ViewRecipeTile(
                         ingredient: _ingredientsList,
                         instruction: _instructionsList,
-                        nutrition: nutrition))
-                /*body: Container(
-                  // height: 100000,
-                  padding: EdgeInsets.symmetric(vertical: 0),
-                  // foregroundDecoration: BoxDecoration(
-                  //     image: DecorationImage(
-                  //         scale: 0.9,
-                  //         colorFilter: ColorFilter.mode(
-                  //             Colors.blue.withOpacity(1.0),
-                  //             BlendMode.softLight),
-                  //         alignment: Alignment.topCenter,
-                  //         image:
-                  //             AssetImage("assets/images/chicken breast.jpg"))),
-                  // child: SingleChildScrollView(
-                  child: Column(children: <Widget>[
-                    SizedBox(
-                      height: 300,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemCount: ingredientDoc.length,
-                        itemBuilder: (ctx, index) {
-                          if (ingredientDoc[index].data != null) {
-                            name = ingredientDoc[index]['name'];
-                            quantity = ingredientDoc[index]['quantity'];
-                            unit = ingredientDoc[index]['unit'];
-                          }
-                          return ViewRecipeIngredTile(
-                              name: name, quantity: quantity, unit: unit);
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            itemCount: instructionDoc.length,
-                            itemBuilder: (ctx, index) {
-                              if (instructionDoc[index].data != null) {
-                                instruction =
-                                    instructionDoc[index]['instruction'];
-                              }
-                              return ViewRecipeInstructTile(instruction);
-                            }))
-                  ]),
-                ));*/
+                        nutrition: nutrition,
+                        imageUrl: imageUrl,))
                 );
           },
         );
