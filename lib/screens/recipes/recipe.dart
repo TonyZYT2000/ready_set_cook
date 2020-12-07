@@ -20,29 +20,13 @@ class Recipe extends StatefulWidget {
 }
 
 class _RecipeState extends State<Recipe> {
-    File _image;
-    String _imageUrl;
-    String _filePath;
-    final _picker = ImagePicker();
-
-    void getImage() async {
-      final pickedFile =
-          await _picker.getImage(source: ImageSource.gallery, imageQuality: 50);
-      _filePath = pickedFile.path;
-      setState(() {
-        if (pickedFile != null) {
-          _image = File(pickedFile.path);
-        } else {
-          print('No image selected.');
-        }
-      });
-    }
 
   @override
   Widget build(BuildContext context) {
     final uid = FirebaseAuth.instance.currentUser.uid;
     String name = "";
     double rating = 0;
+    String _imageUrl;
 
     final Size size = MediaQuery.of(context).size;
     double padding = 25;
