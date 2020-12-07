@@ -14,7 +14,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
 
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   static List<Widget> _widgetOptions = <Widget>[
     Recommend(),
