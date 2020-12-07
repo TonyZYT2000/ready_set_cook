@@ -13,7 +13,6 @@ class RecommendTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         child: Container(
-      padding: EdgeInsets.all(5),
       margin: EdgeInsets.fromLTRB(15, 5, 15, 10),
       child: Column(children: [
         Column(children: <Widget>[
@@ -32,7 +31,7 @@ class RecommendTile extends StatelessWidget {
                     image: NetworkImage("https://spoonacular"
                             ".com/recipeImages/" +
                         recipeId +
-                        "-556x370"
+                        "-480x360"
                             "." +
                         imageType),
                   ),
