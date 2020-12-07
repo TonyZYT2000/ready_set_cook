@@ -33,6 +33,7 @@ class _AddIngredientPage extends State<AddIngredientPage> {
     _controller2.clear();
     _controller3.clear();
     return new Scaffold(
+      backgroundColor: Colors.blue[50],
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),

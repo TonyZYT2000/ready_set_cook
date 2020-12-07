@@ -21,7 +21,7 @@ class _AddInstructionsPage extends State<AddInstructionsPage> {
   Widget build(BuildContext context) {
     _controller1.clear();
     return Scaffold(
-      backgroundColor: Colors.blue[120],
+      backgroundColor: Colors.blue[50],
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
