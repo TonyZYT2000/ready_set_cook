@@ -8,7 +8,8 @@ class ViewRecipeTile extends StatelessWidget {
   final List<Ingredient> ingredient;
   final List<String> instruction;
   final Nutrition nutrition;
-  ViewRecipeTile({this.ingredient, this.instruction, this.nutrition});
+  final String imageUrl;
+  ViewRecipeTile({this.ingredient, this.instruction, this.nutrition, this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,11 @@ class ViewRecipeTile extends StatelessWidget {
           child: Column(children: <Widget>[
         Stack(
                       children: [
-                        Image.asset("assets/images/chicken_breast.png"),
+                        (imageUrl == null)
+                ? Image(
+                    image: NetworkImage(
+                        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png"))
+                : Image(image: NetworkImage(imageUrl)),
                         Positioned(
                           width: size.width,
                           top: padding,
@@ -57,7 +62,6 @@ class ViewRecipeTile extends StatelessWidget {
                             child: Text(ingredient[i].name,
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
-                                    // color: Colors.blue[700],
                                     fontSize: 19,
                                     height: 1.8))),
                         TableCell(
@@ -67,7 +71,6 @@ class ViewRecipeTile extends StatelessWidget {
                                     ingredient[i].unit,
                                 textAlign: TextAlign.right,
                                 style: TextStyle(
-                                    // color: Colors.blue[700],
                                     fontSize: 19,
                                     height: 1.8))),
                       ])

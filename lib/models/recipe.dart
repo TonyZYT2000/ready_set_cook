@@ -10,6 +10,7 @@ class Recipe {
   Nutrition nutrition;
   double rating;
   int numRatings;
+  String imageUrl;
 
   Recipe(
       {this.recipeId,
@@ -18,7 +19,8 @@ class Recipe {
       this.instructions,
       this.nutrition,
       this.rating,
-      this.numRatings});
+      this.numRatings,
+      this.imageUrl});
 
   String getRecipeId() {
     return recipeId;

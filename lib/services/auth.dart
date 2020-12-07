@@ -58,14 +58,6 @@ class AuthService {
           email: email, password: password);
       fire.User user = result.user;
 
-      /*List<Recipe> recipes = [];
-
-      await RecipesDatabaseService(uid: user.uid).updateUserRecipes(recipes);*/
-
-      // test adding a single recipe
-      /*Recipe testRecipe =
-          new Recipe("123", user.uid, "Deez Nutz", null, null, 5.0, false);*/
-
       await RecipesDatabaseService(uid: user.uid).addRecipe("1");
       await RecipesDatabaseService(uid: user.uid).addRecipe("2");
       await RecipesDatabaseService(uid: user.uid).addRecipe("3");
