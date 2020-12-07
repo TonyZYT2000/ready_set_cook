@@ -6,9 +6,6 @@ import 'dart:developer';
 class RecipesDatabaseService {
   // uid of user
   String uid;
-  /*User _user;
-  DocumentReference _recipeList;
-  final _recipeReference = FirebaseFirestore.instance.collection('recipes');*/
   RecipesDatabaseService({this.uid});
 
   // obtains instance of the recipes collection from firestore
@@ -20,23 +17,6 @@ class RecipesDatabaseService {
 
   String _recipeName;
   double _recipeRating;
-
-  // sets entire recipe list
-  /*Future updateUserRecipes(List<String> recipeIds) async {
-    return await recipeCollection
-        .doc(uid)
-        .collection("recipesList")
-        .doc()
-        .set({'recipes': recipes});
-  }*/
-
-  /*RecipesDatabaseService(context) {
-    // _user = Provider.of<User>(context);
-    /*if (_recipeReference.doc(_user.uid) == null) {
-      _recipeReference.doc(_user.uid).set({"count": 0});
-    }*/
-    //_recipeList = _recipeReference.doc(_user.uid);
-  }*/
 
   Future addRecipe(String recipeId) async {
     return await recipeCollection
@@ -65,9 +45,6 @@ class RecipesDatabaseService {
     });
   }
 
-  // work in progress (add numRatings)
-  // work on adding ingredients to database
-  // work on adding instructions to database
   Future addCustomRecipe(Recipe recipe) async {
     recipe.ingredients.forEach((ing) {
       allRecipesCollection
@@ -94,7 +71,8 @@ class RecipesDatabaseService {
       "recipeId": recipe.recipeId,
       "name": recipe.name,
       "rating": recipe.rating,
-      "numRatings": recipe.numRatings
+      "numRatings": recipe.numRatings,
+      "imageUrl": recipe.imageUrl,
     });
     addRecipe(recipe.recipeId);
     recipe.ingredients.clear();
