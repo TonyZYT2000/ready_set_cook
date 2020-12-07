@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/number_symbols_data.dart';
+import 'package:ready_set_cook/models/ingredient.dart';
 import 'package:ready_set_cook/models/recipe.dart';
 import 'dart:developer';
 

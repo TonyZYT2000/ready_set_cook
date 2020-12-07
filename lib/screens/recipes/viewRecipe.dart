@@ -108,7 +108,7 @@ class _ViewRecipeState extends State<ViewRecipe> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => EditRecipe(this.recipeId)));
+                              builder: (context) => EditRecipe(this.recipeId, this.name)));
                     }),
                 body: Container(
                     child: ViewRecipeTile(
