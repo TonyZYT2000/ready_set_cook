@@ -137,6 +137,7 @@ class _CreateRecipeState extends State<CreateRecipe> {
     final _tabPages = <Widget>[
       // Ingredients
       Scaffold(
+        backgroundColor: Colors.blue[50],
         body: Container(
             child: ListView.builder(
                 physics: BouncingScrollPhysics(),
@@ -186,6 +187,7 @@ class _CreateRecipeState extends State<CreateRecipe> {
 
       // Instructions
       Scaffold(
+        backgroundColor: Colors.blue[50],
         body: Container(
           child: ListView.builder(
               physics: BouncingScrollPhysics(),
@@ -228,6 +230,7 @@ class _CreateRecipeState extends State<CreateRecipe> {
       // Nutrition
       Center(
           child: Scaffold(
+        backgroundColor: Colors.blue[50],
         body: Container(
           padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
           child: Form(

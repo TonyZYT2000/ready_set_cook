@@ -63,6 +63,7 @@ class _CommonEditState extends State<CommonEdit> {
     }
 
     return Scaffold(
+      backgroundColor: Colors.blue[50],
       appBar: AppBar(
           title: Text('Add ' + widget._ingredient.name)),
       body: Container(
