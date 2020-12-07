@@ -85,26 +85,42 @@ class Recommend extends StatefulWidget {
 class _Recommend extends State<Recommend> {
   Widget recommendRecipeBuilder() {
     return FutureBuilder(
-      builder: (context, recipeCheck) {
-        if (recipeCheck.connectionState == ConnectionState.none &&
-            recipeCheck.hasData == null) {
-          return Container();
-        }
-        return ListView.builder(
-          itemCount: recipeCheck.data.meals.length,
-          itemBuilder: (context, index) {
-            RecipeMapper recipes = recipeCheck.data;
-            return SingleChildScrollView(
-              child: new RecommendTile(
-                name: recipes.meals[index].title,
-                recipeId: recipes.meals[index].id.toString(),
-                imageType: recipes.meals[index].imageType,
-              ),
-            );
-          },
-        );
-      },
       future: getRecipesForDay(),
+      builder: (context, recipeCheck) {
+        if (recipeCheck.hasData != null && recipeCheck.data.meals != null) {
+          return ListView.builder(
+            itemCount: recipeCheck.data.meals.length,
+            itemBuilder: (context, index) {
+              RecipeMapper recipes = recipeCheck.data;
+              return SingleChildScrollView(
+                child: new RecommendTile(
+                  name: recipes.meals[index].title,
+                  recipeId: recipes.meals[index].id.toString(),
+                  imageType: recipes.meals[index].imageType,
+                ),
+              );
+            },
+          );
+        } else {
+          return ListView(children: [
+            new RecommendTile(
+              name: "Peanut Butter And Chocolate Oatmeal",
+              recipeId: 655219.toString(),
+              imageType: "jpg",
+            ),
+            new RecommendTile(
+              name: "Lentil Salad With Vegetables",
+              recipeId: 649931.toString(),
+              imageType: "jpg",
+            ),
+            new RecommendTile(
+              name: "Asian Noodles",
+              recipeId: 632854.toString(),
+              imageType: "jpg",
+            ),
+          ]);
+        }
+      },
     );
   }
 
