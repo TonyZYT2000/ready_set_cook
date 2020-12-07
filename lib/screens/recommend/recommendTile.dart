@@ -82,21 +82,21 @@ class RecommendTile extends StatelessWidget {
 Widget _buildRatingStar(rating) {
   List<Widget> icons = [];
   double i = 0;
-  while (i < rating - 0.5) {
+  while (rating - i >= 0.75) {
     icons.add(new Icon(Icons.star, color: Colors.blue));
-
     i = i + 1;
   }
-  if (rating - i >= 0.5) {
+
+  if (rating - i >= 0.25) {
     icons.add(new Icon(Icons.star_half, color: Colors.blue));
   }
 
-  while (icons.length != 5) {
+  while (icons.length < 5) {
     icons.add(new Icon(Icons.star_border, color: Colors.grey));
   }
 
   return new Padding(
-    padding: EdgeInsets.fromLTRB(90, 5, 70, 0),
+    padding: EdgeInsets.fromLTRB(10, 0, 0, 3),
     child: new Row(children: icons),
   );
 }

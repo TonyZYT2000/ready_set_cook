@@ -79,23 +79,23 @@ Future<RecipeMapper> getRecipesForDay() async {
 
     // Basic Check meal
     recipeList.meals.add(APIrecipe.fromMap({
-      "id": 632854,
-      "title": "Asian Noodles",
-      "imageType": "jpg",
-      "readyInMinutes": 45,
-      "servings": 4,
-      "sourceUrl": "https://spoonacular.com/recipes/asian-noodles-632854"
-    }));
-
-    // Basic Check meal
-    recipeList.meals.add(APIrecipe.fromMap({
-      "id": 649931,
-      "title": "Lentil Salad With Vegetables",
+      "id": 1566481,
+      "title": "Turkey-Stuffed Portabella Mushrooms",
       "imageType": "jpg",
       "readyInMinutes": 45,
       "servings": 4,
       "sourceUrl":
-          "https://spoonacular.com/recipes/lentil-salad-with-vegetables-649931"
+          "https://spoonacular.com/recipes/turkey-stuffed-portabella-mushrooms-1566481"
+    }));
+
+    // Basic Check meal
+    recipeList.meals.add(APIrecipe.fromMap({
+      "id": 1569707,
+      "title": "Kale Bruschetta",
+      "imageType": "jpg",
+      "readyInMinutes": 45,
+      "servings": 4,
+      "sourceUrl": "https://spoonacular.com/recipes/kale-bruschetta-1569707"
     }));
 
     // Return the Recipe List
