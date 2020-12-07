@@ -1,7 +1,7 @@
 class Ingredient {
   String id;
   String name;
-  int quantity;
+  String quantity;
   String unit;
   DateTime startDate;
   int shelfLife;
