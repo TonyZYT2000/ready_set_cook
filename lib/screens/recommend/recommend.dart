@@ -8,6 +8,11 @@ const apiKey = '88391b173f7a4ae99bf83c54ab1e4381';
 const apiURL = 'https://api.spoonacular.com';
 const imageUrl = 'https://spoonacular.com/recipeImages/';
 
+class Recommend extends StatefulWidget {
+  @override
+  _Recommend createState() => _Recommend();
+}
+
 class APIrecipe {
   int id;
   String imageType;
@@ -51,7 +56,7 @@ class RecipeMapper {
 
   factory RecipeMapper.fromMap(Map<String, dynamic> map) {
     List<APIrecipe> meals = [];
-    map['meals'].forEach((mealMap) => meals.add(APIrecipe.fromMap(mealMap)));
+    map['meals'].forEach((meal) => meals.add(APIrecipe.fromMap(meal)));
     return RecipeMapper(
       meals: meals,
       calories: map['nutrients']['calories'],
@@ -67,19 +72,37 @@ Future<RecipeMapper> getRecipesForDay() async {
       .get('$apiURL/recipes/mealplans/generate?timeFrame=day&apiKey=$apiKey');
 
   if (response.statusCode == 200) {
-    Map<String, dynamic> recipesData = json.decode(response.body);
+    Map<String, dynamic> recipesData = jsonDecode(response.body);
     RecipeMapper recipeList = RecipeMapper.fromMap(recipesData);
+
+    // Basic Check meal
+    recipeList.meals.add(APIrecipe.fromMap({
+      "id": 632854,
+      "title": "Asian Noodles",
+      "imageType": "jpg",
+      "readyInMinutes": 45,
+      "servings": 4,
+      "sourceUrl": "https://spoonacular.com/recipes/asian-noodles-632854"
+    }));
+
+    // Basic Check meal
+    recipeList.meals.add(APIrecipe.fromMap({
+      "id": 649931,
+      "title": "Lentil Salad With Vegetables",
+      "imageType": "jpg",
+      "readyInMinutes": 45,
+      "servings": 4,
+      "sourceUrl":
+          "https://spoonacular.com/recipes/lentil-salad-with-vegetables-649931"
+    }));
+
+    // Return the Recipe List
     return recipeList;
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
-    throw Exception('Failed to load album');
+    throw Exception('Failed to load recipes');
   }
-}
-
-class Recommend extends StatefulWidget {
-  @override
-  _Recommend createState() => _Recommend();
 }
 
 class _Recommend extends State<Recommend> {
@@ -87,7 +110,7 @@ class _Recommend extends State<Recommend> {
     return FutureBuilder(
       future: getRecipesForDay(),
       builder: (context, recipeCheck) {
-        if (recipeCheck.hasData != null && recipeCheck.data.meals != null) {
+        if (recipeCheck.hasData != null) {
           return ListView.builder(
             itemCount: recipeCheck.data.meals.length,
             itemBuilder: (context, index) {
