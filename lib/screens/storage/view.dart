@@ -14,8 +14,9 @@ class View extends StatefulWidget {
 class _ViewState extends State<View> {
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(backgroundColor: Colors.cyan),
-        floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue[50],
+        appBar: AppBar(title: Text("View " + widget._ingredient.name)),
+        floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
             Navigator.pop(context);
             Navigator.push(
@@ -23,7 +24,8 @@ class _ViewState extends State<View> {
               MaterialPageRoute(builder: (context) => Edit(widget._ingredient)),
             );
           },
-          child: Icon(Icons.edit),
+          icon: Icon(Icons.edit),
+          label: Text("Edit"),
         ),
         body: Container(
           padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),

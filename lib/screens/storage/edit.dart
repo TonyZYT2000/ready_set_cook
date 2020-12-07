@@ -53,8 +53,9 @@ class _EditState extends State<Edit> {
     }
 
     return Scaffold(
+        backgroundColor: Colors.blue[50],
         appBar: AppBar(
-            title: const Text('Edit Items'), backgroundColor: Colors.cyan),
+            title: Text('Edit ' + widget._ingredient.name)),
         key: _scaffoldKey,
         body: Container(
           padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),

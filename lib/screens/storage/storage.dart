@@ -63,14 +63,15 @@ class _StorageState extends State<Storage> {
     }
     return Scaffold(
         backgroundColor: Colors.blue[50],
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => Add()),
             );
           },
-          child: Icon(Icons.add),
+          icon: Icon(Icons.add),
+          label: Text("Add")
         ),
         body: Column(
           children: [

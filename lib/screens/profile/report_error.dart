@@ -31,9 +31,8 @@ class _ReportErrorState extends State<ReportError> {
       _errorDB = ErrorDatabase(context);
     }
     return Scaffold(
-      backgroundColor: Colors.blue[200],
+      backgroundColor: Colors.blue[50],
       appBar: AppBar(
-        backgroundColor: Colors.blue[120],
         elevation: 0.0,
         title: Text('Report Bugs'),
       ),
