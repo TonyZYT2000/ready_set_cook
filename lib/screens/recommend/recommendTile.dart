@@ -1,58 +1,78 @@
 import 'package:flutter/material.dart';
 import 'package:ready_set_cook/screens/recipes/viewRecipe.dart';
+import 'package:ready_set_cook/screens/recipes/BorderIcon.dart';
+import 'package:ready_set_cook/shared/constants.dart';
+import 'dart:math';
 
 // ignore: must_be_immutable
 class RecommendTile extends StatelessWidget {
   final String name;
   final String recipeId;
   final String imageType;
-  final double rating = 4.0;
   RecommendTile({this.name, this.recipeId, this.imageType});
 
   @override
   Widget build(BuildContext context) {
+    // Generate Random Rating
+    Random r = new Random();
+    double rating = 1.0 + (5.0 - 1.0) * r.nextDouble();
+    rating = double.parse((rating).toStringAsFixed(1));
+
+    // How the tiles look
+    final Size size = MediaQuery.of(context).size;
+    final double padding = 25;
+    final sidePadding = EdgeInsets.symmetric(horizontal: padding);
+    final ThemeData themeData = Theme.of(context);
     return GestureDetector(
-        child: Container(
-      margin: EdgeInsets.fromLTRB(15, 5, 15, 10),
-      child: Column(children: [
-        Column(children: <Widget>[
-          Container(
-              child: Text(name,
-                  style: TextStyle(
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      color: Colors.blueGrey))),
-          Container(
-              height: 160,
-              decoration: new BoxDecoration(
-                  image: DecorationImage(
-                    // https://spoonacular.com/recipeImages/{ID}-{SIZE}.{TYPE}
-                    image: NetworkImage("https://spoonacular"
-                            ".com/recipeImages/" +
-                        recipeId +
-                        "-480x360"
-                            "." +
-                        imageType),
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                Center(
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(25.0),
+                        child: Image.network("https://spoonacular"
+                                ".com/recipeImages/" +
+                            recipeId +
+                            "-312x231"
+                                "." +
+                            imageType))),
+                Positioned(
+                    top: 20,
+                    right: 60,
+                    child: BorderIcon(
+                        child: Icon(
+                      Icons.favorite_border,
+                      color: COLOR_BLACK,
+                    )))
+              ],
+            ),
+            SizedBox(height: 5),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    "$name",
+                    style: themeData.textTheme.headline5,
                   ),
-                  borderRadius: new BorderRadius.circular(8))),
-          SizedBox(height: 2),
-        ]),
-        Center(
-          child: Text("Rating: " + rating.toString(),
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                  fontStyle: FontStyle.italic,
-                  fontSize: 18,
-                  color: Colors.blueGrey)),
+                ),
+              ],
+            ),
+            SizedBox(height: 7),
+            Row(children: [
+              Text(
+                "$rating / 5.0",
+                style: themeData.textTheme.subtitle1,
+              ),
+              _buildRatingStar(rating)
+            ]),
+          ],
         ),
-        _buildRatingStar(rating),
-      ]),
-      constraints: BoxConstraints(
-          minWidth: 10, maxWidth: 50, minHeight: 50, maxHeight: 250),
-      decoration: BoxDecoration(
-          color: Colors.blue[100], borderRadius: BorderRadius.circular(15)),
-    ));
+      ),
+    );
   }
 }
 
