@@ -27,12 +27,6 @@ class _ProfileState extends State<Profile> {
     return Container(
       child: Scaffold(
           backgroundColor: Colors.blue[50],
-          /*
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {},
-            child: Icon(Icons.edit),
-          ),
-          */
           body: ListView(children: <Widget>[
             ListTile(
               trailing: CircleAvatar(

@@ -63,6 +63,13 @@ class AuthService {
       await RecipesDatabaseService(uid: user.uid).addRecipe("3");
       await RecipesDatabaseService(uid: user.uid).addRecipe("4");
       await RecipesDatabaseService(uid: user.uid).addRecipe("5");
+      await RecipesDatabaseService(uid: user.uid).addRecipe("6");
+      await RecipesDatabaseService(uid: user.uid).addRecipe("7");
+      await RecipesDatabaseService(uid: user.uid).addRecipe("8");
+      await RecipesDatabaseService(uid: user.uid).addRecipe("9");
+      await RecipesDatabaseService(uid: user.uid).addRecipe("90");
+      // await RecipesDatabaseService(uid: user.uid).addRecipe("91");
+      await RecipesDatabaseService(uid: user.uid).addRecipe("92");
 
       return _userFromFirebaseUser(user);
     } catch (error) {
