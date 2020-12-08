@@ -55,8 +55,8 @@ class RecipesDatabaseService {
       if (ds != null) {
         ds.docs.forEach((recipe) {
           id = recipe['recipeId'];
-          print("The id is");
-          print(id);
+          // print("The id is");
+          // print(id);
           if (id == recipeId) {
             print("we are in");
             return FirebaseFirestore.instance
