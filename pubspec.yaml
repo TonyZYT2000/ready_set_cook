@@ -40,6 +40,7 @@ dependencies:
   flutter_email_sender: ^4.0.0
   http: ^0.12.2
   webview_flutter: ^1.0.7
+  flutter_rating_bar: ^3.2.0+1
 
 
 dev_dependencies:

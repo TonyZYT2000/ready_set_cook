@@ -38,6 +38,7 @@ class _CreateRecipeState extends State<CreateRecipe> {
   String _instruction_error = "";
   String _ingredient_error = "";
   Nutrition nutrition;
+  bool _fav;
 
   String _ingredientName = "";
   String _quantity = "";
@@ -115,7 +116,8 @@ class _CreateRecipeState extends State<CreateRecipe> {
         nutrition: nutrition,
         rating: _rating,
         numRatings: _numRatings,
-        imageUrl: _imageUrl));
+        imageUrl: _imageUrl,
+        fav: _fav));
     _controller1.clear();
     _controller2.clear();
     _controller3.clear();
