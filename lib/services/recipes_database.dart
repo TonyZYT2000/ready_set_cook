@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/number_symbols_data.dart';
 import 'package:ready_set_cook/models/recipe.dart';
 import 'dart:developer';
+import 'package:flutter/material.dart';
 
 class RecipesDatabaseService {
   // uid of user
@@ -18,11 +19,62 @@ class RecipesDatabaseService {
   String _recipeName;
   double _recipeRating;
 
+  Future favRecipe(String recipeId) async {
+    print("in favRecipe");
+    String id;
+
+    CollectionReference _documentRef =
+        recipeCollection.doc(uid).collection('recipesList');
+    return _documentRef.get().then((ds) {
+      if (ds != null) {
+        ds.docs.forEach((recipe) {
+          id = recipe['recipeId'];
+          print("The id is");
+          print(id);
+          if (id == recipeId) {
+            print("we are in");
+            return FirebaseFirestore.instance
+                .collection('recipes')
+                .doc(uid)
+                .collection("recipesList")
+                .doc(recipe.id)
+                .set({"recipeId": recipeId, "fav": true});
+          }
+        });
+      }
+    });
+  }
+
+  Future unFavRecipe(String recipeId) async {
+    String id;
+
+    CollectionReference _documentRef =
+        recipeCollection.doc(uid).collection('recipesList');
+    return _documentRef.get().then((ds) {
+      if (ds != null) {
+        ds.docs.forEach((recipe) {
+          id = recipe['recipeId'];
+          print("The id is");
+          print(id);
+          if (id == recipeId) {
+            print("we are in");
+            return FirebaseFirestore.instance
+                .collection('recipes')
+                .doc(uid)
+                .collection("recipesList")
+                .doc(recipe.id)
+                .set({"recipeId": recipeId, "fav": false});
+          }
+        });
+      }
+    });
+  }
+
   Future addRecipe(String recipeId) async {
     return await recipeCollection
         .doc(uid)
         .collection("recipesList")
-        .add({"recipeId": recipeId});
+        .add({"recipeId": recipeId, "fav": false});
   }
 
   deleteRecipe(String recipeId, String uid) {
@@ -66,6 +118,7 @@ class RecipesDatabaseService {
       "Total Fat": recipe.nutrition.totalFat,
       "Total Carbohydrate": recipe.nutrition.totalCarbs,
     });
+    allRecipesCollection.doc(recipe.recipeId).collection("uids").add({});
 
     await allRecipesCollection.doc(recipe.recipeId).set({
       "recipeId": recipe.recipeId,
@@ -101,30 +154,6 @@ class RecipesDatabaseService {
     }).toList();
   }
 
-  /*QuerySnapshot list;
-    List<DocumentSnapshot> snap = snapshot.docs;
-    for (var i in snap) {
-      // var dss = i.data();
-
-      // var key = dss.keys.firstWhere((k) => dss[k] == uid);
-
-      if (i.id == uid) {
-        list = i.get('recipesList');
-      }
-    }
-
-    return list.docs.map((doc) {
-      return doc.data()['recipeId'];
-      /* return Recipe(
-        doc.data['recipeId'],
-        doc.data['userId'],
-        doc.data['name'],
-        null,
-        null,
-        doc.data['rating'],
-      );*/
-    }).toList();*/
-
   // get recipes stream
   Stream<List<Recipe>> get recipes {
     return recipeCollection
@@ -133,17 +162,4 @@ class RecipesDatabaseService {
         .snapshots()
         .map(_recipesList);
   }
-
-  // List<Recipe>  get recipes {
-
-  //   StreamBuilder(
-  //     stream:
-  //   )
-
-  //   return recipeCollection
-  //       .doc(uid)
-  //       .collection("recipesList")
-  //       .snapshots()
-  //       .map(_recipesList);
-  // }
 }
