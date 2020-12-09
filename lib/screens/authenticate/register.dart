@@ -18,8 +18,9 @@ class _RegisterState extends State<Register> {
   // text field state
   String _email = '';
   String _password = '';
-  String _firstName = '';
-  String _lastName = '';
+  String _userName = '';
+  String _photoURL =
+      "https://i.kym-cdn.com/photos/images/newsfeed/001/090/170/192.png";
 
   @override
   Widget build(BuildContext context) {
@@ -49,17 +50,9 @@ class _RegisterState extends State<Register> {
                 SizedBox(height: 20.0),
                 TextFormField(
                   decoration:
-                      textInputDecoration.copyWith(hintText: 'First Name'),
+                      textInputDecoration.copyWith(hintText: 'User Name'),
                   onChanged: (val) {
-                    setState(() => _firstName = val);
-                  },
-                ),
-                SizedBox(height: 20.0),
-                TextFormField(
-                  decoration:
-                      textInputDecoration.copyWith(hintText: 'Last Name'),
-                  onChanged: (val) {
-                    setState(() => _lastName = val);
+                    setState(() => _userName = val);
                   },
                 ),
                 SizedBox(height: 20.0),
@@ -75,8 +68,9 @@ class _RegisterState extends State<Register> {
                   decoration:
                       textInputDecoration.copyWith(hintText: 'Password'),
                   obscureText: true,
-                  validator: (val) =>
-                      val.length < 6 ? 'Enter a password 6+ characters long' : null,
+                  validator: (val) => val.length < 6
+                      ? 'Enter a password 6+ characters long'
+                      : null,
                   onChanged: (val) {
                     setState(() => _password = val);
                   },
@@ -96,6 +90,8 @@ class _RegisterState extends State<Register> {
                           setState(() {
                             _error = 'Please supply a valid email';
                           });
+                        } else {
+                          _auth.updateUserProfile(_userName, _photoURL);
                         }
                       }
                     }),

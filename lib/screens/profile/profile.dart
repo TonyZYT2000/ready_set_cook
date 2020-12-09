@@ -7,6 +7,7 @@ import 'package:ready_set_cook/screens/profile/forgot_password.dart';
 import 'package:ready_set_cook/services/auth.dart' as fire;
 import 'package:ready_set_cook/models/user.dart';
 import 'package:ready_set_cook/screens/profile/dietary_preferences.dart';
+import 'package:ready_set_cook/screens/profile/profile_page.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -17,10 +18,7 @@ class _ProfileState extends State<Profile> {
   final AuthService _auth = AuthService();
 
   String _userName = "My Name";
-  String _profilePicURL =
-      "https://i0.wp.com/nerdschalk.com/wp-content/uploads/2020/08/pogger.png?resize=768%2C757&ssl=1";
   bool _notification = false;
-  String _dietaryPreferences = "Kosher, Pescatarian...";
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +28,20 @@ class _ProfileState extends State<Profile> {
           body: ListView(children: <Widget>[
             ListTile(
               trailing: CircleAvatar(
-                backgroundImage: NetworkImage(_profilePicURL),
+                backgroundImage: NetworkImage(_auth.getCurrentUserPhotoURL() !=
+                        null
+                    ? _auth.getCurrentUserPhotoURL()
+                    : "https://www.streamscheme.com/wp-content/uploads/2020/04/poggers.png"),
               ),
               title: Text('Username'),
-              subtitle: Text('$_userName'),
+              subtitle: Text(_auth.getCurrentUserdiaplayName() != null
+                  ? _auth.getCurrentUserdiaplayName()
+                  : "loading or no Username"),
               onTap: () {
-                // do something
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfilePage()),
+                );
               },
             ),
             ListTile(

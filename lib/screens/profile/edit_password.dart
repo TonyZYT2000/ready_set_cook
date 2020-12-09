@@ -28,9 +28,6 @@ class _ChangePasswordState extends State<ChangePassword> {
       backgroundColor: Colors.blue[50],
       appBar: AppBar(
         title: Text('Change Password'),
-        //actions: <Widget>[],
-        //leading:
-        //    Padding(padding: const EdgeInsets.all(8.0), child: SmallLogo()),
       ),
       /*
       floatingActionButton: FloatingActionButton(

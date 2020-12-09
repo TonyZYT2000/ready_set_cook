@@ -22,8 +22,17 @@ class AuthService {
     return _auth.currentUser.email;
   }
 
-  String getCurrentUserFirstName() {
+  String getCurrentUserdiaplayName() {
     return _auth.currentUser.displayName;
+  }
+
+  String getCurrentUserPhotoURL() {
+    return _auth.currentUser.photoURL;
+  }
+
+  Future<void> updateUserProfile(String displayName, String photoURL) async {
+    await _auth.currentUser
+        .updateProfile(displayName: displayName, photoURL: photoURL);
   }
 
   // sign in anon
