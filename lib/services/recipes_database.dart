@@ -78,6 +78,15 @@ class RecipesDatabaseService {
         .add({"recipeId": recipeId, "fav": false});
   }
 
+  Future updateRecipe(String newName, String recipeId) async {
+    debugPrint(recipeId);
+    debugPrint(newName);
+
+    return await recipeCollection.doc(recipeId).update({
+      "name": newName,
+    });
+  }
+
   deleteRecipe(String recipeId, String uid) {
     FirebaseFirestore.instance
         .collection('recipes')
@@ -131,11 +140,6 @@ class RecipesDatabaseService {
     addRecipe(recipe.recipeId);
     recipe.ingredients.clear();
     recipe.instructions.clear();
-  }
-
-
-  Future updateRecipe(Recipe recipe) async {
-  
   }
 
   Future getRecipesHelper(QueryDocumentSnapshot qds) async {
