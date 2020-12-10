@@ -133,6 +133,11 @@ class RecipesDatabaseService {
     recipe.instructions.clear();
   }
 
+
+  Future updateRecipe(Recipe recipe) async {
+  
+  }
+
   Future getRecipesHelper(QueryDocumentSnapshot qds) async {
     DocumentSnapshot recipeSnapshot =
         await allRecipesCollection.doc(qds.get('recipeId')).get();
