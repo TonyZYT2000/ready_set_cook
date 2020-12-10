@@ -135,7 +135,13 @@ class _ViewRecipeState extends State<ViewRecipe> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                EditRecipe(this.recipeId)));
+                                                EditRecipe(ingredient: _ingredientsList,
+                          instruction: _instructionsList,
+                          nutrition: nutrition,
+                          imageUrl: imageUrl,
+                          fav: fav,
+                          recipeId: recipeId,
+                          name: name)));
                                   }),
                               FloatingActionButton.extended(
                                 heroTag: "rate",
