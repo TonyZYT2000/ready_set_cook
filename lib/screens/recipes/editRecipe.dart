@@ -5,310 +5,423 @@ import 'package:ready_set_cook/models/nutrition.dart';
 import 'package:ready_set_cook/models/recipe.dart';
 import 'package:ready_set_cook/services/recipes_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ready_set_cook/screens/recipes/BorderIcon.dart';
 
 class EditRecipe extends StatefulWidget {
-  final Function toggleView;
-  String recipeId = "";
-  String name = "";
-  EditRecipe(this.recipeId, this.name, {this.toggleView});
-
+  final List<Ingredient> ingredient;
+  final List<String> instruction;
+  final Nutrition nutrition;
+  final String imageUrl;
+  final bool fav;
+  final recipeId;
+  final name;
+  EditRecipe(
+      {this.ingredient,
+      this.instruction,
+      this.nutrition,
+      this.imageUrl,
+      this.fav,
+      this.recipeId,
+      this.name});
   @override
-  _EditState createState() => _EditState();
-} // EditRecipe
+  _EditRecipe createState() => _EditRecipe();
+}
 
-class _EditState extends State<EditRecipe> {
-  String recipeId = "";
-  String currentName = "";
+class _EditRecipe extends State<EditRecipe> {
+  // Variables
+  List<Ingredient> ingredient;
+  List<String> instruction;
+  Nutrition nutrition;
+  String imageUrl;
+  bool fav;
+  String recipeId;
+  String name;
+  String currentName;
 
   @override
   void initState() {
     super.initState();
     this.recipeId = widget.recipeId;
+    this.ingredient = widget.ingredient;
+    this.instruction = widget.instruction;
+    this.nutrition = widget.nutrition;
+    this.imageUrl = widget.imageUrl;
+    this.fav = widget.fav;
+    this.recipeId = widget.recipeId;
+    this.name = widget.name;
     this.currentName = widget.name;
   }
 
-  // Editable Variables
-  String updatedName = "";
-  String quantity = "";
-  String unit = "";
-  String instruction = "";
-  List<Ingredient> _ingredientsList = [];
-  List<String> _instructionsList = [];
-  Nutrition nutrition;
-  final _formKey = GlobalKey<FormState>();
-  // Nutrition
-  String calories = "";
-  String protein = "";
-  String totalCarbs = "";
-  String totalFat = "";
-
-  // Boolean Check to See if Values were updated
-  bool name_updated = false;
-  bool nutrition_updated = false;
-  bool instruction_updated = false;
-  bool ingredient_updated = false;
-
-  // Recipe Database
-  RecipesDatabaseService recipeDB;
-
+  // Probably Best to Set entire recipe
   Future<void> _updateRecipe() async {
-    final currentRec =
-        RecipesDatabaseService().allRecipesCollection.doc(widget.recipeId);
-    currentRec.update({"name": updatedName});
-
-    updatedName = "";
-    _ingredientsList = null;
-    _instructionsList = null;
-    _formKey.currentState.save();
+    setState(() {});
+    Navigator.of(context).pop();
   }
 
-  Future<void> updateIngredients() async {
-    final ingredientColl = RecipesDatabaseService()
-        .allRecipesCollection
-        .doc(recipeId)
-        .collection("ingredients")
-        .snapshots();
+  TextEditingController nameController = TextEditingController();
 
-    ingredientColl.forEach((ingredient) {
-      ingredient.docs.asMap().forEach((index, data) {
-        ingredient.docs.elementAt(index).data().updateAll((key, value) => _instructionsList);
-      });
-    });
-  }
-
+  @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('allRecipes')
-            .doc(recipeId)
-            .collection("ingredients")
-            .snapshots(),
-        builder: (ctx, ingredientSnapshot) {
-          return StreamBuilder(
-              stream: FirebaseFirestore.instance
-                  .collection('allRecipes')
-                  .doc(recipeId)
-                  .collection("instructions")
-                  .snapshots(),
-              builder: (ctx, instructionSnapshot) {
-                return StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection('allRecipes')
-                      .doc(recipeId)
-                      .collection("nutrition")
-                      .snapshots(),
-                  builder: (ctx, nutritionSnapshot) {
-                    if (ingredientSnapshot.connectionState ==
-                        ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    }
+    final Size size = MediaQuery.of(context).size;
+    final ThemeData themeData = Theme.of(context);
+    final double padding = 25;
+    final sidePadding = EdgeInsets.symmetric(horizontal: padding);
+    final user = FirebaseAuth.instance.currentUser;
+    final uid = user.uid;
+    var recipeDB = RecipesDatabaseService(uid: uid);
 
-                    if (instructionSnapshot.connectionState ==
-                        ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    }
+    TextEditingController calorieController =
+        TextEditingController(text: nutrition.calories);
+    TextEditingController proteinController =
+        TextEditingController(text: nutrition.protein);
+    TextEditingController carbController =
+        TextEditingController(text: nutrition.totalCarbs);
+    TextEditingController fatController =
+        TextEditingController(text: nutrition.totalFat);
 
-                    if (nutritionSnapshot.connectionState ==
-                        ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    }
+    var icon = Icons.favorite_border;
+    if (fav) {
+      icon = Icons.favorite;
+    }
+    return Scaffold(
+      backgroundColor: Colors.blue[50],
+      appBar: AppBar(
+          toolbarHeight: 60,
+          title: Container(
+            child: TextFormField(
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.all(5),
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                prefixText: 'Enter New Name:   ',
+                labelText: currentName,
+                labelStyle:
+                    TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
+                prefixStyle:
+                    TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
+              ),
+              controller: nameController,
+              style: TextStyle(color: Colors.white, fontSize: 20),
+              onChanged: (val) {
+                setState(() => name = val);
+              },
+            ),
+          ),
+          elevation: 0),
+      body: Container(
+          child: ListView(physics: BouncingScrollPhysics(), children: <Widget>[
+        Form(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: Container(
+              child: Column(children: <Widget>[
+            Stack(
+              children: [
+                (imageUrl == null)
+                    ? Image(
+                        image: NetworkImage(
+                            "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png"))
+                    : Image(image: NetworkImage(imageUrl)),
+                Positioned(
+                    width: size.width,
+                    top: padding,
+                    child: Padding(
+                      padding: sidePadding,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            GestureDetector(
+                                onTap: () async {
+                                  if (fav) {
+                                    await recipeDB.unFavRecipe(recipeId);
+                                    icon = Icons.favorite_border;
+                                    setState(() {});
+                                  }
 
-                    instructionSnapshot.data.documents.forEach((instruction) {
-                      _instructionsList.add(instruction['instruction']);
-                    });
-
-                    ingredientSnapshot.data.documents.forEach((ingredient) {
-                      _ingredientsList.add(new Ingredient(
-                          name: ingredient['name'],
-                          quantity: ingredient['quantity'],
-                          unit: ingredient['unit']));
-                    });
-
-                    nutritionSnapshot.data.documents.forEach((nut) {
-                      nutrition = Nutrition(
-                          calories: nut['Calories'],
-                          protein: nut['Protein'],
-                          totalCarbs: nut['Total Carbohydrate'],
-                          totalFat: nut['Total Fat']);
-                    });
-
-                    return Scaffold(
-                        appBar: AppBar(
-                            title: TextFormField(
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 20),
-                                decoration: InputDecoration(
-                                  hintText: widget.name,
-                                  hintStyle: TextStyle(
-                                      fontStyle: FontStyle.italic,
-                                      color: Colors.white),
-                                  contentPadding: new EdgeInsets.symmetric(
-                                      vertical: 50.0, horizontal: 0),
+                                  if (!fav) {
+                                    await recipeDB.favRecipe(recipeId);
+                                    icon = Icons.favorite;
+                                    setState(() {});
+                                  }
+                                  fav = !fav;
+                                },
+                                child: BorderIcon(
+                                    child: Icon(
+                                  icon,
+                                  color: Colors.red,
+                                )))
+                          ]),
+                    )),
+              ],
+            ),
+            SizedBox(height: 15),
+            Container(
+                padding: EdgeInsets.all(12.0),
+                child: Column(children: [
+                  Wrap(children: <Widget>[
+                    // Editing Ingredients
+                    Text(
+                      "Ingredients",
+                      style: TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline),
+                    ),
+                    SizedBox(height: 50),
+                    for (int i = 0; i < (ingredient.length); i++)
+                      Table(
+                          border: TableBorder.symmetric(
+                              inside: BorderSide.none,
+                              outside: BorderSide.none),
+                          defaultColumnWidth: FixedColumnWidth(180),
+                          children: [
+                            TableRow(children: [
+                              TableCell(
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                                  child: TextFormField(
+                                      decoration: InputDecoration(
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: Colors.blue,
+                                          ),
+                                        ),
+                                        errorBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                                        hintText: ingredient[i].name,
+                                        hintStyle: TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            color: Colors.black),
+                                      ),
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(fontSize: 20)),
                                 ),
-                                onChanged: (val) {
-                                  setState(() => updatedName = val);
-                                })),
-                        floatingActionButton: FloatingActionButton.extended(
-                            icon: Icon(Icons.edit),
-                            label: Text("Update Changes"),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            }),
-                        body: Form(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            child: Container(
-                                child: Column(children: <Widget>[
-                              ListView.builder(
-                                  physics: BouncingScrollPhysics(),
-                                  padding: const EdgeInsets.all(15),
-                                  itemCount: _ingredientsList.length,
-                                  itemBuilder: (context, index) {
-                                    return Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.baseline,
-                                        children: [
-                                          TextFormField(
-                                            decoration: new InputDecoration(
-                                              labelText:
-                                                  _ingredientsList[index].name,
-                                              border: new OutlineInputBorder(
-                                                borderSide: new BorderSide(),
-                                              ),
+                              ),
+                              TableCell(
+                                  child: Row(children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 8.0),
+                                    child: TextFormField(
+                                        decoration: InputDecoration(
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.blue,
                                             ),
-                                            validator: (value) {
-                                              if (value.length > 16) {
-                                                return "Ingredient name too long";
-                                              }
-                                              if (value.isEmpty) {
-                                                return "Please enter Ingredient Name";
-                                              }
-                                              return null;
-                                            },
-                                            onChanged: (text) {
-                                              _ingredientsList[index].name =
-                                                  text;
-                                            },
                                           ),
-                                          TextFormField(
-                                            decoration: new InputDecoration(
-                                              labelText: _ingredientsList[index]
-                                                  .quantity
-                                                  .toString(),
-                                              border: new OutlineInputBorder(
-                                                borderSide: new BorderSide(),
-                                              ),
+                                          hintText: ingredient[i].quantity,
+                                          hintStyle: TextStyle(
+                                              fontStyle: FontStyle.italic,
+                                              color: Colors.black),
+                                        ),
+                                        textAlign: TextAlign.right,
+                                        style: TextStyle(fontSize: 20)),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 8.0),
+                                    child: TextFormField(
+                                        decoration: InputDecoration(
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                              color: Colors.blue,
                                             ),
-                                            validator: (value) {
-                                              if (int.parse(value) > 9999) {
-                                                return "Ingredient name too long";
-                                              }
-                                              if (!isNumeric(value)) {
-                                                return "Please enter an integer";
-                                              }
-                                              return null;
-                                            },
-                                            onChanged: (text) {
-                                              _ingredientsList[index].quantity =
-                                                  int.parse(text);
-                                            },
                                           ),
-                                          TextFormField(
-                                            decoration: new InputDecoration(
-                                              labelText:
-                                                  _ingredientsList[index].unit,
-                                              border: new OutlineInputBorder(
-                                                borderSide: new BorderSide(),
-                                              ),
-                                            ),
-                                            validator: (value) {
-                                              if (value.isEmpty) {
-                                                return "Please enter a unit";
-                                              }
-                                              if (value.length > 9) {
-                                                return "Unit of Measure Invalid";
-                                              }
-                                              return null;
-                                            },
-                                            onChanged: (text) {
-                                              _ingredientsList[index].quantity =
-                                                  int.parse(text);
-                                            },
-                                          )
-                                        ]);
-                                  }),
-                              ListView.builder(
-                                  physics: BouncingScrollPhysics(),
-                                  padding: const EdgeInsets.all(15),
-                                  itemBuilder: (context, index) {
-                                    return Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.baseline,
-                                        children: [
-                                          TextFormField(
-                                            decoration: new InputDecoration(
-                                              labelText: "Calories" +
-                                                  nutrition.calories,
-                                              border: new OutlineInputBorder(
-                                                borderSide: new BorderSide(),
-                                              ),
-                                            ),
-                                            onChanged: (text) {
-                                              nutrition.calories = text;
-                                            },
-                                          ),
-                                          TextFormField(
-                                            decoration: new InputDecoration(
-                                              labelText: "Protein: " +
-                                                  nutrition.protein,
-                                              border: new OutlineInputBorder(
-                                                borderSide: new BorderSide(),
-                                              ),
-                                            ),
-                                            onChanged: (text) {
-                                              _ingredientsList[index].name =
-                                                  text;
-                                            },
-                                          ),
-                                          TextFormField(
-                                            decoration: new InputDecoration(
-                                              labelText: "Total Carbs: " +
-                                                  nutrition.totalCarbs,
-                                              border: new OutlineInputBorder(
-                                                borderSide: new BorderSide(),
-                                              ),
-                                            ),
-                                            onChanged: (text) {
-                                              _ingredientsList[index].name =
-                                                  text;
-                                            },
-                                          ),
-                                          TextFormField(
-                                            decoration: new InputDecoration(
-                                              labelText: "Total Fat: " +
-                                                  nutrition.totalFat,
-                                              border: new OutlineInputBorder(
-                                                borderSide: new BorderSide(),
-                                              ),
-                                            ),
-                                            onChanged: (text) {
-                                              _ingredientsList[index].name =
-                                                  text;
-                                            },
-                                          ),
-                                        ]);
-                                  })
-                            ]))));
-                  },
-                );
-              });
-        });
-  } //Build
-}
+                                          hintText: ingredient[i].unit,
+                                          hintStyle: TextStyle(
+                                              fontStyle: FontStyle.italic,
+                                              color: Colors.black),
+                                        ),
+                                        textAlign: TextAlign.right,
+                                        style: TextStyle(fontSize: 20)),
+                                  ),
+                                )
+                              ])),
+                            ])
+                          ]),
 
-bool isNumeric(String s) {
-  if (s == null) {
-    return false;
+                    // Editing Instructions
+                    SizedBox(height: 100),
+                    Text(
+                      "Instructions",
+                      style: TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline),
+                    ),
+                    SizedBox(height: 50),
+                    for (int i = 0; i < (instruction.length); i++)
+                      Table(
+                          border: TableBorder.symmetric(
+                              inside: BorderSide.none,
+                              outside: BorderSide.none),
+                          defaultColumnWidth: FixedColumnWidth(350),
+                          children: [
+                            TableRow(children: [
+                              TableCell(
+                                  child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 10.0),
+                                child: TextFormField(
+                                  initialValue: instruction[i],
+                                  maxLines: 2,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 10),
+                                    isDense: true,
+                                    border: OutlineInputBorder(),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                    labelText:
+                                        "Instruction " + (i + 1).toString(),
+                                  ),
+                                  style: TextStyle(fontSize: 20, height: 1.8),
+                                ),
+                              )),
+                            ])
+                          ]),
+                    SizedBox(height: 150),
+
+                    // Edit Nutrition
+                    Text(
+                      "Nutritional Facts (per serving)",
+                      style: TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline),
+                    ),
+                    SizedBox(height: 75),
+                    Column(
+                      children: [
+                        // Editing Calories
+                        TextFormField(
+                          textAlign: TextAlign.right,
+                          controller: calorieController,
+                          style: TextStyle(fontSize: 20),
+                          maxLines: 1,
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: BorderSide(
+                                color: Colors.blue,
+                                width: 2.0,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: BorderSide(
+                                color: Colors.grey,
+                                width: 2.0,
+                              ),
+                            ),
+                            labelText: "Calories: ",
+                            labelStyle: TextStyle(fontSize: 25),
+                          ),
+                        ),
+                        SizedBox(height: 30),
+
+                        TextFormField(
+                          controller: proteinController,
+                          textAlign: TextAlign.right,
+                          style: TextStyle(fontSize: 20),
+                          maxLines: 1,
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: BorderSide(
+                                color: Colors.blue,
+                                width: 2.0,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: BorderSide(
+                                color: Colors.grey,
+                                width: 2.0,
+                              ),
+                            ),
+                            labelText: "Protein: ",
+                            labelStyle: TextStyle(fontSize: 25),
+                          ),
+                        ),
+                        SizedBox(height: 30),
+                        TextFormField(
+                          controller: carbController,
+                          textAlign: TextAlign.right,
+                          style: TextStyle(fontSize: 20),
+                          maxLines: 1,
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: BorderSide(
+                                color: Colors.blue,
+                                width: 2.0,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: BorderSide(
+                                color: Colors.grey,
+                                width: 2.0,
+                              ),
+                            ),
+                            labelText: "Total Carbs: ",
+                            labelStyle: TextStyle(fontSize: 25),
+                          ),
+                        ),
+
+                        SizedBox(height: 30),
+
+                        TextFormField(
+                          controller: fatController,
+                          textAlign: TextAlign.right,
+                          style: TextStyle(fontSize: 20),
+                          maxLines: 1,
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: BorderSide(
+                                color: Colors.blue,
+                                width: 2.0,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: BorderSide(
+                                color: Colors.grey,
+                                width: 2.0,
+                              ),
+                            ),
+                            labelText: "Total Fat: ",
+                            labelStyle: TextStyle(fontSize: 25),
+                          ),
+                        ),
+
+                        SizedBox(height: 20),
+                      ],
+                    ),
+                    SizedBox(height: 200),
+                  ])
+                ]))
+          ])),
+        )
+      ])),
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+        onPressed: () {
+          // Respond to button press
+        },
+        icon: Icon(Icons.edit),
+        label: Text('Update Recipe'),
+      ),
+    );
   }
-  return double.parse(s, (e) => null) != null;
 }
