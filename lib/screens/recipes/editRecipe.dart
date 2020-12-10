@@ -52,7 +52,20 @@ class _EditRecipe extends State<EditRecipe> {
     this.currentName = widget.name;
   }
 
+   final CollectionReference allRecipesCollection =
+      FirebaseFirestore.instance.collection('allRecipes');
+
+  // Probably Best to Set entire recipe
+  Future<void> _updateRecipe() async {
+    setState(() {});
+    Navigator.of(context).pop();
+  }
+
   TextEditingController nameController = TextEditingController();
+  TextEditingController proteinController = TextEditingController();
+  TextEditingController calorieController = TextEditingController();
+  TextEditingController carbController = TextEditingController();
+  TextEditingController fatController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -207,7 +220,7 @@ class _EditRecipe extends State<EditRecipe> {
                 Expanded(
                   child:Padding(
                     padding:  EdgeInsets.symmetric(vertical: 8.0),
-                                      child: TextFormField(
+                    child: TextFormField(
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
@@ -222,9 +235,9 @@ class _EditRecipe extends State<EditRecipe> {
                                               fontSize: 20)),
                   ),
                 )
-              ])
+              ]),
 ),
-                            ])
+                            ]),
                           ]),
 
 
@@ -262,8 +275,7 @@ class _EditRecipe extends State<EditRecipe> {
                         ),),
                                           labelText: "Instruction "+ (i+1).toString(),
               ),
-                               style: TextStyle(
-                                                fontSize: 20, height: 1.8),
+                               style: TextStyle(fontSize: 20, height: 1.8),
                               ),
                                   )),
                             ])
@@ -284,6 +296,7 @@ class _EditRecipe extends State<EditRecipe> {
 
                         // Editing Calories
                         TextFormField(
+                          controller: calorieController,
                                   textAlign: TextAlign.right,
                                      initialValue: nutrition.calories,
                                      style: TextStyle(fontSize:20),
@@ -305,11 +318,14 @@ class _EditRecipe extends State<EditRecipe> {
                 ),
                         labelText: "Calories: ",
                         labelStyle: TextStyle(fontSize:25),
-              ),              
-                                              ),
+              ),    
+              onChanged: (val) {
+                setState(() => nutrition.calories = val);
+              },             
+            ),
               SizedBox(height:30),
-
                         TextFormField(
+                          controller: proteinController,
                                   textAlign: TextAlign.right,
                                   initialValue: nutrition.protein,
                                      style: TextStyle(fontSize:20),
@@ -331,11 +347,15 @@ class _EditRecipe extends State<EditRecipe> {
                 ),
                         labelText: "Protein: ",
                         labelStyle: TextStyle(fontSize:25),
-              ),       
+              ), 
+              onChanged: (val) {
+                setState(() => nutrition.protein = val);
+              },         
                               
                                               ),
                SizedBox(height:30),
                                               TextFormField(
+                                  controller: carbController,
                                   textAlign: TextAlign.right,
                                   initialValue: nutrition.totalCarbs,
                                      style: TextStyle(fontSize:20),
@@ -357,13 +377,17 @@ class _EditRecipe extends State<EditRecipe> {
                 ),
                         labelText: "Total Carbs: ",
                         labelStyle: TextStyle(fontSize:25),
-              ),       
+              ),  
+              onChanged: (val) {
+                setState(() => nutrition.totalCarbs = val);
+              },        
                               
                                               ),
 
               SizedBox(height:30),
 
-                                              TextFormField(
+                              TextFormField(
+                                  controller: fatController,
                                   textAlign: TextAlign.right,
                                   initialValue: nutrition.totalFat,
                                      style: TextStyle(fontSize:20),
@@ -385,11 +409,15 @@ class _EditRecipe extends State<EditRecipe> {
                 ),
                         labelText: "Total Fat: ",
                         labelStyle: TextStyle(fontSize:25),
-              ),              
-                                              ),
+              ),   
+              onChanged: (val) {
+                setState(() => nutrition.totalFat = val);
+              },           
+            ),
+            
 
               SizedBox(height:20),
-                      ],
+            ],
                     ),
                     SizedBox(height: 200),
                   ])
@@ -398,8 +426,8 @@ class _EditRecipe extends State<EditRecipe> {
         )
       ])),
       floatingActionButton: FloatingActionButton.extended(
-  backgroundColor: const Color(0xff03dac6),
-  foregroundColor: Colors.black,
+  backgroundColor: Colors.blue,
+  foregroundColor: Colors.white,
   onPressed: () {
     // Respond to button press
   },

@@ -140,8 +140,7 @@ class _ViewRecipeState extends State<ViewRecipe> {
                           nutrition: nutrition,
                           imageUrl: imageUrl,
                           fav: fav,
-                          recipeId: recipeId,
-                          name: name)));
+                          recipeId: recipeId)));
                                   }),
                               FloatingActionButton.extended(
                                 heroTag: "rate",
