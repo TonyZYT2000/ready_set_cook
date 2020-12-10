@@ -134,15 +134,14 @@ class _ViewRecipeState extends State<ViewRecipe> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                EditRecipe(
-                                                  ingredient: _ingredientsList,
-                          instruction: _instructionsList,
-                          nutrition: nutrition,
-                          imageUrl: imageUrl,
-                          fav: fav,
-                          recipeId: recipeId,
-                          name: name)));
+                                            builder: (context) => EditRecipe(
+                                                ingredient: _ingredientsList,
+                                                instruction: _instructionsList,
+                                                nutrition: nutrition,
+                                                imageUrl: imageUrl,
+                                                fav: fav,
+                                                recipeId: recipeId,
+                                                name: name)));
                                   }),
                               FloatingActionButton.extended(
                                 heroTag: "rate",
