@@ -89,113 +89,9 @@ class _EditRecipe extends State<EditRecipe> {
   List<TextEditingController> _ingredientQuantControllers = [];
   List<TextEditingController> _ingredientUnitControllers = [];
 
-  // Add ingredient Method
-  void addIngedredient() {
-    String newIngredientName = "Please Enter New Ingredient: ";
-    TextEditingController newIngredientNameCont =
-        new TextEditingController(text: newIngredientName);
-    TextEditingController newIngredientQuant = new TextEditingController();
-    TextEditingController newIngredientUnit = new TextEditingController();
-    _ingredientNameControllers.add(newIngredientNameCont);
-    _ingredientQuantControllers.add(newIngredientQuant);
-    _ingredientUnitControllers.add(newIngredientUnit);
-    int index = _ingredientNameControllers.length;
-    Row(
-      children: [
-        Expanded(
-          flex: 3,
-          child: TextFormField(
-            controller: _ingredientNameControllers[index - 1],
-            decoration: InputDecoration(
-              isDense: true,
-              border: OutlineInputBorder(),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.blue,
-                ),
-              ),
-              labelText: "Ingredient " + (index).toString(),
-            ),
-            style: TextStyle(fontSize: 20, height: 1.5),
-            onChanged: (val) {
-              setState(() => ingredient[index - 1].name = val);
-            },
-          ),
-        ),
-        Expanded(
-          flex: 2,
-          child: TextFormField(
-            controller: _ingredientQuantControllers[index - 1],
-            decoration: InputDecoration(
-              isDense: true,
-              border: OutlineInputBorder(),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.blue,
-                ),
-              ),
-              labelText: "Quantity",
-            ),
-            style: TextStyle(fontSize: 20, height: 1.5),
-            onChanged: (val) {
-              setState(() => ingredient[index - 1].quantity = val);
-            },
-          ),
-        ),
-        Expanded(
-          flex: 1,
-          child: TextFormField(
-            controller: _ingredientUnitControllers[index - 1],
-            decoration: InputDecoration(
-              isDense: true,
-              border: OutlineInputBorder(),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.blue,
-                ),
-              ),
-              labelText: "Unit",
-            ),
-            style: TextStyle(fontSize: 20, height: 1.5),
-            onChanged: (val) {
-              setState(() => ingredient[index - 1].unit = val);
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
   // Dynamic Text Fields for Instructions
   final _instructionKey = GlobalKey<FormState>();
   List<TextEditingController> _instructionControllers = [];
-
-  // Add Instruction Method
-  void addInstruction() {
-    String newInstruction = "Please Enter New Instruction: ";
-    TextEditingController newInstruct =
-        new TextEditingController(text: newInstruction);
-    TextFormField(
-      controller: newInstruct,
-      maxLines: 2,
-      decoration: InputDecoration(
-        contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-        isDense: true,
-        border: OutlineInputBorder(),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.blue,
-          ),
-        ),
-        hintText: "Please Enter to New Instructions",
-      ),
-      style: TextStyle(fontSize: 20, height: 1.5),
-    );
-    setState(() {
-      instruction.add(newInstruct.text);
-      _instructionControllers.add(newInstruct);
-    });
-  }
 
   // Probably Best to Set entire recipe
   // Nutrition
@@ -204,66 +100,94 @@ class _EditRecipe extends State<EditRecipe> {
   bool proteinChanged = false;
   bool calorieChanged = false;
 
-  // List
   bool ingredientChanged = false;
   bool instructionChanged = false;
 
   Future<void> _updateRecipe() async {
-    final nutritionDB = FirebaseFirestore.instance
-        .collection('allRecipes')
-        .doc(this.recipeId)
-        .collection("nutrition")
-        .doc("1");
-
-    final instructionDB = FirebaseFirestore.instance
-        .collection('allRecipes')
-        .doc(this.recipeId)
-        .collection("instruction");
-
     if (currentName != name) {
       FirebaseFirestore.instance
           .collection('allRecipes')
           .doc(this.recipeId)
-          .update({name: this.name});
+          .update({'name': this.name});
     }
 
-    if (fatChanged == true) {
-      nutritionDB.update({
-        "Total Fat": nutrition.totalFat,
-      });
-    }
-
-    if (carbChanged == true) {
-      nutritionDB.update({
-        "Total Carbohydrate": nutrition.totalCarbs,
-      });
-    }
-    if (proteinChanged == true) {
-      nutritionDB.update({
-        "Protein": nutrition.protein,
-      });
-    }
-    if (calorieChanged == true) {
-      nutritionDB.update({
-        "Calories": nutrition.calories,
-      });
-    }
+    CollectionReference _nutritionRef = FirebaseFirestore.instance
+        .collection("allRecipes")
+        .doc(this.recipeId)
+        .collection("nutrition");
+    _nutritionRef.get().then((ds) {
+      if (ds != null) {
+        ds.docs.forEach((nutrient) {
+          if (fatChanged == true) {
+            nutrient
+                .data()
+                .update("Total Fat", (value) => this.nutrition.totalFat);
+          }
+          if (carbChanged == true) {
+            nutrient
+                .data()
+                .update("Total Fat", (value) => this.nutrition.totalCarbs);
+          }
+          if (calorieChanged == true) {
+            nutrient
+                .data()
+                .update("Total Fat", (value) => this.nutrition.calories);
+          }
+          if (proteinChanged == true) {
+            nutrient
+                .data()
+                .update("Total Fat", (value) => this.nutrition.protein);
+          }
+        });
+      }
+    });
 
     if (instructionChanged == true) {
-      QuerySnapshot snapshot = await instructionDB.get();
-      for (int i = 1; i <= instruction.length; i++) {
-        if (instructionDB.doc(i.toString()) == null) {
-          instructionDB.doc().set({"instruction": instruction[i - 1]});
-        } else {
-          instructionDB
-              .doc(i.toString())
-              .update({"instruction": instruction[i - 1]});
+      int instructionIndex = 0;
+      CollectionReference _instructRef = FirebaseFirestore.instance
+          .collection("allRecipes")
+          .doc(this.recipeId)
+          .collection("instructions");
+      _instructRef.get().then((ds) {
+        if (ds != null) {
+          ds.docs.forEach((instruction) {
+            instruction.reference.delete();
+          });
         }
-      }
+      });
+      instruction.forEach((ins) {
+        RecipesDatabaseService()
+            .allRecipesCollection
+            .doc(this.recipeId)
+            .collection("instructions")
+            .add({"instruction": ins});
+      });
+    }
+
+    if (ingredientChanged == true) {
+      int instructionIndex = 0;
+      CollectionReference _ingredientRef = FirebaseFirestore.instance
+          .collection("allRecipes")
+          .doc(this.recipeId)
+          .collection("ingredients");
+      _ingredientRef.get().then((ds) {
+        if (ds != null) {
+          ds.docs.forEach((ingredient) {
+            ingredient.reference.delete();
+          });
+        }
+      });
+      ingredient.forEach((ing) {
+        RecipesDatabaseService()
+            .allRecipesCollection
+            .doc(this.recipeId)
+            .collection("ingredients")
+            .add(
+                {"name": ing.name, "quantity": ing.quantity, "unit": ing.unit});
+      });
     }
 
     nameController.clear();
-    _instructionControllers.clear();
     _ingredientUnitControllers.clear();
     _ingredientQuantControllers.clear();
     _ingredientNameControllers.clear();
@@ -271,7 +195,7 @@ class _EditRecipe extends State<EditRecipe> {
     proteinController.clear();
     carbController.clear();
     fatController.clear();
-    Navigator.of(context).pop();
+    Navigator.pop(context);
   }
 
   @override
@@ -293,6 +217,18 @@ class _EditRecipe extends State<EditRecipe> {
       backgroundColor: Colors.blue[50],
       appBar: AppBar(
         toolbarHeight: 60,
+        actions: [
+          FlatButton(
+            color: Colors.blue,
+            textColor: Colors.white,
+            child: Text("Update"),
+            onPressed: () {
+              // Respond to button press
+              _updateRecipe();
+              setState(() {});
+            },
+          ),
+        ],
         title: Container(
           child: Form(
             child: TextFormField(
@@ -303,7 +239,7 @@ class _EditRecipe extends State<EditRecipe> {
                 enabledBorder: InputBorder.none,
                 errorBorder: InputBorder.none,
                 disabledBorder: InputBorder.none,
-                prefixText: 'Enter New Name:   ',
+                prefixText: '',
                 labelText: currentName,
                 labelStyle:
                     TextStyle(fontStyle: FontStyle.italic, color: Colors.white),
@@ -337,7 +273,9 @@ class _EditRecipe extends State<EditRecipe> {
                   child:
                       Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                     GestureDetector(
-                        onTap: () async {},
+                        onTap: () async {
+                          getImage();
+                        },
                         child: CircleAvatar(
                           radius: 30,
                           child: Icon(
@@ -377,50 +315,64 @@ class _EditRecipe extends State<EditRecipe> {
                   itemBuilder: (context, index) {
                     _ingredientNameControllers.add(new TextEditingController(
                         text: ingredient[index].name));
+
                     _ingredientQuantControllers.add(new TextEditingController(
                         text: ingredient[index].quantity));
+
                     _ingredientUnitControllers.add(new TextEditingController(
                         text: ingredient[index].unit));
                     return Container(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Row(children: [
                           Expanded(
-                            flex: 3,
+                            flex: 2,
                             child: TextFormField(
                               controller: _ingredientNameControllers[index],
                               decoration: InputDecoration(
                                 isDense: true,
+                                /*
                                 border: OutlineInputBorder(),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                     color: Colors.blue,
                                   ),
                                 ),
+                                 */
                                 labelText:
                                     "Ingredient " + (index + 1).toString(),
                               ),
-                              style: TextStyle(fontSize: 20, height: 1.5),
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  height: 1.5,
+                                  fontStyle: FontStyle.italic),
                               onChanged: (val) {
+                                ingredientChanged = true;
                                 setState(() => ingredient[index].name = val);
                               },
                             ),
                           ),
                           Expanded(
-                            flex: 2,
+                            flex: 1,
                             child: TextFormField(
                               controller: _ingredientQuantControllers[index],
                               decoration: InputDecoration(
                                 isDense: true,
+                                /*
                                 border: OutlineInputBorder(),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                     color: Colors.blue,
                                   ),
                                 ),
+                                 */
                                 labelText: "Quantity",
                               ),
-                              style: TextStyle(fontSize: 20, height: 1.5),
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  height: 1.5,
+                                  fontStyle: FontStyle.italic),
                               onChanged: (val) {
+                                ingredientChanged = true;
                                 setState(
                                     () => ingredient[index].quantity = val);
                               },
@@ -432,36 +384,28 @@ class _EditRecipe extends State<EditRecipe> {
                               controller: _ingredientUnitControllers[index],
                               decoration: InputDecoration(
                                 isDense: true,
+                                /*
                                 border: OutlineInputBorder(),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                     color: Colors.blue,
                                   ),
                                 ),
+                                 */
                                 labelText: "Unit",
                               ),
-                              style: TextStyle(fontSize: 20, height: 1.5),
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  height: 1.5,
+                                  fontStyle: FontStyle.italic),
                               onChanged: (val) {
+                                ingredientChanged = true;
                                 setState(() => ingredient[index].unit = val);
                               },
                             ),
                           ),
                         ]));
                   },
-                ),
-              ),
-              Container(
-                child: CircleAvatar(
-                  backgroundColor: Colors.blue,
-                  // Add Button Next to instruction
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.add,
-                      color: Colors.white,
-                      size: 24.0,
-                    ),
-                    onPressed: addInstruction,
-                  ),
                 ),
               ),
 
@@ -495,48 +439,30 @@ class _EditRecipe extends State<EditRecipe> {
                         new TextEditingController(text: instruction[index]));
                     return Container(
                       padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Row(children: [
-                        Expanded(
-                          child: TextFormField(
-                            controller: _instructionControllers[index],
-                            maxLines: 2,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 20),
-                              isDense: true,
-                              border: OutlineInputBorder(),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.blue,
-                                ),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextFormField(
+                              controller: _instructionControllers[index],
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 20),
+                                isDense: true,
+                                labelText:
+                                    "Instruction " + (index + 1).toString(),
                               ),
-                              labelText:
-                                  "Instruction " + (index + 1).toString(),
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  height: 1.5,
+                                  fontStyle: FontStyle.italic),
+                              onChanged: (val) {
+                                instructionChanged = true;
+                                setState(() => instruction[index] = val);
+                              },
                             ),
-                            style: TextStyle(fontSize: 20, height: 1.5),
-                            onChanged: (val) {
-                              instructionChanged = true;
-                              setState(() => instruction[index] = val);
-                            },
-                          ),
-                        ),
-                      ]),
+                          ]),
                     );
                   },
-                ),
-              ),
-              Container(
-                child: CircleAvatar(
-                  backgroundColor: Colors.blue,
-                  // Add Button Next to instruction
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.add,
-                      color: Colors.white,
-                      size: 24.0,
-                    ),
-                    onPressed: addInstruction,
-                  ),
                 ),
               ),
 
@@ -701,18 +627,6 @@ class _EditRecipe extends State<EditRecipe> {
                 ],
               ),
             ]),
-            RaisedButton(
-              color: Colors.blue,
-              textColor: Colors.white,
-              child: Text("Update Recipe"),
-              onPressed: () {
-                // Respond to button press
-                _updateRecipe();
-              },
-            ),
-            SizedBox(
-              height: 20,
-            ),
           ],
         ),
       ),
