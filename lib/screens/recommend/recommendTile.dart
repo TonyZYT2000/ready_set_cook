@@ -9,25 +9,15 @@ class RecommendTile extends StatelessWidget {
   final String name;
   final String recipeId;
   final String imageType;
-  double rating;
-  RecommendTile({this.name, this.recipeId, this.imageType, this.rating});
+  double spoonRating;
+  RecommendTile({this.name, this.recipeId, this.imageType, this.spoonRating});
 
   @override
   Widget build(BuildContext context) {
     // Generate Random Rating
-    if (rating == 0.0) {
-      Random r = new Random();
-      this.rating = 1.0 + (5.0 - 1.0) * r.nextDouble();
-      this.rating = double.parse((this.rating).toStringAsFixed(1));
-    }
 
-    if (recipeId == 1566481.toString()) {
-      this.rating = 4.2;
-    }
-
-    if (recipeId == 1569707.toString()) {
-      this.rating = 3.5;
-    }
+    this.spoonRating = 5.0 * (this.spoonRating * 0.01);
+    double rating = double.parse((this.spoonRating).toStringAsFixed(1));
 
     // How the tiles look
     final Size size = MediaQuery.of(context).size;
