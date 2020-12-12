@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ready_set_cook/screens/storage/storage.dart';
 import 'package:ready_set_cook/services/recipes_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ready_set_cook/screens/recipes/recipeTile.dart';
@@ -7,6 +8,7 @@ import 'package:ready_set_cook/shared/constants.dart';
 import 'package:ready_set_cook/screens/recipes/BorderIcon.dart';
 import 'package:ready_set_cook/screens/recipes/viewRecipe.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ready_set_cook/screens/home/home.dart';
 import 'dart:io';
 import 'dart:math';
 
@@ -25,6 +27,10 @@ class _RecipeState extends State<Recipe> {
     return ((value * mod).round().toDouble() / mod);
   }
 
+  void helper() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final uid = FirebaseAuth.instance.currentUser.uid;
@@ -34,7 +40,6 @@ class _RecipeState extends State<Recipe> {
     final Size size = MediaQuery.of(context).size;
     double padding = 25;
     final sidePadding = EdgeInsets.symmetric(horizontal: padding);
-
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('recipes')
@@ -139,6 +144,7 @@ class RecipeItem extends StatelessWidget {
     var icon = Icons.favorite_border;
     var color = Colors.red;
     var _fav = fav;
+    var _name = name;
     var recipeDB = RecipesDatabaseService(uid: uid);
 
     final ThemeData themeData = Theme.of(context);
@@ -148,8 +154,13 @@ class RecipeItem extends StatelessWidget {
     }
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ViewRecipe(recipeId, name, imageUrl, _fav)));
+        Navigator.of(context)
+            .push(MaterialPageRoute(
+                builder: (context) =>
+                    ViewRecipe(recipeId, _name, imageUrl, _fav)))
+            .then((value) async {
+          _name = await recipeDB.getRecipeName(recipeId);
+        });
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 20),
@@ -193,7 +204,7 @@ class RecipeItem extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  " $name",
+                  " $_name",
                   style: themeData.textTheme.headline5,
                 ),
               ],

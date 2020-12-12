@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ready_set_cook/models/ingredient.dart';
+import 'package:ready_set_cook/services/recipes_database.dart';
 import 'editRecipe.dart';
 import 'package:ready_set_cook/screens/recipes/viewRecipeTile.dart';
 import 'package:ready_set_cook/models/nutrition.dart';
@@ -20,6 +21,15 @@ class ViewRecipe extends StatefulWidget {
 }
 
 class _ViewRecipeState extends State<ViewRecipe> {
+  @override
+  void initState() {
+    super.initState();
+    this.recipeId = widget.recipeId;
+    this.imageUrl = widget.imageUrl;
+    this.fav = widget.fav;
+    this.name = widget.name;
+  }
+
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   String recipeId = "";
@@ -31,15 +41,20 @@ class _ViewRecipeState extends State<ViewRecipe> {
   bool fav = false;
   List<Ingredient> _ingredientsList = [];
   List<String> _instructionsList = [];
+  List<int> _ins_index_List = [];
   Nutrition nutrition;
+  callme() async {
+    await Future.delayed(Duration(seconds: 3));
+  }
 
-  @override
-  void initState() {
-    super.initState();
-    this.recipeId = widget.recipeId;
-    this.name = widget.name;
-    this.imageUrl = widget.imageUrl;
-    this.fav = widget.fav;
+  void sort_Instruction() {
+    List<String> temp = [];
+    for (int i = 0; i < _ins_index_List.length; i++) {
+      int j = _ins_index_List.indexOf(i);
+      temp.add(_instructionsList[j]);
+    }
+    print(temp);
+    _instructionsList = temp;
   }
 
   Widget build(BuildContext context) {
@@ -78,11 +93,11 @@ class _ViewRecipeState extends State<ViewRecipe> {
                       ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
                   }
-
                   instructionSnapshot.data.documents.forEach((instruction) {
                     _instructionsList.add(instruction['instruction']);
+                    _ins_index_List.add(instruction['index']);
                   });
-
+                  sort_Instruction();
                   ingredientSnapshot.data.documents.forEach((ingredient) {
                     _ingredientsList.add(new Ingredient(
                         name: ingredient['name'],
@@ -137,11 +152,30 @@ class _ViewRecipeState extends State<ViewRecipe> {
                                             builder: (context) => EditRecipe(
                                                 ingredient: _ingredientsList,
                                                 instruction: _instructionsList,
+                                                ins_index: _ins_index_List,
                                                 nutrition: nutrition,
                                                 imageUrl: imageUrl,
                                                 fav: fav,
                                                 recipeId: recipeId,
-                                                name: name)));
+                                                name: name))).then((value) {
+                                      setState(() {
+                                        RecipesDatabaseService recipeDB =
+                                            RecipesDatabaseService();
+                                        recipeDB
+                                            .getRecipeName(recipeId)
+                                            .then((value) {
+                                          setState(() {
+                                            name = value;
+                                          });
+                                          print("name:" + name);
+                                          print("value: " + value);
+
+                                          _ingredientsList.clear();
+                                          _instructionsList.clear();
+                                          _ins_index_List.clear();
+                                        });
+                                      });
+                                    });
                                   }),
                               FloatingActionButton.extended(
                                 heroTag: "rate",

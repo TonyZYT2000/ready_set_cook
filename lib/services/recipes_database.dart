@@ -108,6 +108,7 @@ class RecipesDatabaseService {
   }
 
   Future addCustomRecipe(Recipe recipe) async {
+    int ins_index = 0;
     recipe.ingredients.forEach((ing) {
       allRecipesCollection
           .doc(recipe.recipeId)
@@ -119,7 +120,8 @@ class RecipesDatabaseService {
       allRecipesCollection
           .doc(recipe.recipeId)
           .collection("instructions")
-          .add({"instruction": ins});
+          .add({"instruction": ins, "index": ins_index});
+      ins_index += 1;
     });
 
     allRecipesCollection.doc(recipe.recipeId).collection("nutrition").add({
@@ -171,5 +173,13 @@ class RecipesDatabaseService {
         .collection("recipesList")
         .snapshots()
         .map(_recipesList);
+  }
+
+  Future getRecipeName(String recipeId) async {
+    var name = await FirebaseFirestore.instance
+        .collection('allRecipes')
+        .doc(recipeId)
+        .get();
+    return name.get('name');
   }
 }

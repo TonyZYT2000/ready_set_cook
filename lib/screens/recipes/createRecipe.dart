@@ -46,6 +46,7 @@ class _CreateRecipeState extends State<CreateRecipe> {
 
   final List<String> _instructions = [];
   String instruction = "";
+  int ins_ind = 0;
 
   TextEditingController _controller1 = TextEditingController();
   TextEditingController _controller2 = TextEditingController();

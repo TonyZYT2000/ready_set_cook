@@ -14,6 +14,7 @@ import 'dart:io';
 class EditRecipe extends StatefulWidget {
   final List<Ingredient> ingredient;
   final List<String> instruction;
+  final List<int> ins_index;
   final Nutrition nutrition;
   final String imageUrl;
   final bool fav;
@@ -22,6 +23,7 @@ class EditRecipe extends StatefulWidget {
   EditRecipe(
       {this.ingredient,
       this.instruction,
+      this.ins_index,
       this.nutrition,
       this.imageUrl,
       this.fav,
@@ -35,6 +37,7 @@ class _EditRecipe extends State<EditRecipe> {
   // Variables
   List<Ingredient> ingredient;
   List<String> instruction;
+  List<int> ins_index;
   Nutrition nutrition;
   String imageUrl;
   bool fav;
@@ -63,6 +66,7 @@ class _EditRecipe extends State<EditRecipe> {
     this.recipeId = widget.recipeId;
     this.name = widget.name;
     this.currentName = widget.name;
+    this.ins_index = widget.ins_index;
   }
 
   // Editing image
@@ -110,37 +114,49 @@ class _EditRecipe extends State<EditRecipe> {
           .doc(this.recipeId)
           .update({'name': this.name});
     }
-
-    CollectionReference _nutritionRef = FirebaseFirestore.instance
-        .collection("allRecipes")
-        .doc(this.recipeId)
-        .collection("nutrition");
-    _nutritionRef.get().then((ds) {
-      if (ds != null) {
-        ds.docs.forEach((nutrient) {
-          if (fatChanged == true) {
-            nutrient
-                .data()
-                .update("Total Fat", (value) => this.nutrition.totalFat);
-          }
-          if (carbChanged == true) {
-            nutrient
-                .data()
-                .update("Total Fat", (value) => this.nutrition.totalCarbs);
-          }
-          if (calorieChanged == true) {
-            nutrient
-                .data()
-                .update("Total Fat", (value) => this.nutrition.calories);
-          }
-          if (proteinChanged == true) {
-            nutrient
-                .data()
-                .update("Total Fat", (value) => this.nutrition.protein);
-          }
-        });
-      }
-    });
+    if (fatChanged || carbChanged || calorieChanged || proteinChanged) {
+      CollectionReference _nutritionRef = FirebaseFirestore.instance
+          .collection("allRecipes")
+          .doc(this.recipeId)
+          .collection("nutrition");
+      _nutritionRef.get().then((ds) {
+        if (ds != null) {
+          ds.docs.forEach((nutrient) {
+            nutrient.reference.delete();
+          });
+        }
+      });
+      _nutritionRef.add({
+        "Total Fat": this.nutrition.totalFat,
+        "Total Carbohydrate": this.nutrition.totalCarbs,
+        "Calories": this.nutrition.calories,
+        "Protein": this.nutrition.protein
+      });
+    }
+    // if (fatChanged == true) {
+    //   nutrient
+    //       .data()["Total Fat"]
+    //       .update({"Total Fat": this.nutrition.totalFat});
+    //   print("Fat is :  " + this.nutrition.totalFat);
+    // }
+    // if (carbChanged == true) {
+    //   nutrient.data().update(
+    //       "Total Carbohydrate", (value) => this.nutrition.totalCarbs);
+    //   print("Carbs:  " + this.nutrition.totalCarbs);
+    // }
+    // if (calorieChanged == true) {
+    //   nutrient
+    //       .data()
+    //       .update("Calories", (value) => this.nutrition.calories);
+    // }
+    // if (proteinChanged == true) {
+    //   nutrient
+    //       .data()
+    //       .update("Protein", (value) => this.nutrition.protein);
+    // }
+    //     });
+    //   }
+    // });
 
     if (instructionChanged == true) {
       int instructionIndex = 0;
@@ -155,12 +171,15 @@ class _EditRecipe extends State<EditRecipe> {
           });
         }
       });
+      int index = 0;
       instruction.forEach((ins) {
         RecipesDatabaseService()
             .allRecipesCollection
             .doc(this.recipeId)
             .collection("instructions")
-            .add({"instruction": ins});
+            .add({"instruction": ins, "index": index});
+        print("instruction is :" + ins + "index is" + index.toString());
+        index += 1;
       });
     }
 
@@ -186,7 +205,8 @@ class _EditRecipe extends State<EditRecipe> {
                 {"name": ing.name, "quantity": ing.quantity, "unit": ing.unit});
       });
     }
-
+    ingredient.clear();
+    instruction.clear();
     nameController.clear();
     _ingredientUnitControllers.clear();
     _ingredientQuantControllers.clear();
@@ -225,7 +245,6 @@ class _EditRecipe extends State<EditRecipe> {
             onPressed: () {
               // Respond to button press
               _updateRecipe();
-              setState(() {});
             },
           ),
         ],
