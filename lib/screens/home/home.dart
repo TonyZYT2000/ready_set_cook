@@ -18,7 +18,7 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 1;
 
   static List<Widget> _widgetOptions = <Widget>[
-    RandomRecommend(),
+    Recommend(),
     Recipe(),
     Storage(),
     Profile(),
