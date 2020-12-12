@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'recommendTile.dart';
+import 'package:ready_set_cook/models/user.dart';
 import 'package:ready_set_cook/services/grocery.dart';
-import 'package:ready_set_cook/shared/constants.dart';
 
 // Consts for API
 const apiKey = '4b2f81fdb7cd4dcdb1c96fb533073092';
@@ -99,27 +100,6 @@ class _Recommend extends State<Recommend> {
     }
   }
 
-  // Search by Ingredients
-  /*
-  String ingredientsFromStorage = "apple";
-  void searchByUserIngredients() async {
-    var request = http.Request(
-        'GET',
-        Uri.parse('https://api.spoonacular'
-            '.com/recipes/findByIngredients?ingredients=<$ingredientsFromStorage>&number'
-            '=<$number>&limitLicense=<boolean>&ranking=<number>&ignorePantry'
-            '=<boolean>&apiKey=$apiKey'));
-
-    http.StreamedResponse response = await request.send();
-
-    if (response.statusCode == 200) {
-      print(await response.stream.bytesToString());
-    } else {
-      print(response.reasonPhrase);
-    }
-  }
- */
-
   Widget buildList() {
     return apiRecipeList.length != 0
         ? RefreshIndicator(
@@ -140,28 +120,36 @@ class _Recommend extends State<Recommend> {
           );
   }
 
-  /*
-  Widget buildIngredientList(ingredientList) {
-    return apiRecipeList.length != 0
-        ? RefreshIndicator(
-            child: ListView.builder(
-              itemCount: apiRecipeList.length,
-              itemBuilder: (context, index) {
-                return new RecommendTile(
-                  name: apiRecipeList[index].title,
-                  recipeId: apiRecipeList[index].id.toString(),
-                  imageType: apiRecipeList[index].imageType,
-                  spoonRating: apiRecipeList[index].spoonacularScore,
-                );
-              },
-            ),
-            onRefresh: getRecipeFromIngredients)
-        : Center(
-            child: CircularProgressIndicator(),
-          );
-  }
+  // Get current items in storage
+  List<String> recipeIds = [];
+  List<String> correctIDs = [];
+  Future<void> findSimilarRecipes(
+      List<String> ingredients, List<String> lowerCase) async {
+    final allRecipes = FirebaseFirestore.instance.collection("allRecipes");
+    // So, for each doc(recipe) in all recipes
+    allRecipes.get().then((recipeId) => recipeId.docs.forEach((element) {
+          String recipeId = element.data()["recipeId"];
+          if (recipeIds.contains(recipeId) != true) {
+            recipeIds.add(recipeId);
+          }
+        }));
 
-   */
+    recipeIds.forEach((id) {
+      allRecipes
+          .doc(id)
+          .collection("ingredients")
+          .snapshots()
+          .forEach((ingredient) {
+        ingredient.docs.forEach((element) {
+          String ingredientName = element.data()["name"];
+          if (ingredients.contains(ingredientName) == true ||
+              lowerCase.contains(ingredientName) == true) {
+            correctIDs.add(id.toString());
+          }
+        });
+      });
+    });
+  }
 
   Future<void> getRecipes() async {
     setState(() {
@@ -173,30 +161,29 @@ class _Recommend extends State<Recommend> {
     setState(() {});
   }
 
-  List<String> ingredientList = [];
-  Future<void> getCurrentStorage() async {
-    GroceryDatabase _groceryDB = GroceryDatabase(context);
-    _groceryDB.getGrocerySnap().forEach((element) {
-      element.docs.forEach((element) {
-        if (!ingredientList.contains(element.data()["name"])) {
-          ingredientList.add(element.data()["name"]);
-        }
-      });
-    });
-  }
-
   @override
   void initState() {
     super.initState();
     getRecipes();
-    getCurrentStorage();
     getRecipeFromIngredients();
   }
 
-  // Recommended API
+  List<String> currentIngredients = [null];
+  List<String> lowerCaseIngredients = [null];
   Widget build(BuildContext context) {
+    GroceryDatabase current = GroceryDatabase(context);
+    current.getGrocerySnap().forEach((item) {
+      item.docs.forEach((element) {
+        String storageItem = element.data()["name"];
+        if (currentIngredients.contains(storageItem) != true) {
+          currentIngredients.add(storageItem);
+          lowerCaseIngredients.add(storageItem.toLowerCase());
+        }
+      });
+    });
+    findSimilarRecipes(currentIngredients, lowerCaseIngredients);
     final _tabPages = <Widget>[
-      Center(child: Text("WorkINProgress")), //buildIngredientList
+      Center(child: Text("This is Hard")), //buildIngredientList
       // (ingredientList)),
       Center(child: buildList()),
     ];
