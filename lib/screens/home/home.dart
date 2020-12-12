@@ -1,8 +1,8 @@
 import 'package:ready_set_cook/screens/recipes/recipe.dart';
-import 'package:ready_set_cook/screens/recommend/randomRecommended.dart';
+import 'package:ready_set_cook/screens/recommend/recommended.dart';
 import 'package:ready_set_cook/screens/storage/storage.dart';
 import 'package:ready_set_cook/screens/profile/profile.dart';
-import 'package:ready_set_cook/screens/recommend/randomRecommended.dart';
+import 'package:ready_set_cook/screens/recommend/recommended.dart';
 import 'package:ready_set_cook/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ready_set_cook/shared/constants.dart';
