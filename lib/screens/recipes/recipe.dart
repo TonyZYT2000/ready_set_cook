@@ -203,9 +203,13 @@ class RecipeItem extends StatelessWidget {
             SizedBox(height: 5),
             Row(
               children: [
-                Text(
-                  " $_name",
-                  style: themeData.textTheme.headline5,
+                Flexible(
+                  flex: 2,
+                  child: Text(
+                    " $_name",
+                    textAlign: TextAlign.left,
+                    style: themeData.textTheme.headline5,
+                  ),
                 ),
               ],
             ),

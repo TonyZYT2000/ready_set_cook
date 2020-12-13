@@ -225,14 +225,6 @@ class _ViewRecommendedRecipeState extends State<ViewRecommendedRecipe> {
                   color: Colors.lightBlueAccent, fontWeight: FontWeight.w700),
             ),
           ),
-          PopupMenuItem(
-            value: 2,
-            child: Text(
-              "Share Recipe",
-              style: TextStyle(
-                  color: Colors.blueGrey, fontWeight: FontWeight.w700),
-            ),
-          ),
         ],
         icon: Icon(
           Icons.library_add,
