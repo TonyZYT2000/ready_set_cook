@@ -78,9 +78,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           : "no Username",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 60.0,
+                        fontSize: 35.0,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blue,
+                        color: Colors.black,
                       )),
                   SizedBox(height: 45.0),
                   Text(
@@ -89,9 +89,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           : "no Email",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 45.0,
+                        fontSize: 25.0,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blue,
+                        color: Colors.black,
                       )),
                 ],
               ),
