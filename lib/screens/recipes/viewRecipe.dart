@@ -14,8 +14,9 @@ class ViewRecipe extends StatefulWidget {
   String recipeId = "";
   String name = "";
   String imageUrl = "";
+  String uid = "";
   bool fav = false;
-  ViewRecipe(this.recipeId, this.name, this.imageUrl, this.fav,
+  ViewRecipe(this.recipeId, this.name, this.imageUrl, this.fav, this.uid,
       {this.toggleView});
   @override
   _ViewRecipeState createState() => _ViewRecipeState();
@@ -29,6 +30,7 @@ class _ViewRecipeState extends State<ViewRecipe> {
     this.imageUrl = widget.imageUrl;
     this.fav = widget.fav;
     this.name = widget.name;
+    this.uid = widget.uid;
   }
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -39,6 +41,7 @@ class _ViewRecipeState extends State<ViewRecipe> {
   String unit = "";
   String instruction = "";
   String imageUrl = "";
+  String uid;
   bool fav = false;
   List<Ingredient> _ingredientsList = [];
   List<String> _instructionsList = [];
@@ -171,7 +174,7 @@ class _ViewRecipeState extends State<ViewRecipe> {
                                                 name: name))).then((value) {
                                       setState(() {
                                         RecipesDatabaseService recipeDB =
-                                            RecipesDatabaseService();
+                                            RecipesDatabaseService(uid: uid);
                                         recipeDB
                                             .getRecipeName(recipeId)
                                             .then((value) {

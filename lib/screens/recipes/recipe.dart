@@ -151,7 +151,7 @@ class RecipeItem extends StatelessWidget {
         Navigator.of(context)
             .push(MaterialPageRoute(
                 builder: (context) =>
-                    ViewRecipe(recipeId, _name, imageUrl, _fav)))
+                    ViewRecipe(recipeId, _name, imageUrl, _fav, uid)))
             .then((value) async {
           _name = await recipeDB.getRecipeName(recipeId);
         });
