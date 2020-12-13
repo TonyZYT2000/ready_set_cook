@@ -68,6 +68,7 @@ class _ViewRecommendedRecipeState extends State<ViewRecommendedRecipe> {
     this.recipeId = widget.recipeId;
     this.imageType = widget.imageType;
     this.recipeName = widget.name;
+    setState(() {});
   }
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -159,10 +160,6 @@ class _ViewRecommendedRecipeState extends State<ViewRecommendedRecipe> {
       debugPrint("API Response Error");
       throw Exception('Failed to load Ingredients');
     }
-  }
-
-  Future<void> getRecipeInfo() async {
-    setState(() {});
   }
 
   // Build Widget
