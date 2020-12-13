@@ -8,21 +8,25 @@ import 'package:ready_set_cook/screens/recipes/view_recipe_tile.dart';
 import 'package:ready_set_cook/models/nutrition.dart';
 import 'package:ready_set_cook/screens/recipes/delete_confirmation.dart';
 import 'package:ready_set_cook/screens/recipes/rate_recipe.dart';
+import 'package:ready_set_cook/screens/recommend/view_recommend_recipe_tile.dart';
 
-class ViewRecipe extends StatefulWidget {
+class ViewStoredRecommendedRecipe extends StatefulWidget {
   final Function toggleView;
   String recipeId = "";
   String name = "";
   String imageUrl = "";
   String uid = "";
   bool fav = false;
-  ViewRecipe(this.recipeId, this.name, this.imageUrl, this.fav, this.uid,
+  ViewStoredRecommendedRecipe(
+      this.recipeId, this.name, this.imageUrl, this.fav, this.uid,
       {this.toggleView});
   @override
-  _ViewRecipeState createState() => _ViewRecipeState();
+  _ViewStoredRecommendedRecipeState createState() =>
+      _ViewStoredRecommendedRecipeState();
 }
 
-class _ViewRecipeState extends State<ViewRecipe> {
+class _ViewStoredRecommendedRecipeState
+    extends State<ViewStoredRecommendedRecipe> {
   @override
   void initState() {
     super.initState();
@@ -68,27 +72,21 @@ class _ViewRecipeState extends State<ViewRecipe> {
     final uid = FirebaseAuth.instance.currentUser.uid;
     return StreamBuilder(
         stream: FirebaseFirestore.instance
-            .collection('recipes')
-            .doc(uid)
-            .collection("recipesList")
+            .collection('allRecipes')
             .doc(recipeId)
             .collection("ingredients")
             .snapshots(),
         builder: (ctx, ingredientSnapshot) {
           return StreamBuilder(
             stream: FirebaseFirestore.instance
-                .collection('recipes')
-                .doc(uid)
-                .collection("recipesList")
+                .collection('allRecipes')
                 .doc(recipeId)
                 .collection("instructions")
                 .snapshots(),
             builder: (ctx, instructionSnapshot) {
               return StreamBuilder(
                 stream: FirebaseFirestore.instance
-                    .collection('recipes')
-                    .doc(uid)
-                    .collection("recipesList")
+                    .collection('allRecipes')
                     .doc(recipeId)
                     .collection("nutrition")
                     .snapshots(),
@@ -118,17 +116,14 @@ class _ViewRecipeState extends State<ViewRecipe> {
                         quantity: ingredient['quantity'],
                         unit: ingredient['unit']));
                   });
-                  print("Outside for each");
+
                   nutritionSnapshot.data.documents.forEach((nut) {
-                    print("inside for each");
-                    print("calories:" + nut["Calories"]);
                     nutrition = Nutrition(
                         calories: nut['Calories'],
                         protein: nut['Protein'],
                         totalCarbs: nut['Total Carbohydrate'],
                         totalFat: nut['Total Fat']);
                   });
-                  print("after for each");
 
                   return Scaffold(
                     backgroundColor: Colors.blue[50],
@@ -214,7 +209,7 @@ class _ViewRecipeState extends State<ViewRecipe> {
                               )
                             ])),
                     body: Container(
-                      child: ViewRecipeTile(
+                      child: ViewRecommendRecipeTile(
                           ingredient: _ingredientsList,
                           instruction: _instructionsList,
                           nutrition: nutrition,
