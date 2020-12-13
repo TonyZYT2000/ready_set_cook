@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:ready_set_cook/screens/recommend/recommend.dart';
 import 'package:ready_set_cook/shared/constants.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:ready_set_cook/services/auth.dart';
@@ -109,10 +108,12 @@ class _EditProfileState extends State<EditProfile> {
                           _image = null;
                           _imageUrl = null;
                           _controller1.clear();
-                          _formKey.currentState.save();
+                          //_formKey.currentState.save();
                         }
 
                         setState(() {});
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
                       }),
                 ],
               ),

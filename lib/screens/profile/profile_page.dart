@@ -2,9 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ready_set_cook/screens/profile/edit_profile.dart';
-import 'package:ready_set_cook/screens/recommend/recommend.dart';
-import 'package:ready_set_cook/shared/constants.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:ready_set_cook/services/auth.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -59,38 +56,38 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Column(
                 children: <Widget>[
                   SizedBox(height: 30.0),
-                  Container(
-                    height: 200,
-                    width: 200,
-                    child: (_image == null)
-                        ? Image(
-                            image: NetworkImage(_auth
-                                        .getCurrentUserPhotoURL() !=
-                                    null
-                                ? _auth.getCurrentUserPhotoURL()
-                                : "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png"))
-                        : Image.file(_image),
+                  Center(
+                    child: Container(
+                      height: 200,
+                      width: 200,
+                      child: (_image == null)
+                          ? Image(
+                              image: NetworkImage(_auth
+                                          .getCurrentUserPhotoURL() !=
+                                      null
+                                  ? _auth.getCurrentUserPhotoURL()
+                                  : "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png"))
+                          : Image.file(_image),
+                    ),
                   ),
                   SizedBox(height: 45.0),
                   Text(
                       _auth.getCurrentUserdiaplayName() != null
-                          ? _auth.getCurrentUserdiaplayName()
-                          : "no Username",
+                          ? "Name: " + _auth.getCurrentUserdiaplayName()
+                          : "No username",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 35.0,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 24.0,
                         color: Colors.black,
                       )),
                   SizedBox(height: 45.0),
                   Text(
                       _auth.getCurrentUserEmail() != null
-                          ? _auth.getCurrentUserEmail()
-                          : "no Email",
+                          ? "Email: " + _auth.getCurrentUserEmail()
+                          : "No email",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 25.0,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 24.0,
                         color: Colors.black,
                       )),
                 ],
