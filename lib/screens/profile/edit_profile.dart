@@ -94,7 +94,7 @@ class _EditProfileState extends State<EditProfile> {
                           if (_image != null) {
                             var ref = FirebaseStorage.instance
                                 .ref()
-                                .child('storage_image')
+                                .child('profile_image')
                                 .child(_filePath);
                             await ref.putFile(_image).whenComplete(() => null);
                             _imageUrl = await ref.getDownloadURL();

@@ -71,7 +71,12 @@ class _Add_allergyState extends State<Add_allergy> {
                       'Vegan',
                       'Peanut Allergy',
                       'Lactose Intolerant',
-                      'Seafood Allergy'
+                      'Seafood Allergy',
+                      'Pescetarian',
+                      'Low Sodium',
+                      'Low Fat',
+                      'Halal',
+                      'Kosher'
                     ].map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
