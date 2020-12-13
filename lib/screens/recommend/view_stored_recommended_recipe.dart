@@ -130,19 +130,6 @@ class _ViewStoredRecommendedRecipeState
                     appBar: AppBar(
                       title: Text(name),
                       elevation: 0,
-                      actions: <Widget>[
-                        FlatButton(
-                          minWidth: 20,
-                          child: Text(
-                            'Delete',
-                            style: TextStyle(color: Colors.white, fontSize: 14),
-                          ),
-                          onPressed: () async {
-                            DeleteConfirmation(context)
-                                .showDeleteConfirmation(context, recipeId);
-                          },
-                        ),
-                      ],
                     ),
                     floatingActionButtonLocation:
                         FloatingActionButtonLocation.centerDocked,
