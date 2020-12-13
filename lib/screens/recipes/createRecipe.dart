@@ -22,8 +22,6 @@ class CreateRecipe extends StatefulWidget {
 
 class _CreateRecipeState extends State<CreateRecipe> {
   RecipesDatabaseService recipeDB;
-  final _ingredientKey = GlobalKey<FormState>();
-  final _instructionKey = GlobalKey<FormState>();
 
   String _recipeName = "";
   double _rating = 0;
@@ -125,11 +123,8 @@ class _CreateRecipeState extends State<CreateRecipe> {
     _controller4.clear();
     _ingredients.clear();
     _instructions.clear();
-
-    _ingredientKey.currentState.save();
-    _instructionKey.currentState.save();
-    setState(() {});
-    Navigator.of(context).pop();
+    // setState(() {});
+    // Navigator.of(context).pop();
   }
 
   @override
