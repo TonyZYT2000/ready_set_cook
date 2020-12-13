@@ -105,9 +105,6 @@ class _AddIngredientPage extends State<AddIngredientPage> {
                     ),
                     controller: _controller3,
                     validator: (value) {
-                      if (value.isEmpty) {
-                        return "Please enter a unit";
-                      }
                       if (value.length > 9) {
                         return "Unit of Measure Invalid";
                       }
