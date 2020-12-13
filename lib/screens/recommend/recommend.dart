@@ -171,9 +171,29 @@ class _RecommendState extends State<Recommend> {
     "whole30",
     "thai",
     "korean",
-    "italian"
+    "italian",
+    "gluten-free",
+    "healthy",
+    "japanese",
+    "indian",
+    "greek",
+    "shellfish-free",
+    "seafood-free",
+    "egg-free",
+    "soy-"
+        "free",
+    "peanut-free"
   ];
   List<String> selectedDietaryPreference = [];
+
+  List<String> allergen = [
+    "shellfish-free",
+    "seafood-free",
+    "egg-free",
+    "soy-"
+        "free",
+    "peanut-free"
+  ];
 
   void _openFilterDialog() async {
     await FilterListDialog.display(context,
@@ -337,17 +357,30 @@ class _RecommendState extends State<Recommend> {
   void useAPI() async {
     // Tags are separated by commas
     String newTags = "";
+    String intolerances = "";
     for (int i = 0; i < selectedDietaryPreference.length; i++) {
       if (i != selectedDietaryPreference.length - 1) {
-        newTags += selectedDietaryPreference[i] + ",";
+        if (allergen.contains(selectedDietaryPreference[i])) {
+          intolerances += selectedDietaryPreference[i] + ",";
+        } else {
+          newTags += selectedDietaryPreference[i] + ",";
+        }
       } else {
-        newTags += selectedDietaryPreference[i];
+        if (allergen.contains(selectedDietaryPreference[i])) {
+          intolerances += selectedDietaryPreference[i];
+        } else {
+          newTags += selectedDietaryPreference[i];
+        }
       }
     }
     tags = newTags;
     debugPrint(tags);
+    debugPrint(intolerances);
     var response = await http
-        .get('$apiURL/recipes/random?number=$number&tags=$tags&apiKey=$apiKey');
+        .get('$apiURL/recipes/random?number=$number&tags=$tags&intolerances'
+            '=$intolerances'
+            '&apiKey'
+            '=$apiKey');
 
     if (response.statusCode == 200) {
       debugPrint("API Response Generated");
@@ -461,7 +494,7 @@ class _RecommendState extends State<Recommend> {
     final _tabs = <Tab>[
       const Tab(
         icon: Icon(Icons.backpack),
-        text: 'Suggested from Storage',
+        text: 'Storage Suggested',
       ),
       const Tab(icon: Icon(Icons.approval), text: 'Based on Filters')
     ];
