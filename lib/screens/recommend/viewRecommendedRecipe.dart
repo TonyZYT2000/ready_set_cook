@@ -228,10 +228,20 @@ class _ViewRecommendedRecipeState extends State<ViewRecommendedRecipe> {
             ),
           ),
         ],
-        icon: Icon(
-          Icons.library_add,
-          color: Colors.blue,
-          size: 40,
+        icon: ClipOval(
+          child: Material(
+            color: Colors.blue, // button color
+            child: InkWell(
+              child: SizedBox(
+                  width: 200,
+                  height: 200,
+                  child: Icon(
+                    Icons.add_shopping_cart,
+                    color: Colors.white,
+                    size: 20,
+                  )),
+            ),
+          ),
         ),
         offset: Offset(0, 100),
       );
@@ -270,7 +280,7 @@ class _ViewRecommendedRecipeState extends State<ViewRecommendedRecipe> {
                             "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png"))
                     : Image(image: NetworkImage(imageUrl)),
                 Positioned(
-                  width: size.longestSide + 50,
+                  right: 30,
                   top: 10,
                   child: _offsetPopup(),
                 ),
