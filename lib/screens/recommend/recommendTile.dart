@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ready_set_cook/screens/recipes/viewRecipe.dart';
-import 'package:ready_set_cook/screens/recipes/BorderIcon.dart';
+import 'package:ready_set_cook/screens/recipes/border_icon.dart';
 import 'package:ready_set_cook/shared/constants.dart';
 import 'dart:math';
 

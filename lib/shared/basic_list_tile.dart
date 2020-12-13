@@ -1,4 +1,4 @@
-import 'package:ready_set_cook/models/pracIngredients.dart';
+import 'package:ready_set_cook/models/prac_ingredients.dart';
 import 'package:flutter/material.dart';
 
 class GroceryCard extends StatelessWidget {

@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ready_set_cook/models/ingredient.dart';
 import 'package:ready_set_cook/services/recipes_database.dart';
-import 'editRecipe.dart';
-import 'package:ready_set_cook/screens/recipes/viewRecipeTile.dart';
+import 'package:ready_set_cook/screens/recipes/edit_recipe.dart';
+import 'package:ready_set_cook/screens/recipes/view_recipe_tile.dart';
 import 'package:ready_set_cook/models/nutrition.dart';
-import 'package:ready_set_cook/screens/recipes/deleteConfirmation.dart';
-import 'package:ready_set_cook/screens/recipes/rateRecipe.dart';
+import 'package:ready_set_cook/screens/recipes/delete_confirmation.dart';
+import 'package:ready_set_cook/screens/recipes/rate_recipe.dart';
 
 class ViewRecipe extends StatefulWidget {
   final Function toggleView;

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:ready_set_cook/services/recipes_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:ready_set_cook/screens/recipes/BorderIcon.dart';
-import 'package:ready_set_cook/screens/recipes/viewRecipe.dart';
+import 'package:ready_set_cook/screens/recipes/border_icon.dart';
+import 'package:ready_set_cook/screens/recipes/view_recipe.dart';
+import 'package:ready_set_cook/screens/recipes/create_recipe.dart';
 import 'dart:math';
 
-import 'createRecipe.dart';
 
 class Recipe extends StatefulWidget {
   final Function toggleView;

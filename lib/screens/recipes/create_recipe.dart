@@ -3,11 +3,11 @@ import 'package:ready_set_cook/models/ingredient.dart';
 import 'package:ready_set_cook/models/nutrition.dart';
 import 'package:ready_set_cook/models/recipe.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:ready_set_cook/screens/recipes/addInstruction.dart';
+import 'package:ready_set_cook/screens/recipes/add_instruction.dart';
 import 'package:ready_set_cook/services/recipes_database.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import 'package:ready_set_cook/screens/recipes/addIngredient.dart';
+import 'package:ready_set_cook/screens/recipes/add_ingredient.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:uuid/uuid.dart';

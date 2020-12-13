@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ready_set_cook/models/ingredient.dart';
 import 'package:ready_set_cook/models/nutrition.dart';
-import 'package:ready_set_cook/screens/recipes/BorderIcon.dart';
+import 'package:ready_set_cook/screens/recipes/border_icon.dart';
 import 'package:ready_set_cook/services/recipes_database.dart';
 
 class ViewRecipeTile extends StatefulWidget {
