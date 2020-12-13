@@ -33,7 +33,7 @@ class FilteredRecipe extends StatelessWidget {
           .snapshots(),
       builder: (context, ingSnapshot) {
         if (ingSnapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return Container();
         } else {
           var ingDocs = ingSnapshot.data.documents;
           for (var i = 0; i < ingDocs.length; i++) {
