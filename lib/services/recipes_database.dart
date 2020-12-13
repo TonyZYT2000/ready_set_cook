@@ -1,7 +1,6 @@
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/number_symbols_data.dart';
 import 'package:ready_set_cook/models/recipe.dart';
-import 'dart:developer';
 
 class RecipesDatabaseService {
   // uid of user
@@ -17,12 +16,130 @@ class RecipesDatabaseService {
 
   String _recipeName;
   double _recipeRating;
+  double roundDouble(double value, int places) {
+    double mod = pow(10.0, places);
+    return ((value * mod).round().toDouble() / mod);
+  }
 
-  Future addRecipe(String recipeId) async {
-    return await recipeCollection
-        .doc(uid)
-        .collection("recipesList")
-        .add({"recipeId": recipeId});
+  Future favRecipe(String recipeId) async {
+    String id;
+
+    CollectionReference _documentRef =
+        recipeCollection.doc(uid).collection('recipesList');
+    return _documentRef.get().then((ds) {
+      if (ds != null) {
+        ds.docs.forEach((recipe) {
+          id = recipe['recipeId'];
+          if (id == recipeId) {
+            return FirebaseFirestore.instance
+                .collection('recipes')
+                .doc(uid)
+                .collection("recipesList")
+                .doc(recipe.id)
+                .set({
+              "recipeId": recipeId,
+              "fav": true,
+              "imageUrl": recipe["imageUrl"],
+              "name": recipe["name"],
+              "numRatings": recipe["numRatings"],
+              "rating": recipe["rating"]
+            });
+          }
+        });
+      }
+    });
+  }
+
+  Future unFavRecipe(String recipeId) async {
+    String id;
+
+    CollectionReference _documentRef =
+        recipeCollection.doc(uid).collection('recipesList');
+    return _documentRef.get().then((ds) {
+      if (ds != null) {
+        ds.docs.forEach((recipe) {
+          id = recipe['recipeId'];
+          if (id == recipeId) {
+            return FirebaseFirestore.instance
+                .collection('recipes')
+                .doc(uid)
+                .collection("recipesList")
+                .doc(recipe.id)
+                .set({
+              "recipeId": recipeId,
+              "fav": false,
+              "imageUrl": recipe["imageUrl"],
+              "name": recipe["name"],
+              "numRatings": recipe["numRatings"],
+              "rating": recipe["rating"]
+            });
+          }
+        });
+      }
+    });
+  }
+
+  addRecipe(String recipeId) async {
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection("allRecipes")
+        .doc(recipeId)
+        .get();
+    print("yep");
+    QuerySnapshot ingredient = await FirebaseFirestore.instance
+        .collection("allRecipes")
+        .doc(recipeId)
+        .collection("ingredients")
+        .get();
+    QuerySnapshot instruction = await FirebaseFirestore.instance
+        .collection("allRecipes")
+        .doc(recipeId)
+        .collection("instructions")
+        .get();
+    QuerySnapshot nutrition = await FirebaseFirestore.instance
+        .collection("allRecipes")
+        .doc(recipeId)
+        .collection("nutrition")
+        .get();
+    String imageUrl = snapshot.get("imageUrl");
+    String name = snapshot.get("name");
+    int numRating = snapshot.get("numRatings");
+    var temp = snapshot.get('rating');
+    double rating = roundDouble(temp.toDouble(), 1);
+    CollectionReference _documentRef =
+        recipeCollection.doc(uid).collection('recipesList');
+    _documentRef.doc(recipeId).set({
+      "imageUrl": imageUrl,
+      "name": name,
+      "numRatings": numRating,
+      "rating": rating,
+      "recipeId": recipeId,
+      "fav": false
+    });
+    ingredient.docs.forEach((ing) {
+      _documentRef.doc(recipeId).collection("ingredients").add({
+        "name": ing.get("name"),
+        "quantity": ing.get("quantity"),
+        "unit": ing.get("unit")
+      });
+    });
+    instruction.docs.forEach((ins) {
+      _documentRef.doc(recipeId).collection("instructions").add(
+          {"index": ins.get("index"), "instruction": ins.get("instruction")});
+    });
+    nutrition.docs.forEach((nut) {
+      _documentRef.doc(recipeId).collection("nutrition").add({
+        "Calories": nut.get("Calories"),
+        "Protein": nut.get("Protein"),
+        "Total Fat": nut.get("Total Fat"),
+        "Total Carbohydrate": nut.get("Total Carbohydrate")
+      });
+    });
+  }
+
+  Future updateRecipe(String newName, String recipeId) async {
+    return await recipeCollection.doc(recipeId).update({
+      "name": newName,
+    });
   }
 
   deleteRecipe(String recipeId, String uid) {
@@ -40,12 +157,49 @@ class RecipesDatabaseService {
               .collection("recipesList")
               .doc(recipeIdField.id)
               .delete();
+          FirebaseFirestore.instance
+              .collection('recipes')
+              .doc(uid)
+              .collection("recipesList")
+              .doc(recipeId)
+              .collection("ingredients")
+              .get()
+              .then((snapshot) {
+            for (DocumentSnapshot ds in snapshot.docs) {
+              ds.reference.delete();
+            }
+          });
+          FirebaseFirestore.instance
+              .collection('recipes')
+              .doc(uid)
+              .collection("recipesList")
+              .doc(recipeId)
+              .collection("instructions")
+              .get()
+              .then((snapshot) {
+            for (DocumentSnapshot ds in snapshot.docs) {
+              ds.reference.delete();
+            }
+          });
+          FirebaseFirestore.instance
+              .collection('recipes')
+              .doc(uid)
+              .collection("recipesList")
+              .doc(recipeId)
+              .collection("nutrition")
+              .get()
+              .then((snapshot) {
+            for (DocumentSnapshot ds in snapshot.docs) {
+              ds.reference.delete();
+            }
+          });
         }
       });
     });
   }
 
   Future addCustomRecipe(Recipe recipe) async {
+    int ins_index = 0;
     recipe.ingredients.forEach((ing) {
       allRecipesCollection
           .doc(recipe.recipeId)
@@ -57,7 +211,8 @@ class RecipesDatabaseService {
       allRecipesCollection
           .doc(recipe.recipeId)
           .collection("instructions")
-          .add({"instruction": ins});
+          .add({"instruction": ins, "index": ins_index});
+      ins_index += 1;
     });
 
     allRecipesCollection.doc(recipe.recipeId).collection("nutrition").add({
@@ -90,7 +245,6 @@ class RecipesDatabaseService {
   List<Recipe> _recipesList(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       getRecipesHelper(doc);
-      log('called helper');
       return Recipe(
         recipeId: doc.get('recipeId'),
         name: _recipeName,
@@ -101,30 +255,6 @@ class RecipesDatabaseService {
     }).toList();
   }
 
-  /*QuerySnapshot list;
-    List<DocumentSnapshot> snap = snapshot.docs;
-    for (var i in snap) {
-      // var dss = i.data();
-
-      // var key = dss.keys.firstWhere((k) => dss[k] == uid);
-
-      if (i.id == uid) {
-        list = i.get('recipesList');
-      }
-    }
-
-    return list.docs.map((doc) {
-      return doc.data()['recipeId'];
-      /* return Recipe(
-        doc.data['recipeId'],
-        doc.data['userId'],
-        doc.data['name'],
-        null,
-        null,
-        doc.data['rating'],
-      );*/
-    }).toList();*/
-
   // get recipes stream
   Stream<List<Recipe>> get recipes {
     return recipeCollection
@@ -134,16 +264,13 @@ class RecipesDatabaseService {
         .map(_recipesList);
   }
 
-  // List<Recipe>  get recipes {
-
-  //   StreamBuilder(
-  //     stream:
-  //   )
-
-  //   return recipeCollection
-  //       .doc(uid)
-  //       .collection("recipesList")
-  //       .snapshots()
-  //       .map(_recipesList);
-  // }
+  Future getRecipeName(String recipeId) async {
+    var name = await FirebaseFirestore.instance
+        .collection('recipes')
+        .doc(uid)
+        .collection('recipesList')
+        .doc(recipeId)
+        .get();
+    return name.get('name');
+  }
 }

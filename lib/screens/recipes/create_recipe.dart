@@ -3,11 +3,11 @@ import 'package:ready_set_cook/models/ingredient.dart';
 import 'package:ready_set_cook/models/nutrition.dart';
 import 'package:ready_set_cook/models/recipe.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:ready_set_cook/screens/recipes/addInstruction.dart';
+import 'package:ready_set_cook/screens/recipes/add_instruction.dart';
 import 'package:ready_set_cook/services/recipes_database.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import 'package:ready_set_cook/screens/recipes/addIngredient.dart';
+import 'package:ready_set_cook/screens/recipes/add_ingredient.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:uuid/uuid.dart';
@@ -22,8 +22,6 @@ class CreateRecipe extends StatefulWidget {
 
 class _CreateRecipeState extends State<CreateRecipe> {
   RecipesDatabaseService recipeDB;
-  final _ingredientKey = GlobalKey<FormState>();
-  final _instructionKey = GlobalKey<FormState>();
 
   String _recipeName = "";
   double _rating = 0;
@@ -38,6 +36,7 @@ class _CreateRecipeState extends State<CreateRecipe> {
   String _instruction_error = "";
   String _ingredient_error = "";
   Nutrition nutrition;
+  bool _fav;
 
   String _ingredientName = "";
   String _quantity = "";
@@ -45,6 +44,7 @@ class _CreateRecipeState extends State<CreateRecipe> {
 
   final List<String> _instructions = [];
   String instruction = "";
+  int ins_ind = 0;
 
   TextEditingController _controller1 = TextEditingController();
   TextEditingController _controller2 = TextEditingController();
@@ -115,18 +115,16 @@ class _CreateRecipeState extends State<CreateRecipe> {
         nutrition: nutrition,
         rating: _rating,
         numRatings: _numRatings,
-        imageUrl: _imageUrl));
+        imageUrl: _imageUrl,
+        fav: _fav));
     _controller1.clear();
     _controller2.clear();
     _controller3.clear();
     _controller4.clear();
     _ingredients.clear();
     _instructions.clear();
-
-    _ingredientKey.currentState.save();
-    _instructionKey.currentState.save();
-    setState(() {});
-    Navigator.of(context).pop();
+    // setState(() {});
+    // Navigator.of(context).pop();
   }
 
   @override

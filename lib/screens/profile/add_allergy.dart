@@ -94,7 +94,6 @@ class _Add_allergyState extends State<Add_allergy> {
                         final allergySnap = allergySnapshot.data.documents;
 
                         allergySnap.forEach((aller) {
-                          print(aller["allergy"]);
                           if (aller["allergy"] == dropdownValue) {
                             addedFlag = true;
                           }

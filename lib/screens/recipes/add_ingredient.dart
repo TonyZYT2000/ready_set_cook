@@ -1,11 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:ready_set_cook/shared/constants.dart';
-import 'package:uuid/uuid.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:ready_set_cook/services/recipes_database.dart';
-import 'package:ready_set_cook/models/recipe.dart';
-import 'package:ready_set_cook/screens/recipes/createRecipe.dart';
 import 'package:ready_set_cook/models/ingredient.dart';
 
 class AddIngredientPage extends StatefulWidget {
@@ -87,10 +80,6 @@ class _AddIngredientPage extends State<AddIngredientPage> {
                         return "Please enter an integer";
                       }
 
-                      if (int.parse(value) > 9999) {
-                        return "Please enter a smaller integer";
-                      }
-
                       return null;
                     }),
                 SizedBox(
@@ -105,9 +94,6 @@ class _AddIngredientPage extends State<AddIngredientPage> {
                     ),
                     controller: _controller3,
                     validator: (value) {
-                      if (value.isEmpty) {
-                        return "Please enter a unit";
-                      }
                       if (value.length > 9) {
                         return "Unit of Measure Invalid";
                       }
