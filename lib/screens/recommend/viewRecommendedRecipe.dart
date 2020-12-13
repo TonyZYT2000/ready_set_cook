@@ -250,12 +250,18 @@ class _ViewRecommendedRecipeState extends State<ViewRecommendedRecipe> {
   Widget build(BuildContext context) {
     // List of Instructions from API Recipe
 
-    String imageUrl = "https://spoonacular"
-            ".com/recipeImages/" +
-        this.recipeId +
-        "-556x370"
-            "." +
-        this.imageType;
+    String imageUrl = "https://upload.wikimedia"
+        ".org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png";
+    if (imageType == null) {
+      imageUrl = "https://upload.wikimedia"
+          ".org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png";
+    } else {
+      imageUrl = "https://spoonacular"
+              ".com/recipeImages/" +
+          recipeId +
+          "-480x360." +
+          imageType;
+    }
 
     final Size size = MediaQuery.of(context).size;
     final ThemeData themeData = Theme.of(context);
