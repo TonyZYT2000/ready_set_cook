@@ -39,18 +39,5 @@ class ViewRecipeIngredTile extends StatelessWidget {
           ],
           alignment: WrapAlignment.center,
         ));
-    // Container(
-    //   padding: EdgeInsets.all(90.0),
-    //   height: 160,
-    //   width: 320,
-    //   decoration: BoxDecoration(
-    //       border: Border.all(color: Colors.blue[100], width: 10),
-    //       borderRadius: BorderRadius.circular(20),
-    //       image: DecorationImage(
-    //           colorFilter: ColorFilter.mode(
-    //               Colors.blue.withOpacity(1.0), BlendMode.softLight),
-    //           fit: BoxFit.cover,
-    //           image: AssetImage("assets/images/apple.png"))),
-    // )
   }
 }

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:ready_set_cook/screens/recipes/viewRecipe.dart';
 
 // ignore: must_be_immutable
@@ -15,7 +15,7 @@ class RecipeTile extends StatelessWidget {
     return GestureDetector(
         onTap: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ViewRecipe(recipeId, name, imageUrl)));
+              MaterialPageRoute(builder: (context) => ViewRecipe(recipeId, name, imageUrl,)));
         },
         child: Container(
           padding: EdgeInsets.all(5),
@@ -77,4 +77,4 @@ Widget _buildRatingStar(rating) {
     padding: EdgeInsets.fromLTRB(90, 5, 70, 0),
     child: new Row(children: icons),
   );
-}
+}*/

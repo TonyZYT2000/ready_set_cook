@@ -11,24 +11,23 @@ import 'dart:convert';
 import 'recommendTile.dart';
 import 'package:filter_list/filter_list.dart';
 import 'package:flutter/services.dart';
+import 'package:ready_set_cook/models/ingredient.dart';
+import 'package:ready_set_cook/models/nutrition.dart';
+
+import 'viewRecommendedRecipe.dart';
+
+String apiKey = 'b99da7728f3a41a1bdac85f5e588e0b9';
 
 class RecRecipe {
   int id;
-  int calories;
-  String carbs;
-  String fat;
   String image;
   String imageType;
-  String protein;
   String title;
   double spoonacularScore;
   String summary;
 
   RecRecipe(
       {this.id,
-      this.carbs,
-      this.fat,
-      this.protein,
       this.image,
       this.imageType,
       this.title,
@@ -37,10 +36,6 @@ class RecRecipe {
 
   RecRecipe.fromMap(Map<String, dynamic> json) {
     id = json['id'];
-    calories = json['calories'];
-    carbs = json['carbs'];
-    fat = json['fat'];
-    protein = json['protein'];
     image = json['image'];
     imageType = json['imageType'];
     title = json['title'];
@@ -76,6 +71,11 @@ class Recommend extends StatefulWidget {
 class _RecommendState extends State<Recommend> {
   List<String> ingredientArray = [];
   List<RecRecipe> recipeList = [];
+
+  List<Ingredient> _ingredients = [];
+  bool instruction_added = false;
+  bool ingredient_added = false;
+  Nutrition nutrition;
 
   Future<void> loadFromStorage() async {
     final uid = FirebaseAuth.instance.currentUser.uid;
@@ -131,12 +131,23 @@ class _RecommendState extends State<Recommend> {
               child: ListView.builder(
                 itemCount: recipeList.length,
                 itemBuilder: (context, index) {
-                  return new RecommendTile(
-                    name: recipeList[index].title,
-                    recipeId: recipeList[index].id.toString(),
-                    imageType: recipeList[index].imageType,
-                    spoonRating: recipeList[index].spoonacularScore,
-                  );
+                  return GestureDetector(
+                      child: new RecommendTile(
+                        name: recipeList[index].title,
+                        recipeId: recipeList[index].id.toString(),
+                        imageType: recipeList[index].imageType,
+                        spoonRating: recipeList[index].spoonacularScore,
+                      ),
+                      onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ViewRecommendedRecipe(
+                                  recipeId: recipeList[index].id.toString(),
+                                  name: recipeList[index].title,
+                                  imageType: recipeList[index].imageType,
+                                  fav: false),
+                            ),
+                          ));
                 },
               ),
             ),
@@ -152,11 +163,16 @@ class _RecommendState extends State<Recommend> {
     "vegan",
     "vegetarian",
     "keto",
-    "pescatarian",
+    "pescetarian",
     "dairy-free",
     "dessert",
     "mexican",
-    "chinese"
+    "chinese",
+    "primal",
+    "whole30",
+    "thai",
+    "korean",
+    "italian"
   ];
   List<String> selectedDietaryPreference = [];
 
@@ -311,7 +327,7 @@ class _RecommendState extends State<Recommend> {
   // &tags=vegetarian,dessert
   String tags = "";
   // Consts for API
-  String apiKey = '344f6c52e4a341fb9f0ed8a1d7037bda';
+
   String apiURL = 'https://api.spoonacular.com';
   String imageUrl = 'https://spoonacular.com/recipeImages/';
 
