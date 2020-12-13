@@ -14,7 +14,7 @@ import 'package:ready_set_cook/screens/recommend/filtered_recommend.dart';
 import 'recommendTile.dart';
 import 'viewRecommendedRecipe.dart';
 
-String apiKey = 'abb9e049401e4c429a547e0ce93172de';
+String apiKey = '8338f5ec64244b1c935bf18687dab89d';
 
 class RecRecipe {
   int id;
