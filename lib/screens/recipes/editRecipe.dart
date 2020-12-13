@@ -208,12 +208,12 @@ class _EditRecipe extends State<EditRecipe> {
     final Size size = MediaQuery.of(context).size;
     final double padding = 25;
 
-    calorieController = new TextEditingController(/*text: nutrition.calories*/);
-    proteinController = new TextEditingController(/*text: nutrition.protein*/);
-    fatController = new TextEditingController(/*text: nutrition.totalFat*/);
-    carbController = new TextEditingController(/*text: nutrition.totalCarbs*/);
+    calorieController = new TextEditingController(text: nutrition.calories);
+    proteinController = new TextEditingController(text: nutrition.protein);
+    fatController = new TextEditingController(text: nutrition.totalFat);
+    carbController = new TextEditingController(text: nutrition.totalCarbs);
 
-    /*calorieController.selection = TextSelection.fromPosition(
+    calorieController.selection = TextSelection.fromPosition(
         TextPosition(offset: calorieController.text.length));
 
     proteinController.selection = TextSelection.fromPosition(
@@ -223,7 +223,7 @@ class _EditRecipe extends State<EditRecipe> {
         TextPosition(offset: carbController.text.length));
 
     fatController.selection = TextSelection.fromPosition(
-        TextPosition(offset: fatController.text.length));*/
+        TextPosition(offset: fatController.text.length));
 
     return Scaffold(
       backgroundColor: Colors.blue[50],
