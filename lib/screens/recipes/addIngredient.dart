@@ -84,11 +84,7 @@ class _AddIngredientPage extends State<AddIngredientPage> {
                       }
 
                       if (!isNumeric(value)) {
-                        return "Please enter an number";
-                      }
-
-                      if (int.parse(value) > 9999) {
-                        return "Please enter a smaller integer";
+                        return "Please enter an integer";
                       }
 
                       return null;

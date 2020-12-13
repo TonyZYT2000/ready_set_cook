@@ -171,8 +171,8 @@ class _EditRecipe extends State<EditRecipe> {
           .collection("ingredients");
       _ingredientRef.get().then((ds) {
         if (ds != null) {
-          ds.docs.forEach((ingredient) {
-            ingredient.reference.delete();
+          ds.docs.forEach((ing) {
+            ing.reference.delete();
           });
         }
       });
