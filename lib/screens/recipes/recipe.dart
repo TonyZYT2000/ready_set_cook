@@ -77,17 +77,15 @@ class _RecipeState extends State<Recipe> {
                                   final recipeId =
                                       recipesdoc[index]['recipeId'];
                                   final fav = recipesdoc[index]['fav'];
+                                  final name = recipesdoc[index]['name'];
                                   return FutureBuilder<DocumentSnapshot>(
                                       future: FirebaseFirestore.instance
-                                          .collection('recipes')
-                                          .doc(uid)
-                                          .collection('recipesList')
+                                          .collection('allRecipes')
                                           .doc(recipeId)
                                           .get(),
                                       // ignore: non_constant_identifier_names
                                       builder: (ctx, Rsnapshot) {
                                         if (Rsnapshot.data != null) {
-                                          name = Rsnapshot.data.get('name');
                                           var temp =
                                               Rsnapshot.data.get('rating');
                                           rating =
