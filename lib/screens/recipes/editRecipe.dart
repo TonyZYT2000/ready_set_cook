@@ -198,6 +198,7 @@ class _EditRecipe extends State<EditRecipe> {
     carbController.clear();
     fatController.clear();
     Navigator.pop(context);
+    Navigator.pop(context);
   }
 
   @override
