@@ -8,12 +8,10 @@ import 'package:ready_set_cook/screens/recipes/rateRecipe.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'dart:math';
-import 'package:ready_set_cook/screens/recipes/editRecipe.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:ready_set_cook/screens/recipes/BorderIcon.dart';
-import 'recommend.dart';
 import 'recommend.dart' as recommend;
+import 'package:uuid/uuid.dart';
+import 'package:ready_set_cook/models/recipe.dart';
 
 // Ingredient Model from API for Mapping
 class apiIngredient {
@@ -50,9 +48,13 @@ class ViewRecommendedRecipe extends StatefulWidget {
   String recipeId = "";
   String name = "";
   String imageType = "";
-  bool fav = false;
+  double spoonRating;
   ViewRecommendedRecipe(
-      {this.recipeId, this.name, this.imageType, this.fav, this.toggleView});
+      {this.recipeId,
+      this.name,
+      this.imageType,
+      this.spoonRating,
+      this.toggleView});
   @override
   _ViewRecommendedRecipeState createState() => _ViewRecommendedRecipeState();
 }
@@ -61,6 +63,7 @@ class _ViewRecommendedRecipeState extends State<ViewRecommendedRecipe> {
   String recipeId = "";
   String recipeName = "";
   String imageType = "";
+  double spoonRating;
 
   @override
   void initState() {
@@ -68,10 +71,15 @@ class _ViewRecommendedRecipeState extends State<ViewRecommendedRecipe> {
     this.recipeId = widget.recipeId;
     this.imageType = widget.imageType;
     this.recipeName = widget.name;
+    this.spoonRating = widget.spoonRating;
+    getIngredients();
+    getInstructions();
+    getNutrition();
     setState(() {});
   }
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   Nutrition nutrition;
   bool fav = false;
 
@@ -92,6 +100,49 @@ class _ViewRecommendedRecipeState extends State<ViewRecommendedRecipe> {
   String totalFat = "Info Not Available";
   String totalCarbs = "Info Not Available";
 
+  Future<void> _createRecipe() async {
+    final user = FirebaseAuth.instance.currentUser;
+    final uid = user.uid;
+    var recipeDB = RecipesDatabaseService(uid: uid);
+    this.spoonRating = 5.0 * (this.spoonRating * 0.01);
+    double rating = double.parse((this.spoonRating).toStringAsFixed(1));
+    debugPrint(rating.toString());
+    String imageUrl = "https://spoonacular"
+            ".com/recipeImages/" +
+        this.recipeId +
+        "-556x370"
+            "." +
+        this.imageType;
+
+    nutrition = new Nutrition(
+        calories: this.calories,
+        protein: this.protein,
+        totalCarbs: this.totalCarbs,
+        totalFat: this.totalFat);
+    var _recipeId = Uuid().v4();
+    debugPrint(_recipeId);
+    debugPrint(this.recipeName);
+    debugPrint(finalIngredientList.length.toString());
+    debugPrint(instructionList.length.toString());
+    debugPrint(nutrition.toString());
+    debugPrint(rating.toString());
+    debugPrint(imageUrl);
+    debugPrint(fav.toString());
+
+    recipeDB.addCustomRecipe(new Recipe(
+        recipeId: _recipeId,
+        name: this.recipeName,
+        ingredients: this.finalIngredientList,
+        instructions: this.instructionList,
+        nutrition: this.nutrition,
+        rating: rating,
+        numRatings: 1,
+        imageUrl: imageUrl,
+        fav: fav));
+    setState(() {});
+    Navigator.of(context).pop();
+  }
+
   void getInstructions() async {
     //https://api.spoonacular.com/recipes/324694/analyzedInstructions
     var response = await http
@@ -101,9 +152,9 @@ class _ViewRecommendedRecipeState extends State<ViewRecommendedRecipe> {
       List<dynamic> output = jsonDecode(response.body);
       List<dynamic> outputCheck = output[0]["steps"];
       for (int i = 0; i < outputCheck.length; i++) {
-        this.instructionList.add(outputCheck[i]["step"][0]);
+        this.instructionList.add(outputCheck[i]["step"]);
       }
-      debugPrint(instructionList.length.toString());
+      setState(() {});
     } else {
       debugPrint("API Response Error");
       throw Exception('Failed to load Instructions');
@@ -129,10 +180,6 @@ class _ViewRecommendedRecipeState extends State<ViewRecommendedRecipe> {
       if (nutritionData["protein"] != null) {
         this.protein = nutritionData["protein"];
       }
-      debugPrint(calories);
-      debugPrint(totalFat);
-      debugPrint(totalCarbs);
-      debugPrint(protein);
       setState(() {});
     } else {
       debugPrint("API Response Error");
@@ -162,6 +209,39 @@ class _ViewRecommendedRecipeState extends State<ViewRecommendedRecipe> {
     }
   }
 
+  Widget _offsetPopup() => PopupMenuButton<int>(
+        onSelected: (pressed) {
+          if (pressed == 1) {
+            debugPrint("Created Recipe");
+            _createRecipe();
+          }
+        },
+        itemBuilder: (context) => [
+          PopupMenuItem(
+            value: 1,
+            child: Text(
+              "Add to Recipe List",
+              style: TextStyle(
+                  color: Colors.lightBlueAccent, fontWeight: FontWeight.w700),
+            ),
+          ),
+          PopupMenuItem(
+            value: 2,
+            child: Text(
+              "Share Recipe",
+              style: TextStyle(
+                  color: Colors.blueGrey, fontWeight: FontWeight.w700),
+            ),
+          ),
+        ],
+        icon: Icon(
+          Icons.library_add,
+          color: Colors.blue,
+          size: 40,
+        ),
+        offset: Offset(0, 100),
+      );
+
   // Build Widget
   Widget build(BuildContext context) {
     // List of Instructions from API Recipe
@@ -177,18 +257,7 @@ class _ViewRecommendedRecipeState extends State<ViewRecommendedRecipe> {
     final ThemeData themeData = Theme.of(context);
     final double padding = 25;
     final sidePadding = EdgeInsets.symmetric(horizontal: padding);
-    final user = FirebaseAuth.instance.currentUser;
-    final uid = user.uid;
-    var recipeDB = RecipesDatabaseService(uid: uid);
 
-    var icon = Icons.favorite_border;
-    if (fav) {
-      icon = Icons.favorite;
-    }
-
-    getInstructions();
-    getIngredients();
-    getNutrition();
     return Scaffold(
       backgroundColor: Colors.blue[50],
       appBar: AppBar(
@@ -207,11 +276,10 @@ class _ViewRecommendedRecipeState extends State<ViewRecommendedRecipe> {
                             "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png"))
                     : Image(image: NetworkImage(imageUrl)),
                 Positioned(
-                    width: size.width,
-                    top: padding,
-                    child: Padding(
-                      padding: sidePadding,
-                    )),
+                  width: size.longestSide + 50,
+                  top: 10,
+                  child: _offsetPopup(),
+                ),
               ],
             ),
             SizedBox(height: 15),

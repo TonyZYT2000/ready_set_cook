@@ -142,10 +142,11 @@ class _RecommendState extends State<Recommend> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => ViewRecommendedRecipe(
-                                  recipeId: recipeList[index].id.toString(),
-                                  name: recipeList[index].title,
-                                  imageType: recipeList[index].imageType,
-                                  fav: false),
+                                recipeId: recipeList[index].id.toString(),
+                                name: recipeList[index].title,
+                                imageType: recipeList[index].imageType,
+                                spoonRating: recipeList[index].spoonacularScore,
+                              ),
                             ),
                           ));
                 },

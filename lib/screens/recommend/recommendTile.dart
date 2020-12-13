@@ -38,17 +38,9 @@ class RecommendTile extends StatelessWidget {
                         child: Image.network("https://spoonacular"
                                 ".com/recipeImages/" +
                             recipeId +
-                            "-312x231"
+                            "-480x360"
                                 "." +
                             imageType))),
-                Positioned(
-                    top: 20,
-                    right: 30,
-                    child: BorderIcon(
-                        child: Icon(
-                      Icons.favorite_border,
-                      color: COLOR_BLACK,
-                    )))
               ],
             ),
             SizedBox(height: 5),
