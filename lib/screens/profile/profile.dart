@@ -68,16 +68,6 @@ class _ProfileState extends State<Profile> {
                 );
               },
             ),
-            /*
-            SwitchListTile(
-                title: const Text('Notification'),
-                value: _notification,
-                onChanged: (bool value) {
-                  setState(() {
-                    _notification = value;
-                  });
-                }),
-                */
             ListTile(
               title: Text('Report Error'),
               trailing: Icon(Icons.keyboard_arrow_right),

@@ -72,6 +72,7 @@ class _AllergyState extends State<Allergy> {
                             setState(() {
                               _allergyDB.deleteAllergy(allergy_id);
                             });
+                            
                             showDialog(
                                 context: context,
                                 builder: (_) => AlertDialog(

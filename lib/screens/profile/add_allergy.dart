@@ -113,7 +113,6 @@ class _Add_allergyState extends State<Add_allergy> {
                         if (addedFlag == false) {
                           _allergyDB.addAllergy(DiePref(dropdownValue));
 
-                          //Navigator.of(context).pop();
                           showDialog(
                               context: context,
                               builder: (_) => AlertDialog(
@@ -121,6 +120,7 @@ class _Add_allergyState extends State<Add_allergy> {
                                     content: Text(
                                         'You can add more or left swipe to delete'),
                                   ));
+                                  
                         } else {
                           showDialog(
                               context: context,
@@ -131,6 +131,7 @@ class _Add_allergyState extends State<Add_allergy> {
                                         'You can add other preference instead.'),
                                   ));
                         }
+                        
                       }),
                   SizedBox(height: 12.0),
                 ],
