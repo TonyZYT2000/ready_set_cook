@@ -38,7 +38,8 @@ class FilteredRecipe extends StatelessWidget {
           var ingDocs = ingSnapshot.data.documents;
           for (var i = 0; i < ingDocs.length; i++) {
             var ingredientName = ingDocs[i]['name'];
-            if (ingredientArray.contains(ingredientName)) {
+            if (ingredientArray.contains(ingredientName) ||
+                ingredientArray.contains(ingredientName.toLowerCase())) {
               contained = true;
             }
             // return CompareWithStorage(ingredientName: ingredientName);

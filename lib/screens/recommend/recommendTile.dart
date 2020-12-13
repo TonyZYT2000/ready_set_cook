@@ -18,14 +18,17 @@ class RecommendTile extends StatelessWidget {
     this.spoonRating = 5.0 * (this.spoonRating * 0.01);
     double rating = double.parse((this.spoonRating).toStringAsFixed(1));
 
-    String imageUrl = "https://spoonacular"
-            ".com/recipeImages/" +
-        recipeId +
-        "-480x360." +
-        imageType;
+    String imageUrl = "https://upload.wikimedia"
+        ".org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png";
     if (imageType == null) {
       imageUrl = "https://upload.wikimedia"
           ".org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png";
+    } else {
+      imageUrl = "https://spoonacular"
+              ".com/recipeImages/" +
+          recipeId +
+          "-480x360." +
+          imageType;
     }
 
     // How the tiles look
