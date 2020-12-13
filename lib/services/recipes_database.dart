@@ -266,7 +266,9 @@ class RecipesDatabaseService {
 
   Future getRecipeName(String recipeId) async {
     var name = await FirebaseFirestore.instance
-        .collection('allRecipes')
+        .collection('recipes')
+        .doc(uid)
+        .collection('recipesList')
         .doc(recipeId)
         .get();
     return name.get('name');

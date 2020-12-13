@@ -178,8 +178,6 @@ class _ViewRecipeState extends State<ViewRecipe> {
                                           setState(() {
                                             name = value;
                                           });
-                                          print("name:" + name);
-                                          print("value: " + value);
 
                                           _ingredientsList.clear();
                                           _instructionsList.clear();
