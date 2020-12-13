@@ -221,6 +221,7 @@ class RecipesDatabaseService {
       "Total Fat": recipe.nutrition.totalFat,
       "Total Carbohydrate": recipe.nutrition.totalCarbs,
     });
+    allRecipesCollection.doc(recipe.recipeId).collection("uids").add({});
 
     await allRecipesCollection.doc(recipe.recipeId).set({
       "recipeId": recipe.recipeId,

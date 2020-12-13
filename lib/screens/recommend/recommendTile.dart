@@ -8,24 +8,26 @@ class RecommendTile extends StatelessWidget {
   final String name;
   final String recipeId;
   final String imageType;
-  double rating;
-  RecommendTile({this.name, this.recipeId, this.imageType, this.rating});
-
+  double spoonRating;
+  RecommendTile({this.name, this.recipeId, this.imageType, this.spoonRating});
   @override
   Widget build(BuildContext context) {
     // Generate Random Rating
-    if (rating == 0.0) {
-      Random r = new Random();
-      this.rating = 1.0 + (5.0 - 1.0) * r.nextDouble();
-      this.rating = double.parse((this.rating).toStringAsFixed(1));
-    }
 
-    if (recipeId == "1566481") {
-      this.rating = 4.2;
-    }
+    this.spoonRating = 5.0 * (this.spoonRating * 0.01);
+    double rating = double.parse((this.spoonRating).toStringAsFixed(1));
 
-    if (recipeId == "1569707") {
-      this.rating = 3.5;
+    String imageUrl = "https://upload.wikimedia"
+        ".org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png";
+    if (imageType == null) {
+      imageUrl = "https://upload.wikimedia"
+          ".org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png";
+    } else {
+      imageUrl = "https://spoonacular"
+              ".com/recipeImages/" +
+          recipeId +
+          "-480x360." +
+          imageType;
     }
 
     // How the tiles look
@@ -42,22 +44,11 @@ class RecommendTile extends StatelessWidget {
             Stack(
               children: [
                 Center(
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(25.0),
-                        child: Image.network("https://spoonacular"
-                                ".com/recipeImages/" +
-                            recipeId +
-                            "-312x231"
-                                "." +
-                            imageType))),
-                Positioned(
-                    top: 20,
-                    right: 30,
-                    child: BorderIcon(
-                        child: Icon(
-                      Icons.favorite_border,
-                      color: COLOR_BLACK,
-                    )))
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(25.0),
+                    child: Image.network(imageUrl),
+                  ),
+                ),
               ],
             ),
             SizedBox(height: 5),

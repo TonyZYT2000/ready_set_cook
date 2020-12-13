@@ -1,242 +1,515 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:filter_list/filter_list.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+import 'package:ready_set_cook/models/ingredient.dart';
+import 'package:ready_set_cook/models/nutrition.dart';
+import 'package:ready_set_cook/screens/recommend/filtered_recommend.dart';
+
 import 'recommendTile.dart';
+import 'viewRecommendedRecipe.dart';
 
-const apiKey = '4b2f81fdb7cd4dcdb1c96fb533073092';
-const apiURL = 'https://api.spoonacular.com';
-const imageUrl = 'https://spoonacular.com/recipeImages/';
+String apiKey = '8338f5ec64244b1c935bf18687dab89d';
 
-class Recommend extends StatefulWidget {
-  @override
-  _Recommend createState() => _Recommend();
-}
-
-class APIrecipe {
+class RecRecipe {
   int id;
+  String image;
   String imageType;
   String title;
-  int readyInMinutes;
-  int servings;
-  String sourceUrl;
+  double spoonacularScore;
+  String summary;
 
-  APIrecipe(
+  RecRecipe(
       {this.id,
+      this.image,
       this.imageType,
       this.title,
-      this.readyInMinutes,
-      this.servings,
-      this.sourceUrl});
+      this.spoonacularScore,
+      this.summary});
 
-  APIrecipe.fromMap(Map<String, dynamic> json) {
+  RecRecipe.fromMap(Map<String, dynamic> json) {
     id = json['id'];
+    image = json['image'];
     imageType = json['imageType'];
     title = json['title'];
-    readyInMinutes = json['readyInMinutes'];
-    servings = json['servings'];
-    sourceUrl = json['sourceUrl'];
+    spoonacularScore = json['spoonacularScore'];
+    summary = json['summary'];
   }
 }
 
 class RecipeMapper {
-  final List<APIrecipe> meals;
-  final double calories;
-  final double carbs;
-  final double fat;
-  final double protein;
+  final List<RecRecipe> recipes;
 
   RecipeMapper({
-    this.meals,
-    this.calories,
-    this.carbs,
-    this.fat,
-    this.protein,
+    this.recipes,
   });
 
   factory RecipeMapper.fromMap(Map<String, dynamic> map) {
-    List<APIrecipe> meals = [];
-    if (map['meals'] != null) {
-      map['meals'].forEach((meal) => meals.add(APIrecipe.fromMap(meal)));
+    List<RecRecipe> recipes = [];
+    if (map['recipes'] != null) {
+      map['recipes']
+          .forEach((recipe) => recipes.add(RecRecipe.fromMap(recipe)));
     }
     return RecipeMapper(
-      meals: meals,
-      calories: map['nutrients']['calories'],
-      carbs: map['nutrients']['carbohydrates'],
-      fat: map['nutrients']['fat'],
-      protein: map['nutrients']['protein'],
+      recipes: recipes,
     );
   }
 }
 
-Future<RecipeMapper> getRecipesForDay() async {
-  final response = await http
-      .get('$apiURL/recipes/mealplans/generate?timeFrame=day&apiKey=$apiKey');
-
-  if (response.statusCode == 200) {
-    Map<String, dynamic> recipesData = jsonDecode(response.body);
-    RecipeMapper recipeList = RecipeMapper.fromMap(recipesData);
-
-    // Basic Check meal
-    recipeList.meals.add(APIrecipe.fromMap({
-      "id": 1566481,
-      "title": "Turkey-Stuffed Portabella Mushrooms",
-      "imageType": "jpg",
-      "readyInMinutes": 45,
-      "servings": 4,
-      "sourceUrl":
-          "https://spoonacular.com/recipes/turkey-stuffed-portabella-mushrooms-1566481"
-    }));
-
-    // Basic Check meal
-    recipeList.meals.add(APIrecipe.fromMap({
-      "id": 1569707,
-      "title": "Kale Bruschetta",
-      "imageType": "jpg",
-      "readyInMinutes": 45,
-      "servings": 4,
-      "sourceUrl": "https://spoonacular.com/recipes/kale-bruschetta-1569707"
-    }));
-
-    // Return the Recipe List
-    return recipeList;
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load recipes');
-  }
+class Recommend extends StatefulWidget {
+  @override
+  _RecommendState createState() => _RecommendState();
 }
 
-class _Recommend extends State<Recommend> {
-  Future<RecipeMapper> futureRecipes;
+class _RecommendState extends State<Recommend> {
+  List<String> ingredientArray = [];
+  List<RecRecipe> recipeList = [];
+
+  List<Ingredient> _ingredients = [];
+  bool instruction_added = false;
+  bool ingredient_added = false;
+  Nutrition nutrition;
+
+  Future<void> loadFromStorage() async {
+    final uid = FirebaseAuth.instance.currentUser.uid;
+    CollectionReference _documentRef = FirebaseFirestore.instance
+        .collection('grocery')
+        .doc(uid)
+        .collection('groceryList');
+
+    await _documentRef.get().then((ds) {
+      // print(ds.toString());
+      if (ds != null) {
+        ds.docs.forEach((ingredient) {
+          ingredientArray.add(ingredient['name']);
+        });
+      }
+    });
+  }
+
+  Future<bool> getFav(String recipeId) async {
+    final uid = FirebaseAuth.instance.currentUser.uid;
+    bool result = false;
+    CollectionReference _documentRef = FirebaseFirestore.instance
+        .collection('recipes')
+        .doc(uid)
+        .collection('recipesList');
+
+    await _documentRef.get().then((ds) {
+      if (ds != null) {
+        ds.docs.forEach((recipe) {
+          var id = recipe['recipeId'];
+          if (id == recipeId) {
+            result = true;
+          }
+        });
+      }
+    });
+    return result;
+  }
+
+  double roundDouble(double value, int places) {
+    double mod = pow(10.0, places);
+    return ((value * mod).round().toDouble() / mod);
+  }
+
+  Widget buildList() {
+    return this.recipeList.length != 0
+        ? RefreshIndicator(
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 20,
+              ),
+              child: ListView.builder(
+                itemCount: this.recipeList.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                      child: new RecommendTile(
+                        name: this.recipeList[index].title,
+                        recipeId: this.recipeList[index].id.toString(),
+                        imageType: this.recipeList[index].imageType,
+                        spoonRating: this.recipeList[index].spoonacularScore,
+                      ),
+                      onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ViewRecommendedRecipe(
+                                recipeId: recipeList[index].id.toString(),
+                                name: recipeList[index].title,
+                                imageType: recipeList[index].imageType,
+                                spoonRating: recipeList[index].spoonacularScore,
+                              ),
+                            ),
+                          ));
+                },
+              ),
+            ),
+            onRefresh: getRecipes)
+        : Center(
+            child: noRecipes
+                ? Text("No Recipes Found with Given Tags")
+                : CircularProgressIndicator(),
+          );
+  }
+
+  List<String> dietaryPreference = [
+    "vegan",
+    "vegetarian",
+    "keto",
+    "pescetarian",
+    "dairy-free",
+    "dessert",
+    "mexican",
+    "chinese",
+    "primal",
+    "whole30",
+    "thai",
+    "korean",
+    "italian",
+    "gluten-free",
+    "healthy",
+    "japanese",
+    "indian",
+    "greek",
+    "shellfish-free",
+    "seafood-free",
+    "egg-free",
+    "soy-"
+        "free",
+    "peanut-free"
+  ];
+  List<String> selectedDietaryPreference = [];
+
+  List<String> allergen = [
+    "shellfish-free",
+    "seafood-free",
+    "egg-free",
+    "soy-"
+        "free",
+    "peanut-free"
+  ];
+
+  void _openFilterDialog() async {
+    await FilterListDialog.display(context,
+        allTextList: dietaryPreference,
+        height: 480,
+        borderRadius: 20,
+        headlineText: "Select Type of Recipes",
+        searchFieldHintText: "Search Here",
+        selectedTextList: selectedDietaryPreference,
+        onApplyButtonClick: (list) {
+      if (list != null) {
+        setState(() {
+          selectedDietaryPreference = List.from(list);
+          useAPI();
+          buildList();
+        });
+      }
+      Navigator.pop(context);
+    });
+  }
+
+  Future<void> _showMyDialog() async {
+    TextEditingController numberController = new TextEditingController();
+    String newNumber;
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Enter number between 1-20'),
+          content: TextFormField(
+            controller: numberController,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            keyboardType: TextInputType.number,
+            validator: (input) {
+              if (int.tryParse(input) == 0) {
+                return "Please Enter Valid Number";
+              }
+              if (int.parse(input) > 20 || int.parse(input) < 1) {
+                return "Please Enter Valid Number";
+              }
+              return null;
+            },
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            SizedBox(
+              width: 150,
+            ),
+            TextButton(
+              child: Text('Change'),
+              onPressed: () {
+                setState(() {
+                  newNumber = numberController.text;
+                  this.number = int.parse(newNumber);
+                  debugPrint(this.number.toString());
+                  useAPI();
+                  buildList();
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget buildListWithDropDown() {
+    return Scaffold(
+      backgroundColor: Colors.blue[50],
+      body: Column(children: [
+        Container(
+          height: 130,
+          child: Column(children: <Widget>[
+            SizedBox(height: 15),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 20),
+                  child: Text("Change Filters",
+                      style: TextStyle(
+                          color: Colors.blueGrey,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold)),
+                ),
+              ],
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  ButtonTheme(
+                    minWidth: 70.0,
+                    height: 50.0,
+                    child: RaisedButton(
+                      color: Colors.blue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Text(
+                        "Recipes Displayed: " + this.number.toString(),
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.white,
+                        ),
+                      ),
+                      onPressed: _showMyDialog,
+                    ),
+                  ),
+                  ButtonTheme(
+                    minWidth: 70.0,
+                    height: 50.0,
+                    child: RaisedButton(
+                      color: Colors.blue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Text(
+                        "Diet and Cuisine",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.white,
+                        ),
+                      ),
+                      onPressed: _openFilterDialog,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ]),
+        ),
+        Expanded(
+          child: buildList(),
+        ),
+      ]),
+    );
+  }
+
+  // Default number of recipes returned is five
+  int number = 5;
+
+  // &tags=vegetarian,dessert
+  String tags = "";
+
+  // Consts for API
+
+  String apiURL = 'https://api.spoonacular.com';
+  String imageUrl = 'https://spoonacular.com/recipeImages/';
+
+  bool noRecipes = false;
+
+  void useAPI() async {
+    // Tags are separated by commas
+    String newTags = "";
+    String intolerances = "";
+    for (int i = 0; i < selectedDietaryPreference.length; i++) {
+      if (i != selectedDietaryPreference.length - 1) {
+        if (allergen.contains(selectedDietaryPreference[i])) {
+          intolerances += selectedDietaryPreference[i] + ",";
+        } else {
+          newTags += selectedDietaryPreference[i] + ",";
+        }
+      } else {
+        if (allergen.contains(selectedDietaryPreference[i])) {
+          intolerances += selectedDietaryPreference[i];
+        } else {
+          newTags += selectedDietaryPreference[i];
+        }
+      }
+    }
+    tags = newTags;
+    debugPrint(tags);
+    debugPrint(intolerances);
+    var response = await http
+        .get('$apiURL/recipes/random?number=$number&tags=$tags&intolerances'
+            '=$intolerances'
+            '&apiKey'
+            '=$apiKey');
+
+    if (response.statusCode == 200) {
+      debugPrint("API Response Generated");
+      Map<String, dynamic> recipesData = jsonDecode(response.body);
+      RecipeMapper recipeMapper = RecipeMapper.fromMap(recipesData);
+      if (recipeMapper.recipes.isEmpty == true) {
+        noRecipes = true;
+      }
+      // Return the Recipe List
+      setState(() {
+        this.recipeList = recipeMapper.recipes;
+      });
+    } else {
+      debugPrint("API Response Error");
+      throw Exception('Failed to load recipes');
+    }
+  }
+
+  Future<void> getRecipes() async {
+    setState(() {
+      useAPI();
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    futureRecipes = getRecipesForDay();
+    getRecipes();
   }
 
-  // Recommended API
+  @override
   Widget build(BuildContext context) {
-    // Design Vars
+    final uid = FirebaseAuth.instance.currentUser.uid;
+    String name = "";
+    double rating = 0;
+    String imageUrl;
+    bool fav = false;
+    String recipeId;
     final Size size = MediaQuery.of(context).size;
     double padding = 25;
     final sidePadding = EdgeInsets.symmetric(horizontal: padding);
-
-    return Scaffold(
-      backgroundColor: Colors.blue[50],
-      resizeToAvoidBottomPadding: false,
-      body: Container(
-        child: Stack(children: [
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            SizedBox(height: 10),
-            Expanded(
-              child: Padding(
-                padding: sidePadding,
-                child: FutureBuilder(
-                  future: futureRecipes,
-                  builder: (BuildContext context, AsyncSnapshot recipeCheck) {
-                    switch (recipeCheck.connectionState) {
-                      case ConnectionState.waiting:
-                        return Center(
-                          child: SizedBox(
-                            height: 100.0,
-                            width: 100.0,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 10,
-                              valueColor:
-                                  AlwaysStoppedAnimation<Color>(Colors.blue),
-                            ),
-                          ),
-                        );
-                        break;
-                      case ConnectionState.active:
-                        print("active");
-                        RecipeMapper recipes = recipeCheck.data;
-                        if (recipes.meals.isNotEmpty) {
-                          return ListView.builder(
-                            itemCount: recipes.meals.length,
-                            itemBuilder: (context, index) {
-                              return SingleChildScrollView(
-                                child: new RecommendTile(
-                                  name: recipes.meals[index].title,
-                                  recipeId: recipes.meals[index].id.toString(),
-                                  imageType: recipes.meals[index].imageType,
-                                  rating: 0.0,
-                                ),
-                              );
-                            },
-                          );
-                        }
-                        return Column(children: [
-                          new RecommendTile(
-                            name: "Peanut Butter And Chocolate Oatmeal",
-                            recipeId: 655219.toString(),
-                            imageType: "jpg",
-                            rating: 3.3,
-                          ),
-                          new RecommendTile(
-                            name: "Lentil Salad With Vegetables",
-                            recipeId: 649931.toString(),
-                            imageType: "jpg",
-                            rating: 4.2,
-                          ),
-                          new RecommendTile(
-                            name: "Asian Noodles",
-                            recipeId: 632854.toString(),
-                            imageType: "jpg",
-                            rating: 4.3,
-                          ),
-                        ]);
-                      case ConnectionState.done:
-                        print("done");
-                        RecipeMapper recipes = recipeCheck.data;
-                        if (recipes.meals.isNotEmpty) {
-                          return ListView.builder(
-                            itemCount: recipes.meals.length,
-                            itemBuilder: (context, index) {
-                              return SingleChildScrollView(
-                                child: new RecommendTile(
-                                  name: recipes.meals[index].title,
-                                  recipeId: recipes.meals[index].id.toString(),
-                                  imageType: recipes.meals[index].imageType,
-                                  rating: 0.0,
-                                ),
-                              );
-                            },
-                          );
-                        }
-                        return Column(children: [
-                          new RecommendTile(
-                            name: "Peanut Butter And Chocolate Oatmeal",
-                            recipeId: 655219.toString(),
-                            imageType: "jpg",
-                            rating: 3.3,
-                          ),
-                          new RecommendTile(
-                            name: "Lentil Salad With Vegetables",
-                            recipeId: 649931.toString(),
-                            imageType: "jpg",
-                            rating: 4.2,
-                          ),
-                          new RecommendTile(
-                            name: "Asian Noodles",
-                            recipeId: 632854.toString(),
-                            imageType: "jpg",
-                            rating: 4.3,
-                          ),
-                        ]);
-                        break;
-                      default:
-                        return Text("Currently No Recommended Recipes Based "
-                            "on Your Preferences");
+    final _tabPages = <Widget>[
+      // Build Storage Recipes
+      Center(
+          child: FutureBuilder(
+              future: loadFromStorage(),
+              builder: (context, loadSnapshot) {
+                return StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('allRecipes')
+                      .orderBy("rating", descending: true)
+                      .snapshots(),
+                  builder: (ctx, allRecipeSnapshot) {
+                    if (allRecipeSnapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return Container(child: CircularProgressIndicator());
                     }
+                    final recipesdoc = allRecipeSnapshot.data.documents;
+                    return Container(
+                      width: size.width,
+                      height: size.height,
+                      child: Stack(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 10),
+                              Expanded(
+                                child: Padding(
+                                  padding: sidePadding,
+                                  child: ListView.builder(
+                                      physics: BouncingScrollPhysics(),
+                                      itemCount: recipesdoc.length,
+                                      itemBuilder: (ctx, index) {
+                                        recipeId = allRecipeSnapshot
+                                            .data.documents[index]["recipeId"];
+                                        name = allRecipeSnapshot
+                                            .data.documents[index]['name'];
+                                        var temp = allRecipeSnapshot
+                                            .data.documents[index]['rating'];
+                                        rating =
+                                            roundDouble(temp.toDouble(), 1);
+                                        imageUrl = allRecipeSnapshot
+                                            .data.documents[index]['imageUrl'];
+                                        // return Text("jsjs");
+                                        return FilteredRecipe(
+                                          recipeId: recipeId,
+                                          ingredientArray: ingredientArray,
+                                          name: name,
+                                          rating: rating,
+                                          imageUrl: imageUrl,
+                                          fav: fav,
+                                          uid: uid,
+                                        );
+                                      }),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
                   },
-                ),
-              ),
-            ),
-          ]),
-        ]),
+                );
+              })),
+      // Build API Recipes
+      Center(
+        child: buildListWithDropDown(),
+      ),
+    ];
+    final _tabs = <Tab>[
+      const Tab(
+        icon: Icon(Icons.backpack),
+        text: 'Storage Suggested',
+      ),
+      const Tab(icon: Icon(Icons.approval), text: 'Based on Filters')
+    ];
+    return DefaultTabController(
+      length: _tabs.length,
+      child: Scaffold(
+        backgroundColor: Colors.blue[50],
+        appBar: AppBar(
+          title: TabBar(
+            tabs: _tabs,
+          ),
+        ),
+        body: TabBarView(
+          children: _tabPages,
+        ),
       ),
     );
   }
