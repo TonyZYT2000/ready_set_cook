@@ -12,10 +12,7 @@ class AuthService {
 
   // auth change user stream
   Stream<u.User> get user {
-    return _auth
-        .authStateChanges()
-        //.map((FirebaseUser user) => _userFromFirebaseUser(user));
-        .map(_userFromFirebaseUser);
+    return _auth.authStateChanges().map(_userFromFirebaseUser);
   }
 
   String getCurrentUserEmail() {
@@ -33,7 +30,6 @@ class AuthService {
       fire.User user = result.user;
       return _userFromFirebaseUser(user);
     } catch (e) {
-      print(e.toString());
       return null;
     }
   }
@@ -46,7 +42,6 @@ class AuthService {
       fire.User user = result.user;
       return user;
     } catch (error) {
-      print(error.toString());
       return null;
     }
   }
@@ -58,22 +53,18 @@ class AuthService {
           email: email, password: password);
       fire.User user = result.user;
 
-      await RecipesDatabaseService(uid: user.uid).addRecipe("1");
-      await RecipesDatabaseService(uid: user.uid).addRecipe("2");
-      await RecipesDatabaseService(uid: user.uid).addRecipe("3");
-      await RecipesDatabaseService(uid: user.uid).addRecipe("4");
-      // await RecipesDatabaseService(uid: user.uid).addRecipe("5");
-      // await RecipesDatabaseService(uid: user.uid).addRecipe("6");
-      // await RecipesDatabaseService(uid: user.uid).addRecipe("7");
-      // await RecipesDatabaseService(uid: user.uid).addRecipe("8");
-      // await RecipesDatabaseService(uid: user.uid).addRecipe("9");
-      // await RecipesDatabaseService(uid: user.uid).addRecipe("90");
-      // //await RecipesDatabaseService(uid: user.uid).addRecipe("91");
-      // await RecipesDatabaseService(uid: user.uid).addRecipe("92");
+      RecipesDatabaseService(uid: user.uid).addRecipe("1");
+      RecipesDatabaseService(uid: user.uid).addRecipe("2");
+      RecipesDatabaseService(uid: user.uid).addRecipe("3");
+      RecipesDatabaseService(uid: user.uid).addRecipe("4");
+      RecipesDatabaseService(uid: user.uid).addRecipe("5");
+      RecipesDatabaseService(uid: user.uid).addRecipe("6");
+      RecipesDatabaseService(uid: user.uid).addRecipe("7");
+      RecipesDatabaseService(uid: user.uid).addRecipe("8");
+      RecipesDatabaseService(uid: user.uid).addRecipe("9");
 
       return _userFromFirebaseUser(user);
     } catch (error) {
-      print(error.toString());
       return null;
     }
   }
@@ -88,7 +79,6 @@ class AuthService {
     try {
       return await _auth.signOut();
     } catch (error) {
-      print(error.toString());
       return null;
     }
   }

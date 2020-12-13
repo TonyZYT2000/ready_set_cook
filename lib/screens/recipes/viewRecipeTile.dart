@@ -4,8 +4,6 @@ import 'package:ready_set_cook/models/ingredient.dart';
 import 'package:ready_set_cook/models/nutrition.dart';
 import 'package:ready_set_cook/screens/recipes/BorderIcon.dart';
 import 'package:ready_set_cook/services/recipes_database.dart';
-import 'package:ready_set_cook/shared/constants.dart';
-import 'package:ready_set_cook/models/user.dart';
 
 class ViewRecipeTile extends StatefulWidget {
   final List<Ingredient> ingredient;
@@ -48,7 +46,6 @@ class _ViewRecipeTileState extends State<ViewRecipeTile> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final ThemeData themeData = Theme.of(context);
     final double padding = 25;
     final sidePadding = EdgeInsets.symmetric(horizontal: padding);
     final user = FirebaseAuth.instance.currentUser;

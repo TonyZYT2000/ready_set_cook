@@ -1,9 +1,6 @@
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/number_symbols_data.dart';
-import 'package:ready_set_cook/models/ingredient.dart';
 import 'package:ready_set_cook/models/recipe.dart';
-import 'dart:developer';
-import 'package:flutter/material.dart';
 
 class RecipesDatabaseService {
   // uid of user
@@ -19,9 +16,12 @@ class RecipesDatabaseService {
 
   String _recipeName;
   double _recipeRating;
+  double roundDouble(double value, int places) {
+    double mod = pow(10.0, places);
+    return ((value * mod).round().toDouble() / mod);
+  }
 
   Future favRecipe(String recipeId) async {
-    print("in favRecipe");
     String id;
 
     CollectionReference _documentRef =
@@ -30,16 +30,20 @@ class RecipesDatabaseService {
       if (ds != null) {
         ds.docs.forEach((recipe) {
           id = recipe['recipeId'];
-          print("The id is");
-          print(id);
           if (id == recipeId) {
-            print("we are in");
             return FirebaseFirestore.instance
                 .collection('recipes')
                 .doc(uid)
                 .collection("recipesList")
                 .doc(recipe.id)
-                .set({"recipeId": recipeId, "fav": true});
+                .set({
+              "recipeId": recipeId,
+              "fav": true,
+              "imageUrl": recipe["imageUrl"],
+              "name": recipe["name"],
+              "numRatings": recipe["numRatings"],
+              "rating": recipe["rating"]
+            });
           }
         });
       }
@@ -55,33 +59,84 @@ class RecipesDatabaseService {
       if (ds != null) {
         ds.docs.forEach((recipe) {
           id = recipe['recipeId'];
-          // print("The id is");
-          // print(id);
           if (id == recipeId) {
-            print("we are in");
             return FirebaseFirestore.instance
                 .collection('recipes')
                 .doc(uid)
                 .collection("recipesList")
                 .doc(recipe.id)
-                .set({"recipeId": recipeId, "fav": false});
+                .set({
+              "recipeId": recipeId,
+              "fav": false,
+              "imageUrl": recipe["imageUrl"],
+              "name": recipe["name"],
+              "numRatings": recipe["numRatings"],
+              "rating": recipe["rating"]
+            });
           }
         });
       }
     });
   }
 
-  Future addRecipe(String recipeId) async {
-    return await recipeCollection
-        .doc(uid)
-        .collection("recipesList")
-        .add({"recipeId": recipeId, "fav": false});
+  addRecipe(String recipeId) async {
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection("allRecipes")
+        .doc(recipeId)
+        .get();
+    print("yep");
+    QuerySnapshot ingredient = await FirebaseFirestore.instance
+        .collection("allRecipes")
+        .doc(recipeId)
+        .collection("ingredients")
+        .get();
+    QuerySnapshot instruction = await FirebaseFirestore.instance
+        .collection("allRecipes")
+        .doc(recipeId)
+        .collection("instructions")
+        .get();
+    QuerySnapshot nutrition = await FirebaseFirestore.instance
+        .collection("allRecipes")
+        .doc(recipeId)
+        .collection("nutrition")
+        .get();
+    String imageUrl = snapshot.get("imageUrl");
+    String name = snapshot.get("name");
+    int numRating = snapshot.get("numRatings");
+    var temp = snapshot.get('rating');
+    double rating = roundDouble(temp.toDouble(), 1);
+    CollectionReference _documentRef =
+        recipeCollection.doc(uid).collection('recipesList');
+    _documentRef.doc(recipeId).set({
+      "imageUrl": imageUrl,
+      "name": name,
+      "numRatings": numRating,
+      "rating": rating,
+      "recipeId": recipeId,
+      "fav": false
+    });
+    ingredient.docs.forEach((ing) {
+      _documentRef.doc(recipeId).collection("ingredients").add({
+        "name": ing.get("name"),
+        "quantity": ing.get("quantity"),
+        "unit": ing.get("unit")
+      });
+    });
+    instruction.docs.forEach((ins) {
+      _documentRef.doc(recipeId).collection("instructions").add(
+          {"index": ins.get("index"), "instruction": ins.get("instruction")});
+    });
+    nutrition.docs.forEach((nut) {
+      _documentRef.doc(recipeId).collection("nutrition").add({
+        "Calories": nut.get("Calories"),
+        "Protein": nut.get("Protein"),
+        "Total Fat": nut.get("Total Fat"),
+        "Total Carbohydrate": nut.get("Total Carbohydrate")
+      });
+    });
   }
 
   Future updateRecipe(String newName, String recipeId) async {
-    debugPrint(recipeId);
-    debugPrint(newName);
-
     return await recipeCollection.doc(recipeId).update({
       "name": newName,
     });
@@ -102,6 +157,42 @@ class RecipesDatabaseService {
               .collection("recipesList")
               .doc(recipeIdField.id)
               .delete();
+          FirebaseFirestore.instance
+              .collection('recipes')
+              .doc(uid)
+              .collection("recipesList")
+              .doc(recipeId)
+              .collection("ingredients")
+              .get()
+              .then((snapshot) {
+            for (DocumentSnapshot ds in snapshot.docs) {
+              ds.reference.delete();
+            }
+          });
+          FirebaseFirestore.instance
+              .collection('recipes')
+              .doc(uid)
+              .collection("recipesList")
+              .doc(recipeId)
+              .collection("instructions")
+              .get()
+              .then((snapshot) {
+            for (DocumentSnapshot ds in snapshot.docs) {
+              ds.reference.delete();
+            }
+          });
+          FirebaseFirestore.instance
+              .collection('recipes')
+              .doc(uid)
+              .collection("recipesList")
+              .doc(recipeId)
+              .collection("nutrition")
+              .get()
+              .then((snapshot) {
+            for (DocumentSnapshot ds in snapshot.docs) {
+              ds.reference.delete();
+            }
+          });
         }
       });
     });
@@ -130,7 +221,6 @@ class RecipesDatabaseService {
       "Total Fat": recipe.nutrition.totalFat,
       "Total Carbohydrate": recipe.nutrition.totalCarbs,
     });
-    allRecipesCollection.doc(recipe.recipeId).collection("uids").add({});
 
     await allRecipesCollection.doc(recipe.recipeId).set({
       "recipeId": recipe.recipeId,
@@ -155,7 +245,6 @@ class RecipesDatabaseService {
   List<Recipe> _recipesList(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       getRecipesHelper(doc);
-      log('called helper');
       return Recipe(
         recipeId: doc.get('recipeId'),
         name: _recipeName,

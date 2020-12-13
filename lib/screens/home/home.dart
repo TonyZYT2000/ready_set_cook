@@ -27,7 +27,6 @@ class _HomeState extends State<Home> {
     setState(() {
       _selectedIndex = index;
     });
-    print("onItemTapped");
   }
 
   @override

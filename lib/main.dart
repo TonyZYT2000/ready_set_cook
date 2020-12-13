@@ -3,7 +3,6 @@ import 'package:ready_set_cook/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart' as p;
 import 'package:ready_set_cook/models/user.dart';
-
 import 'package:firebase_core/firebase_core.dart';
 
 // void main() => runApp(MyApp());

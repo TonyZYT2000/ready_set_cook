@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ready_set_cook/models/ingredient.dart';
@@ -51,6 +52,9 @@ class _ViewRecipeState extends State<ViewRecipe> {
     List<String> temp = [];
     for (int i = 0; i < _ins_index_List.length; i++) {
       int j = _ins_index_List.indexOf(i);
+      if (j == -1) {
+        return;
+      }
       temp.add(_instructionsList[j]);
     }
     print(temp);
@@ -58,23 +62,30 @@ class _ViewRecipeState extends State<ViewRecipe> {
   }
 
   Widget build(BuildContext context) {
+    final uid = FirebaseAuth.instance.currentUser.uid;
     return StreamBuilder(
         stream: FirebaseFirestore.instance
-            .collection('allRecipes')
+            .collection('recipes')
+            .doc(uid)
+            .collection("recipesList")
             .doc(recipeId)
             .collection("ingredients")
             .snapshots(),
         builder: (ctx, ingredientSnapshot) {
           return StreamBuilder(
             stream: FirebaseFirestore.instance
-                .collection('allRecipes')
+                .collection('recipes')
+                .doc(uid)
+                .collection("recipesList")
                 .doc(recipeId)
                 .collection("instructions")
                 .snapshots(),
             builder: (ctx, instructionSnapshot) {
               return StreamBuilder(
                 stream: FirebaseFirestore.instance
-                    .collection('allRecipes')
+                    .collection('recipes')
+                    .doc(uid)
+                    .collection("recipesList")
                     .doc(recipeId)
                     .collection("nutrition")
                     .snapshots(),
