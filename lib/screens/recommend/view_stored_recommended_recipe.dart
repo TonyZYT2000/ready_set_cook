@@ -138,62 +138,6 @@ class _ViewStoredRecommendedRecipeState
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              FloatingActionButton.extended(
-                                  heroTag: "edit",
-                                  icon: Icon(Icons.edit),
-                                  label: Text("Edit",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 14)),
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => EditRecipe(
-                                                ingredient: _ingredientsList,
-                                                instruction: _instructionsList,
-                                                ins_index: _ins_index_List,
-                                                nutrition: nutrition,
-                                                imageUrl: imageUrl,
-                                                fav: fav,
-                                                recipeId: recipeId,
-                                                name: name))).then((value) {
-                                      setState(() {
-                                        RecipesDatabaseService recipeDB =
-                                            RecipesDatabaseService(uid: uid);
-                                        recipeDB
-                                            .getRecipeName(recipeId)
-                                            .then((value) {
-                                          setState(() {
-                                            name = value;
-                                          });
-
-                                          _ingredientsList.clear();
-                                          _instructionsList.clear();
-                                          _ins_index_List.clear();
-                                        });
-                                      });
-                                    });
-                                  }),
-                              FloatingActionButton.extended(
-                                heroTag: "rate",
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50.0),
-                                    side: BorderSide(color: Colors.blue)),
-                                icon: Icon(Icons.star,
-                                    color: Colors.white, size: 20),
-                                label: Text(
-                                  'Rate',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 15),
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              RatingBar(recipeId)));
-                                },
-                              )
                             ])),
                     body: Container(
                       child: ViewRecommendRecipeTile(
