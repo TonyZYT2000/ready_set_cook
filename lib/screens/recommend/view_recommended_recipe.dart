@@ -236,7 +236,7 @@ class _ViewRecommendedRecipeState extends State<ViewRecommendedRecipe> {
                   width: 200,
                   height: 200,
                   child: Icon(
-                    Icons.add_shopping_cart,
+                    Icons.add,
                     color: Colors.white,
                     size: 20,
                   )),
