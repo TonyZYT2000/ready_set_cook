@@ -11,13 +11,22 @@ class RecommendTile extends StatelessWidget {
   final String imageType;
   double spoonRating;
   RecommendTile({this.name, this.recipeId, this.imageType, this.spoonRating});
-
   @override
   Widget build(BuildContext context) {
     // Generate Random Rating
 
     this.spoonRating = 5.0 * (this.spoonRating * 0.01);
     double rating = double.parse((this.spoonRating).toStringAsFixed(1));
+
+    String imageUrl = "https://spoonacular"
+            ".com/recipeImages/" +
+        recipeId +
+        "-480x360." +
+        imageType;
+    if (imageType == null) {
+      imageUrl = "https://upload.wikimedia"
+          ".org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png";
+    }
 
     // How the tiles look
     final Size size = MediaQuery.of(context).size;
@@ -33,14 +42,11 @@ class RecommendTile extends StatelessWidget {
             Stack(
               children: [
                 Center(
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(25.0),
-                        child: Image.network("https://spoonacular"
-                                ".com/recipeImages/" +
-                            recipeId +
-                            "-480x360"
-                                "." +
-                            imageType))),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(25.0),
+                    child: Image.network(imageUrl),
+                  ),
+                ),
               ],
             ),
             SizedBox(height: 5),

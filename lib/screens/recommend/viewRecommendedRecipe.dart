@@ -1,17 +1,17 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ready_set_cook/models/ingredient.dart';
-import 'package:ready_set_cook/services/recipes_database.dart';
-import 'package:ready_set_cook/models/nutrition.dart';
-import 'package:ready_set_cook/screens/recipes/rateRecipe.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:flutter/services.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'recommend.dart' as recommend;
-import 'package:uuid/uuid.dart';
+import 'package:ready_set_cook/models/ingredient.dart';
+import 'package:ready_set_cook/models/nutrition.dart';
 import 'package:ready_set_cook/models/recipe.dart';
+import 'package:ready_set_cook/services/recipes_database.dart';
+import 'package:uuid/uuid.dart';
+
+import 'recommend.dart' as recommend;
 
 // Ingredient Model from API for Mapping
 class apiIngredient {
@@ -49,12 +49,14 @@ class ViewRecommendedRecipe extends StatefulWidget {
   String name = "";
   String imageType = "";
   double spoonRating;
+
   ViewRecommendedRecipe(
       {this.recipeId,
       this.name,
       this.imageType,
       this.spoonRating,
       this.toggleView});
+
   @override
   _ViewRecommendedRecipeState createState() => _ViewRecommendedRecipeState();
 }

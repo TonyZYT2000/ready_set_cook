@@ -1,22 +1,20 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:filter_list/filter_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ready_set_cook/screens/recipes/recipe.dart';
-import 'package:ready_set_cook/screens/recommend/filtered_recommend.dart';
-import 'package:ready_set_cook/services/recipes_database.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'recommendTile.dart';
-import 'package:filter_list/filter_list.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:ready_set_cook/models/ingredient.dart';
 import 'package:ready_set_cook/models/nutrition.dart';
+import 'package:ready_set_cook/screens/recommend/filtered_recommend.dart';
 
+import 'recommendTile.dart';
 import 'viewRecommendedRecipe.dart';
 
-String apiKey = 'b99da7728f3a41a1bdac85f5e588e0b9';
+String apiKey = 'abb9e049401e4c429a547e0ce93172de';
 
 class RecRecipe {
   int id;
@@ -121,7 +119,7 @@ class _RecommendState extends State<Recommend> {
   }
 
   Widget buildList() {
-    return recipeList.length != 0
+    return this.recipeList.length != 0
         ? RefreshIndicator(
             child: Container(
               padding: const EdgeInsets.symmetric(
@@ -129,14 +127,14 @@ class _RecommendState extends State<Recommend> {
                 vertical: 20,
               ),
               child: ListView.builder(
-                itemCount: recipeList.length,
+                itemCount: this.recipeList.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                       child: new RecommendTile(
-                        name: recipeList[index].title,
-                        recipeId: recipeList[index].id.toString(),
-                        imageType: recipeList[index].imageType,
-                        spoonRating: recipeList[index].spoonacularScore,
+                        name: this.recipeList[index].title,
+                        recipeId: this.recipeList[index].id.toString(),
+                        imageType: this.recipeList[index].imageType,
+                        spoonRating: this.recipeList[index].spoonacularScore,
                       ),
                       onTap: () => Navigator.push(
                             context,
@@ -325,14 +323,17 @@ class _RecommendState extends State<Recommend> {
 
   // Default number of recipes returned is five
   int number = 5;
+
   // &tags=vegetarian,dessert
   String tags = "";
+
   // Consts for API
 
   String apiURL = 'https://api.spoonacular.com';
   String imageUrl = 'https://spoonacular.com/recipeImages/';
 
   bool noRecipes = false;
+
   void useAPI() async {
     // Tags are separated by commas
     String newTags = "";
@@ -357,7 +358,7 @@ class _RecommendState extends State<Recommend> {
       }
       // Return the Recipe List
       setState(() {
-        recipeList = recipeMapper.recipes;
+        this.recipeList = recipeMapper.recipes;
       });
     } else {
       debugPrint("API Response Error");
