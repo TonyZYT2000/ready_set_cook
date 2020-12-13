@@ -76,7 +76,6 @@ class _ReportErrorState extends State<ReportError> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () async {
-                        //await _auth.resetPassword(email);
 
                         _errorDB.addError(new ReportedError(title, problem));
 
@@ -86,7 +85,7 @@ class _ReportErrorState extends State<ReportError> {
                             builder: (_) => AlertDialog(
                                   title: Text('We got your message!'),
                                   content: Text(
-                                      'Please allow a few days for response'),
+                                      'Please allow a few days for a response'),
                                 ));
                       }),
 
