@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ready_set_cook/screens/recipes/border_icon.dart';
-import 'package:ready_set_cook/shared/constants.dart';
-import 'dart:math';
 
 // ignore: must_be_immutable
 class RecommendTile extends StatelessWidget {

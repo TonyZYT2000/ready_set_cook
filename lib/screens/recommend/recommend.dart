@@ -11,8 +11,8 @@ import 'package:ready_set_cook/models/ingredient.dart';
 import 'package:ready_set_cook/models/nutrition.dart';
 import 'package:ready_set_cook/screens/recommend/filtered_recommend.dart';
 
-import 'recommendTile.dart';
-import 'viewRecommendedRecipe.dart';
+import 'recommend_tile.dart';
+import 'view_recommended_recipe.dart';
 
 String apiKey = '8338f5ec64244b1c935bf18687dab89d';
 
