@@ -50,7 +50,7 @@ class _RegisterState extends State<Register> {
                 SizedBox(height: 20.0),
                 TextFormField(
                   decoration:
-                      textInputDecoration.copyWith(hintText: 'User Name'),
+                      textInputDecoration.copyWith(hintText: 'Username'),
                   onChanged: (val) {
                     setState(() => _userName = val);
                   },
